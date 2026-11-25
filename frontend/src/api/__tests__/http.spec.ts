@@ -78,6 +78,18 @@ describe('api', () => {
     await expect(api('/x')).rejects.toMatchObject({ status: 0, message: 'Không kết nối được máy chủ' })
   })
 
+  it('maps empty 502 from dev proxy (backend down) to status 0', async () => {
+    fetchMock.mockResolvedValue(new Response('', { status: 502 }))
+    await expect(api('/x')).rejects.toMatchObject({ status: 0, message: 'Không kết nối được máy chủ' })
+  })
+
+  it('keeps real 502 with ProblemDetail body', async () => {
+    fetchMock.mockResolvedValue(
+      new Response(JSON.stringify({ detail: 'AI bận', code: 'AI_UNAVAILABLE' }), { status: 502 }),
+    )
+    await expect(api('/x')).rejects.toMatchObject({ status: 502, code: 'AI_UNAVAILABLE' })
+  })
+
   it('passes FormData through without JSON content-type', async () => {
     fetchMock.mockResolvedValue(new Response(null, { status: 204 }))
     const fd = new FormData()

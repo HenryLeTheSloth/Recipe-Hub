@@ -47,6 +47,8 @@ export async function api<T>(path: string, init: RequestInit & { json?: unknown 
 
   // Đọc text thay vì res.json(): 204 và 200 rỗng đều trả undefined.
   const text = await res.text()
+  // Proxy Vite trả 502 rỗng khi backend tắt; 502 thật của backend luôn có body ProblemDetail.
+  if (res.status === 502 && !text) throw new ApiError(0, 'Không kết nối được máy chủ')
   const body = text ? parse(text) : undefined
   if (!res.ok) {
     const p = (body ?? {}) as { detail?: string; code?: string; errors?: Record<string, string> }
