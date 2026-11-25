@@ -2,7 +2,7 @@ import { createRouter, createWebHistory } from 'vue-router'
 import PublicLayout from '@/layouts/PublicLayout.vue'
 import HomePage from '@/pages/HomePage.vue'
 import { useAuthStore } from '@/stores/auth'
-import { guard } from './guard'
+import { ADMIN_PERMISSIONS, guard } from './guard'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -19,6 +19,15 @@ const router = createRouter({
         { path: 'reset-password', component: () => import('@/pages/ResetPasswordPage.vue') },
         { path: 'account', component: () => import('@/pages/AccountPage.vue'), meta: { auth: true } },
         { path: '403', component: () => import('@/pages/ForbiddenPage.vue') },
+      ],
+    },
+    {
+      path: '/admin',
+      component: () => import('@/layouts/AdminLayout.vue'),
+      meta: { auth: true, permission: ADMIN_PERMISSIONS },
+      children: [
+        { path: 'users', component: () => import('@/pages/admin/AdminUsersPage.vue'), meta: { permission: 'USER_READ' } },
+        { path: 'roles', component: () => import('@/pages/admin/AdminRolesPage.vue'), meta: { permission: 'ROLE_MANAGE' } },
       ],
     },
   ],

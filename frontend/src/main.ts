@@ -21,5 +21,6 @@ try {
 }
 
 app.use(router)
-app.use(PrimeVue, { theme: { preset: Aura } })
+// PrimeVue 5 dùng giấy phép PrimeUI: key Community miễn phí cho cá nhân, đặt ở frontend/.env.local (không commit).
+app.use(PrimeVue, { theme: { preset: Aura }, license: import.meta.env.VITE_PRIMEUI_LICENSE })
 app.mount('#app')
