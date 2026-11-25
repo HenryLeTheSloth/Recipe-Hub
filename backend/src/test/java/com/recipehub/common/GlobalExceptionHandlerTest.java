@@ -38,4 +38,12 @@ class GlobalExceptionHandlerTest {
         assertThat(p.getStatus()).isEqualTo(403);
         assertThat(p.getProperties()).containsEntry("code", "FORBIDDEN");
     }
+
+    @Test
+    void maxUploadSizeMapsTo413() {
+        ProblemDetail p = handler.handleMaxUpload(
+                new org.springframework.web.multipart.MaxUploadSizeExceededException(5L * 1024 * 1024));
+        assertThat(p.getStatus()).isEqualTo(413);
+        assertThat(p.getProperties()).containsEntry("code", "MEDIA_TOO_LARGE");
+    }
 }

@@ -16,6 +16,10 @@ spring:
       pageable:
         default-page-size: 12
         max-page-size: 50
+  servlet:
+    multipart:
+      max-file-size: 5MB
+      max-request-size: 6MB
   session:
     jdbc:
       initialize-schema: never

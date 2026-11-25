@@ -1,5 +1,7 @@
 package com.recipehub.user;
 
+import com.recipehub.media.MediaService;
+import com.recipehub.user.dto.AvatarRequest;
 import com.recipehub.user.dto.ChangePasswordRequest;
 import com.recipehub.user.dto.MeResponse;
 import jakarta.servlet.http.HttpSession;
@@ -18,9 +20,16 @@ import org.springframework.web.bind.annotation.RestController;
 public class MeController {
 
     private final AuthService auth;
+    private final MediaService media;
 
-    public MeController(AuthService auth) {
+    public MeController(AuthService auth, MediaService media) {
         this.auth = auth;
+        this.media = media;
+    }
+
+    @PutMapping("/avatar")
+    public MeResponse setAvatar(@AuthenticationPrincipal AppUserDetails principal, @Valid @RequestBody AvatarRequest r) {
+        return auth.setAvatar(principal.id(), media.requireOwned(r.mediaId(), principal.id()));
     }
 
     @GetMapping

@@ -1,5 +1,7 @@
 package com.recipehub.user;
 
+import com.recipehub.media.Media;
+import com.recipehub.media.MediaService;
 import com.recipehub.common.ApiException;
 import com.recipehub.common.ErrorCode;
 import com.recipehub.user.dto.MeResponse;
@@ -107,12 +109,19 @@ public class AuthService {
         sessions.invalidateOthers(user.getEmail(), currentSessionId);
     }
 
+    @Transactional
+    public MeResponse setAvatar(Long userId, Media avatar) {
+        users.findById(userId).orElseThrow().setAvatar(avatar);
+        return me(userId);
+    }
+
     @Transactional(readOnly = true)
     public MeResponse me(Long userId) {
         User u = users.findById(userId).orElseThrow(() -> new ApiException(ErrorCode.UNAUTHENTICATED, "Chưa đăng nhập"));
         List<String> roleCodes = u.getRoles().stream().map(Role::getCode).sorted().toList();
         List<String> perms = u.getRoles().stream().flatMap(r -> r.getPermissions().stream())
                 .map(Permission::getCode).distinct().sorted().toList();
-        return new MeResponse(u.getId(), u.getEmail(), u.getUsername(), u.getDisplayName(), null, roleCodes, perms);
+        return new MeResponse(u.getId(), u.getEmail(), u.getUsername(), u.getDisplayName(),
+                MediaService.url(u.getAvatar()), roleCodes, perms);
     }
 }

@@ -1,7 +1,10 @@
 package com.recipehub.user;
 
 import com.recipehub.common.BaseEntity;
+import com.recipehub.media.Media;
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.JoinTable;
 import jakarta.persistence.ManyToMany;
@@ -20,6 +23,10 @@ public class User extends BaseEntity {
     private String displayName;
     private Instant emailVerifiedAt;
     private boolean locked;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "avatar_media_id")
+    private Media avatar;
 
     @ManyToMany
     @JoinTable(name = "user_roles",
@@ -75,6 +82,14 @@ public class User extends BaseEntity {
 
     public void setLocked(boolean locked) {
         this.locked = locked;
+    }
+
+    public Media getAvatar() {
+        return avatar;
+    }
+
+    public void setAvatar(Media avatar) {
+        this.avatar = avatar;
     }
 
     public Set<Role> getRoles() {

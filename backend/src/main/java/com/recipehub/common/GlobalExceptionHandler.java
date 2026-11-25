@@ -7,6 +7,7 @@ import org.springframework.security.access.AccessDeniedException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
+import org.springframework.web.multipart.MaxUploadSizeExceededException;
 
 @RestControllerAdvice
 public class GlobalExceptionHandler {
@@ -29,6 +30,11 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(AccessDeniedException.class)
     public ProblemDetail handleAccessDenied(AccessDeniedException e) {
         return problem(ErrorCode.FORBIDDEN, "Bạn không có quyền thực hiện thao tác này");
+    }
+
+    @ExceptionHandler(MaxUploadSizeExceededException.class)
+    public ProblemDetail handleMaxUpload(MaxUploadSizeExceededException e) {
+        return problem(ErrorCode.MEDIA_TOO_LARGE, "Ảnh tối đa 5MB");
     }
 
     private static ProblemDetail problem(ErrorCode code, String detail) {

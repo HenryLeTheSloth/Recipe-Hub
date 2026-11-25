@@ -20,7 +20,11 @@ public enum ErrorCode {
     SYSTEM_ROLE(HttpStatus.CONFLICT),
     LAST_ADMIN(HttpStatus.CONFLICT),
     SELF_ACTION(HttpStatus.CONFLICT),
-    USER_HAS_CONTENT(HttpStatus.CONFLICT);
+    USER_HAS_CONTENT(HttpStatus.CONFLICT),
+    NAME_TAKEN(HttpStatus.CONFLICT),
+    IN_USE(HttpStatus.CONFLICT),
+    MEDIA_TOO_LARGE(HttpStatus.CONTENT_TOO_LARGE),
+    MEDIA_TYPE(HttpStatus.UNSUPPORTED_MEDIA_TYPE);
 
     private final HttpStatus status;
 
