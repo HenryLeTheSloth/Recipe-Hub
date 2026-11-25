@@ -12,4 +12,8 @@ public record RegisterRequest(
         @Pattern(regexp = "^[a-zA-Z0-9_]{3,30}$", message = "3–30 ký tự: chữ, số hoặc _") String username,
         @NotBlank(message = "Bắt buộc") @Size(max = 50, message = "Tối đa 50 ký tự") String displayName,
         @NotBlank(message = "Bắt buộc") String password) {
+
+    public RegisterRequest {
+        email = email == null ? null : email.trim(); // "  a@x.com " hợp lệ; @Email kiểm trên giá trị đã trim
+    }
 }

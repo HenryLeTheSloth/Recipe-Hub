@@ -33,12 +33,13 @@ class AuthServiceTest {
     @Mock PasswordEncoder encoder;
     @Mock TokenService tokens;
     @Mock MailService mail;
+    @Mock SessionService sessions;
     AuthService service;
     final Role member = new Role("MEMBER", "Thành viên", null);
 
     @BeforeEach
     void setUp() {
-        service = new AuthService(users, roles, encoder, tokens, mail, Clock.fixed(NOW, ZoneOffset.UTC));
+        service = new AuthService(users, roles, encoder, tokens, mail, sessions, Clock.fixed(NOW, ZoneOffset.UTC));
         lenient().when(roles.findByCode("MEMBER")).thenReturn(Optional.of(member));
         lenient().when(encoder.encode(any())).thenReturn("HASH");
         lenient().when(users.save(any())).thenAnswer(i -> i.getArgument(0));
