@@ -28,6 +28,12 @@ const router = createRouter({
       children: [
         { path: 'users', component: () => import('@/pages/admin/AdminUsersPage.vue'), meta: { permission: 'USER_READ' } },
         { path: 'roles', component: () => import('@/pages/admin/AdminRolesPage.vue'), meta: { permission: 'ROLE_MANAGE' } },
+        { path: 'categories', component: () => import('@/pages/admin/AdminCatalogPage.vue'),
+          props: { kind: 'categories' }, meta: { permission: 'CATALOG_MANAGE' } },
+        { path: 'tags', component: () => import('@/pages/admin/AdminCatalogPage.vue'),
+          props: { kind: 'tags' }, meta: { permission: 'CATALOG_MANAGE' } },
+        { path: 'ingredients', component: () => import('@/pages/admin/AdminIngredientsPage.vue'),
+          meta: { permission: 'CATALOG_MANAGE' } },
       ],
     },
   ],

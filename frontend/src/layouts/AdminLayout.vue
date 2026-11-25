@@ -7,10 +7,13 @@ import { useAuthStore } from '@/stores/auth'
 const auth = useAuthStore()
 const route = useRoute()
 
-// GĐ2–3 thêm mục (danh mục, kiểm duyệt).
+// GĐ3 thêm mục kiểm duyệt.
 const ITEMS: { to: string; label: string; permission: Permission }[] = [
   { to: '/admin/users', label: 'Người dùng', permission: 'USER_READ' },
   { to: '/admin/roles', label: 'Vai trò', permission: 'ROLE_MANAGE' },
+  { to: '/admin/categories', label: 'Danh mục', permission: 'CATALOG_MANAGE' },
+  { to: '/admin/tags', label: 'Tag', permission: 'CATALOG_MANAGE' },
+  { to: '/admin/ingredients', label: 'Nguyên liệu', permission: 'CATALOG_MANAGE' },
 ]
 const items = computed(() => ITEMS.filter((i) => auth.can(i.permission)))
 </script>

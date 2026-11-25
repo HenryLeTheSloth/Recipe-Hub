@@ -1,7 +1,9 @@
 <script setup lang="ts">
-import { ref } from 'vue'
+import { computed, ref } from 'vue'
 import { useRouter } from 'vue-router'
 import { changePassword } from '@/api/auth'
+import { setAvatar, type MediaRef } from '@/api/media'
+import ImageUpload from '@/components/ImageUpload.vue'
 import { useForm } from '@/composables/useForm'
 import { useAuthStore } from '@/stores/auth'
 
@@ -12,6 +14,13 @@ const next = ref('')
 const confirm = ref('')
 const { busy, error, fieldErrors, run } = useForm()
 const done = ref(false)
+
+// Server chỉ trả avatarUrl; id chỉ để thỏa kiểu MediaRef, ImageUpload chỉ đọc url.
+const avatar = computed<MediaRef | null>(() => (auth.me?.avatarUrl ? { id: 0, url: auth.me.avatarUrl } : null))
+const avatarForm = useForm()
+async function changeAvatar(m: MediaRef) {
+  await avatarForm.run(async () => (auth.me = await setAvatar(m.id)))
+}
 
 async function submit() {
   done.value = false
@@ -38,6 +47,12 @@ async function logout() {
       <dt>Email</dt><dd>{{ auth.me.email }}</dd>
       <dt>Vai trò</dt><dd>{{ auth.me.roles.join(', ') }}</dd>
     </dl>
+
+    <h2>Ảnh đại diện</h2>
+    <div class="avatar">
+      <ImageUpload :model-value="avatar" @update:model-value="changeAvatar" />
+      <p v-if="avatarForm.error.value" class="form-error" role="alert">{{ avatarForm.error.value }}</p>
+    </div>
 
     <h2>Đổi mật khẩu</h2>
     <form class="form" novalidate @submit.prevent="submit">
@@ -69,4 +84,5 @@ h2 { font-size: 1.1rem; margin: 1.5rem 0 0.75rem; }
 .info { display: grid; grid-template-columns: auto 1fr; gap: 0.35rem 1rem; margin: 0; }
 .info dt { color: var(--muted); }
 .info dd { margin: 0; overflow-wrap: anywhere; }
+.avatar :deep(.preview) { border-radius: 50%; }
 </style>

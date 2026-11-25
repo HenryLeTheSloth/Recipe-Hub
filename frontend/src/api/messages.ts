@@ -8,6 +8,10 @@ const MESSAGES: Record<string, string> = {
   INVALID_TOKEN: 'Liên kết không hợp lệ hoặc đã hết hạn',
   UNAUTHENTICATED: 'Phiên đăng nhập đã hết, hãy đăng nhập lại',
   FORBIDDEN: 'Bạn không có quyền thực hiện thao tác này',
+  MEDIA_TYPE: 'Chỉ nhận ảnh JPEG, PNG hoặc WebP',
+  MEDIA_TOO_LARGE: 'Ảnh tối đa 5MB',
+  NAME_TAKEN: 'Tên này đã có, hãy chọn tên khác',
+  IN_USE: 'Mục này đang được dùng nên không xóa được',
 }
 
 export function messageFor(e: unknown): string {
