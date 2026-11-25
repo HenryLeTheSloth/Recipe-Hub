@@ -17,5 +17,6 @@ public interface RecipeRepository extends JpaRepository<Recipe, Long>, JpaSpecif
     @EntityGraph(attributePaths = {"author", "category"})
     Page<Recipe> findByAuthor_IdAndStatusIn(Long authorId, Collection<RecipeStatus> statuses, Pageable pageable);
 
+    @EntityGraph(attributePaths = {"author", "category"})
     Page<Recipe> findByStatus(RecipeStatus status, Pageable pageable);
 }
