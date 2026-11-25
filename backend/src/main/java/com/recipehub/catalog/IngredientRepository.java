@@ -7,6 +7,7 @@ import org.springframework.data.domain.Limit;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 
 public interface IngredientRepository extends JpaRepository<Ingredient, Long> {
@@ -34,4 +35,20 @@ public interface IngredientRepository extends JpaRepository<Ingredient, Long> {
             order by i.status desc, i.name
             """)
     Page<Ingredient> adminSearch(IngredientStatus status, String q, String qSlug, Pageable pageable);
+
+    // Gộp nguyên liệu: bỏ dòng nguồn ở công thức đã có đích, trỏ phần còn lại sang đích, rồi xóa nguồn.
+    @Modifying
+    @Query(nativeQuery = true, value = """
+            delete from recipe_ingredients s where s.ingredient_id = :src
+              and exists (select 1 from recipe_ingredients t where t.recipe_id = s.recipe_id and t.ingredient_id = :tgt)
+            """)
+    void dropRecipeLinesDuplicatedByTarget(Long src, Long tgt);
+
+    @Modifying
+    @Query(nativeQuery = true, value = "update recipe_ingredients set ingredient_id = :tgt where ingredient_id = :src")
+    void repointRecipeLines(Long src, Long tgt);
+
+    @Modifying(clearAutomatically = true)
+    @Query(nativeQuery = true, value = "delete from ingredients where id = :src")
+    void deleteNative(Long src);
 }
