@@ -14,6 +14,11 @@ public class Permission extends BaseEntity {
     protected Permission() {
     }
 
+    Permission(String code, String description) { // quyền do migration tạo; constructor này cho test
+        this.code = code;
+        this.description = description;
+    }
+
     public String getCode() {
         return code;
     }

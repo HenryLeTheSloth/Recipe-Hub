@@ -30,5 +30,9 @@ public interface UserRepository extends JpaRepository<User, Long> {
 
     long countByRoles_Code(String code);
 
+    long countByRoles_CodeAndLockedFalse(String code);
+
+    long countByRoles_Id(Long roleId);
+
     List<User> findAllByRoles_Id(Long roleId);
 }
