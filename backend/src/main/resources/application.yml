@@ -1,0 +1,27 @@
+spring:
+  application:
+    name: backend
+  config:
+    import: optional:file:../.env[.properties]
+  datasource:
+    url: jdbc:postgresql://localhost:5434/recipehub
+    username: recipehub
+    password: recipehub
+  jpa:
+    hibernate:
+      ddl-auto: validate
+    open-in-view: false
+  session:
+    jdbc:
+      initialize-schema: never
+  mail:
+    host: localhost
+    port: 1025
+
+app:
+  frontend-url: http://localhost:5173
+  storage:
+    dir: uploads
+  admin:
+    email: ${ADMIN_EMAIL:}
+    password: ${ADMIN_PASSWORD:}
