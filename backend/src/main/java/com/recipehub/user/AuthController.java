@@ -98,10 +98,13 @@ public class AuthController {
         if (request.getSession(false) != null) {
             request.changeSessionId(); // chống session fixation
         }
+        // Session chỉ giữ principal không có hash mật khẩu.
+        AppUserDetails principal = ((AppUserDetails) result.getPrincipal()).withoutPassword();
         SecurityContext context = SecurityContextHolder.getContextHolderStrategy().createEmptyContext();
-        context.setAuthentication(result);
+        context.setAuthentication(
+                UsernamePasswordAuthenticationToken.authenticated(principal, null, principal.getAuthorities()));
         SecurityContextHolder.getContextHolderStrategy().setContext(context);
         contextRepository.saveContext(context, request, response);
-        return auth.me(((AppUserDetails) result.getPrincipal()).id());
+        return auth.me(principal.id());
     }
 }

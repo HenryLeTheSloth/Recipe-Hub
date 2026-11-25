@@ -81,6 +81,11 @@ public class User extends BaseEntity {
         return roles;
     }
 
+    public Set<String> permissionCodes() {
+        return roles.stream().flatMap(r -> r.getPermissions().stream()).map(Permission::getCode)
+                .collect(java.util.stream.Collectors.toUnmodifiableSet());
+    }
+
     public boolean hasRole(String code) {
         return roles.stream().anyMatch(r -> r.getCode().equals(code));
     }

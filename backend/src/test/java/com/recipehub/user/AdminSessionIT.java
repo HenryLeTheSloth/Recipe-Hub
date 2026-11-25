@@ -66,6 +66,8 @@ class AdminSessionIT {
         assertThat(send("GET", "/api/me", null, memberSession)).hasStatus(401);
         assertThat(send("POST", "/api/auth/login", "{\"email\":\"lockme@x.com\",\"password\":\"password1\"}", null))
                 .hasStatus(403).bodyJson().extractingPath("$.code").isEqualTo("ACCOUNT_LOCKED");
+        assertThat(send("POST", "/api/auth/login", "{\"email\":\"lockme@x.com\",\"password\":\"wrongpass\"}", null))
+                .hasStatus(401).bodyJson().extractingPath("$.code").isEqualTo("BAD_CREDENTIALS");
     }
 
     @Test
@@ -121,6 +123,16 @@ class AdminSessionIT {
         assertThat(send("PATCH", "/api/admin/users/" + a + "/lock", "{\"locked\":true}", admin)).hasStatusOk();
         assertThat(send("GET", "/api/admin/users?q=ord", null, admin)).hasStatusOk()
                 .bodyJson().extractingPath("$.content[*].id").asArray().containsExactly((int) a, (int) b, (int) c);
+    }
+
+    @Test
+    void userListIgnoresClientSort() {
+        long a = member("sorta"), b = member("sortb");
+        Cookie admin = login("root@test.local", "RootPass123");
+        // sort tùy ý (vd. passwordHash) là kênh dò dữ liệu; danh sách luôn theo id
+        assertThat(send("GET", "/api/admin/users?q=sort&sort=passwordHash,desc", null, admin)).hasStatusOk()
+                .bodyJson().extractingPath("$.content[*].id").asArray().containsExactly((int) a, (int) b);
+        assertThat(send("GET", "/api/admin/users?q=sort&sort=nope", null, admin)).hasStatusOk();
     }
 
     // Chống write skew của LAST_ADMIN: mọi thay đổi user phải chờ khóa hàng role ADMIN.

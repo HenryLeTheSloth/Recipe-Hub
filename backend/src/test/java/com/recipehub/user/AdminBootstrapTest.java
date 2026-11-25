@@ -72,4 +72,17 @@ class AdminBootstrapTest {
         bootstrap("admin@x.com", "ChangeMe123!").run(null);
         verify(users, never()).save(any());
     }
+
+    @Test
+    void picksFreeUsernameWhenAdminTaken() throws Exception {
+        when(users.countByRoles_Code("ADMIN")).thenReturn(0L);
+        when(users.findByEmail("admin@x.com")).thenReturn(Optional.empty());
+        when(users.existsByUsernameIgnoreCase("admin")).thenReturn(true);
+        when(users.existsByUsernameIgnoreCase("admin1")).thenReturn(true);
+        when(roles.findByCode("ADMIN")).thenReturn(Optional.of(role(1, "ADMIN")));
+        bootstrap("admin@x.com", "ChangeMe123!").run(null);
+        var saved = ArgumentCaptor.forClass(User.class);
+        verify(users).save(saved.capture());
+        assertThat(saved.getValue().getUsername()).isEqualTo("admin2");
+    }
 }

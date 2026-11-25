@@ -4,6 +4,7 @@ import com.recipehub.user.dto.AdminUserResponse;
 import com.recipehub.user.dto.LockRequest;
 import com.recipehub.user.dto.UserRolesRequest;
 import jakarta.validation.Valid;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PagedModel;
 import org.springframework.http.HttpStatus;
@@ -33,7 +34,8 @@ public class AdminUserController {
     @GetMapping
     @PreAuthorize("hasAuthority('USER_READ')")
     public PagedModel<AdminUserResponse> list(@RequestParam(defaultValue = "") String q, Pageable pageable) {
-        return new PagedModel<>(service.list(q, pageable));
+        // Bỏ sort của client (sort theo cột tùy ý = 500 hoặc kênh dò dữ liệu); query luôn order by id.
+        return new PagedModel<>(service.list(q, PageRequest.of(pageable.getPageNumber(), pageable.getPageSize())));
     }
 
     @PatchMapping("/{id}/lock")

@@ -9,6 +9,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -42,22 +43,30 @@ public class RoleService {
     }
 
     @Transactional
-    public RoleResponse create(RoleRequest r) {
+    public RoleResponse create(AppUserDetails actor, RoleRequest r) {
         if (r.code() == null) {
             throw new ApiException(ErrorCode.VALIDATION_ERROR, "Thiếu mã vai trò");
         }
         if (roles.findByCode(r.code()).isPresent()) {
             throw new ApiException(ErrorCode.ROLE_CODE_TAKEN, "Mã vai trò đã tồn tại");
         }
+        Set<Permission> perms = resolve(r.permissionCodes());
+        actor.requireAll(r.permissionCodes());
         Role role = new Role(r.code(), r.name().trim(), r.description());
-        role.getPermissions().addAll(resolve(r.permissionCodes()));
-        return RoleResponse.from(roles.save(role), 0);
+        role.getPermissions().addAll(perms);
+        try {
+            return RoleResponse.from(roles.saveAndFlush(role), 0);
+        } catch (DataIntegrityViolationException e) { // tạo trùng đồng thời, lọt qua findByCode
+            throw new ApiException(ErrorCode.ROLE_CODE_TAKEN, "Mã vai trò đã tồn tại");
+        }
     }
 
     @Transactional
-    public RoleResponse update(Long id, RoleRequest r) {
+    public RoleResponse update(AppUserDetails actor, Long id, RoleRequest r) {
         Role role = find(id);
+        actor.requireAll(AdminUserService.codes(role));
         Set<Permission> newPerms = resolve(r.permissionCodes());
+        actor.requireAll(r.permissionCodes());
         boolean permsChanged = !r.permissionCodes().equals(
                 role.getPermissions().stream().map(Permission::getCode).collect(Collectors.toSet()));
         if (permsChanged && "ADMIN".equals(role.getCode())) {
@@ -74,8 +83,9 @@ public class RoleService {
     }
 
     @Transactional
-    public void delete(Long id) {
+    public void delete(AppUserDetails actor, Long id) {
         Role role = find(id);
+        actor.requireAll(AdminUserService.codes(role));
         if (role.isSystem()) {
             throw new ApiException(ErrorCode.SYSTEM_ROLE, "Không thể xóa vai trò hệ thống");
         }

@@ -28,7 +28,7 @@ final class Fixtures {
         return u;
     }
 
-    static AppUserDetails actor(long id) {
-        return new AppUserDetails(id, "actor@x.com", "HASH", true, false, Set.of());
+    static AppUserDetails actor(long id, String... perms) {
+        return new AppUserDetails(id, "actor@x.com", "HASH", true, false, Set.of(perms));
     }
 }

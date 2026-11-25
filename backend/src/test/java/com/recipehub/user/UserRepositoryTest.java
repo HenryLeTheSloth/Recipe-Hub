@@ -55,6 +55,13 @@ class UserRepositoryTest {
     }
 
     @Test
+    void usernameUniqueIgnoringCaseInDb() {
+        user("u1@x.com", "Bep", "A", null);
+        assertThatThrownBy(() -> user("u2@x.com", "bep", "B", null))
+                .isInstanceOf(DataIntegrityViolationException.class);
+    }
+
+    @Test
     void roleInUseCannotBeDeleted() {
         Role r = new Role("COOK", "Đầu bếp", null);
         roles.saveAndFlush(r);

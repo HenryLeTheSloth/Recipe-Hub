@@ -43,7 +43,7 @@ public class TokenService {
         UserToken t = raw == null ? null : tokens.findByTokenHash(sha256Hex(raw))
                 .filter(x -> x.getType() == type && x.getUsedAt() == null && x.getExpiresAt().isAfter(now))
                 .orElse(null);
-        if (t == null) {
+        if (t == null || tokens.markUsed(t.getId(), now) == 0) { // markUsed nguyên tử: chặn dùng 2 lần song song
             throw new ApiException(ErrorCode.INVALID_TOKEN, "Liên kết không hợp lệ hoặc đã hết hạn");
         }
         t.setUsedAt(now);

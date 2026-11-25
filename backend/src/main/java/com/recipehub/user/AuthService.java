@@ -6,6 +6,7 @@ import com.recipehub.user.dto.MeResponse;
 import com.recipehub.user.dto.RegisterRequest;
 import java.time.Clock;
 import java.util.List;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -43,12 +44,19 @@ public class AuthService {
         if (users.existsByEmail(email)) {
             throw new ApiException(ErrorCode.EMAIL_TAKEN, "Email đã được sử dụng");
         }
-        if (users.existsByUsername(r.username())) {
+        if (users.existsByUsernameIgnoreCase(r.username())) {
             throw new ApiException(ErrorCode.USERNAME_TAKEN, "Tên đăng nhập đã được sử dụng");
         }
         User user = new User(email, r.username(), encoder.encode(r.password()), r.displayName().trim());
         user.getRoles().add(roles.findByCode("MEMBER").orElseThrow());
-        users.save(user);
+        try {
+            users.saveAndFlush(user);
+        } catch (DataIntegrityViolationException e) { // đăng ký trùng đồng thời, lọt qua exists*
+            String m = String.valueOf(e.getMostSpecificCause().getMessage());
+            if (m.contains("email")) throw new ApiException(ErrorCode.EMAIL_TAKEN, "Email đã được sử dụng");
+            if (m.contains("username")) throw new ApiException(ErrorCode.USERNAME_TAKEN, "Tên đăng nhập đã được sử dụng");
+            throw e;
+        }
         mail.sendVerification(email, tokens.issue(user, TokenType.VERIFY_EMAIL));
     }
 

@@ -29,6 +29,8 @@ class TokenServiceTest {
     @org.junit.jupiter.api.BeforeEach
     void setUp() {
         service = new TokenService(repo, Clock.fixed(NOW, ZoneOffset.UTC));
+        org.mockito.Mockito.lenient().when(repo.markUsed(org.mockito.ArgumentMatchers.any(), org.mockito.ArgumentMatchers.any()))
+                .thenReturn(1);
     }
 
     UserToken stored(String raw, TokenType type, Instant expiresAt) {
@@ -88,5 +90,13 @@ class TokenServiceTest {
         UserToken t = stored("raw", TokenType.VERIFY_EMAIL, NOW.plusSeconds(60));
         assertThat(service.consume("raw", TokenType.VERIFY_EMAIL)).isSameAs(user);
         assertThat(t.getUsedAt()).isEqualTo(NOW);
+    }
+
+    @Test
+    void consumeLosingRaceFails() {
+        stored("raw", TokenType.VERIFY_EMAIL, NOW.plusSeconds(60));
+        when(repo.markUsed(null, NOW)).thenReturn(0); // request song song đã đánh dấu trước
+        assertThatThrownBy(() -> service.consume("raw", TokenType.VERIFY_EMAIL))
+                .hasFieldOrPropertyWithValue("code", ErrorCode.INVALID_TOKEN);
     }
 }

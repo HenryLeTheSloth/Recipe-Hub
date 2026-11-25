@@ -7,6 +7,7 @@ import jakarta.validation.Valid;
 import java.util.List;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -35,19 +36,20 @@ public class AdminRoleController {
 
     @PostMapping("/roles")
     @ResponseStatus(HttpStatus.CREATED)
-    public RoleResponse create(@Valid @RequestBody RoleRequest r) {
-        return service.create(r);
+    public RoleResponse create(@AuthenticationPrincipal AppUserDetails actor, @Valid @RequestBody RoleRequest r) {
+        return service.create(actor, r);
     }
 
     @PutMapping("/roles/{id}")
-    public RoleResponse update(@PathVariable Long id, @Valid @RequestBody RoleRequest r) {
-        return service.update(id, r);
+    public RoleResponse update(@AuthenticationPrincipal AppUserDetails actor, @PathVariable Long id,
+                               @Valid @RequestBody RoleRequest r) {
+        return service.update(actor, id, r);
     }
 
     @DeleteMapping("/roles/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void delete(@PathVariable Long id) {
-        service.delete(id);
+    public void delete(@AuthenticationPrincipal AppUserDetails actor, @PathVariable Long id) {
+        service.delete(actor, id);
     }
 
     @GetMapping("/permissions")

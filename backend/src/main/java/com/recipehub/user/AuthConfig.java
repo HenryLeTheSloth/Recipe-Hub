@@ -5,6 +5,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.ProviderManager;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
+import org.springframework.security.authentication.AccountStatusUserDetailsChecker;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 // Tách khỏi SecurityConfig để các @WebMvcTest import SecurityConfig không cần UserDetailsService.
@@ -15,6 +16,10 @@ public class AuthConfig {
     AuthenticationManager authenticationManager(AppUserDetailsService uds, PasswordEncoder encoder) {
         var provider = new DaoAuthenticationProvider(uds);
         provider.setPasswordEncoder(encoder);
+        // Kiểm khóa/chưa xác minh SAU khi mật khẩu khớp: sai mật khẩu luôn là BAD_CREDENTIALS,
+        // không lộ trạng thái tài khoản cho người không biết mật khẩu.
+        provider.setPreAuthenticationChecks(u -> { });
+        provider.setPostAuthenticationChecks(new AccountStatusUserDetailsChecker());
         return new ProviderManager(provider);
     }
 }

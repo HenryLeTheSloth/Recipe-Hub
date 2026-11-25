@@ -223,4 +223,57 @@ class AuthFlowIT {
                 """.formatted(n, n, "ệ".repeat(25)))).hasStatus(400)
                 .bodyJson().extractingPath("$.code").isEqualTo("INVALID_PASSWORD");
     }
+
+    // Sai mật khẩu không được tiết lộ trạng thái tài khoản (chưa xác minh/bị khóa).
+    @Test
+    void unverifiedWrongPasswordIs401() {
+        String email = register("password1", false);
+        assertThat(login(email, "wrongpass")).hasStatus(401)
+                .bodyJson().extractingPath("$.code").isEqualTo("BAD_CREDENTIALS");
+    }
+
+    @Test
+    void emailLongerThan100CharsCanLogIn() {
+        int n = SEQ.incrementAndGet();
+        String email = "long" + n + "a".repeat(55) + "@" + "d".repeat(60) + ".example.com"; // > 100 ký tự
+        assertThat(post("/api/auth/register", """
+                {"email":"%s","username":"long%d","displayName":"Long","password":"password1"}
+                """.formatted(email, n))).hasStatus(201);
+        var token = ArgumentCaptor.forClass(String.class);
+        verify(mail).sendVerification(eq(email), token.capture());
+        assertThat(post("/api/auth/verify-email", "{\"token\":\"%s\"}".formatted(token.getValue()))).hasStatus(204);
+        assertThat(login(email, "password1")).hasStatusOk();
+    }
+
+    @Test
+    void emailOver254CharsIs400() {
+        String email = "a".repeat(64) + "@" + "b".repeat(63) + "." + "c".repeat(63) + "." + "d".repeat(59) + ".com";
+        assertThat(post("/api/auth/register", """
+                {"email":"%s","username":"toolong","displayName":"X","password":"password1"}
+                """.formatted(email))).hasStatus(400);
+    }
+
+    @Test
+    void usernameIsUniqueIgnoringCase() {
+        int n = SEQ.incrementAndGet();
+        assertThat(post("/api/auth/register", """
+                {"email":"c%d@x.com","username":"Case%d","displayName":"C","password":"password1"}
+                """.formatted(n, n))).hasStatus(201);
+        assertThat(post("/api/auth/register", """
+                {"email":"d%d@x.com","username":"case%d","displayName":"D","password":"password1"}
+                """.formatted(n, n))).hasStatus(409).bodyJson().extractingPath("$.code").isEqualTo("USERNAME_TAKEN");
+    }
+
+    @Test
+    void sessionDoesNotStorePasswordHash() {
+        String email = register("password1", true);
+        session(login(email, "password1"));
+        String hash = jdbc.queryForObject("select password_hash from users where email = ?", String.class, email);
+        var blobs = jdbc.queryForList("""
+                select a.attribute_bytes from spring_session_attributes a
+                join spring_session s on s.primary_id = a.session_primary_id where s.principal_name = ?
+                """, byte[].class, email);
+        assertThat(blobs).isNotEmpty()
+                .allSatisfy(b -> assertThat(new String(b, java.nio.charset.StandardCharsets.ISO_8859_1)).doesNotContain(hash));
+    }
 }

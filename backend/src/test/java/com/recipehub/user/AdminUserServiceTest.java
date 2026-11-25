@@ -52,6 +52,35 @@ class AdminUserServiceTest {
     }
 
     @Test
+    void cannotActOnUserWithPermissionsActorLacks() {
+        given(user(5, "a@x.com", role(1, "ADMIN", "USER_MANAGE", "ROLE_MANAGE")));
+        var actor = actor(7, "USER_MANAGE");
+        assertCode(() -> service.setLocked(actor, 5L, true), ErrorCode.FORBIDDEN);
+        assertCode(() -> service.setRoles(actor, 5L, Set.of("MEMBER")), ErrorCode.FORBIDDEN);
+        assertCode(() -> service.delete(actor, 5L), ErrorCode.FORBIDDEN);
+        verify(sessions, never()).invalidateAll(any());
+    }
+
+    @Test
+    void cannotGrantRoleWithPermissionsActorLacks() {
+        User target = user(5, "a@x.com", member);
+        given(target);
+        when(roles.findAllByCodeIn(Set.of("ADMIN"))).thenReturn(List.of(role(1, "ADMIN", "USER_MANAGE", "ROLE_MANAGE")));
+        assertCode(() -> service.setRoles(actor(7, "USER_MANAGE"), 5L, Set.of("ADMIN")), ErrorCode.FORBIDDEN);
+        assertThat(target.getRoles()).containsExactly(member);
+    }
+
+    @Test
+    void canGrantRoleWithinOwnPermissions() {
+        User target = user(5, "a@x.com", member);
+        given(target);
+        Role mod = role(2, "MODERATOR", "USER_READ");
+        when(roles.findAllByCodeIn(Set.of("MODERATOR"))).thenReturn(List.of(mod));
+        service.setRoles(actor(7, "USER_MANAGE", "USER_READ"), 5L, Set.of("MODERATOR"));
+        assertThat(target.getRoles()).containsExactly(mod);
+    }
+
+    @Test
     void cannotLockSelf() {
         given(user(7, "me@x.com", admin));
         assertCode(() -> service.setLocked(actor(7), 7L, true), ErrorCode.SELF_ACTION);

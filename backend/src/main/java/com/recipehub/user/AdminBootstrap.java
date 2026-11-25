@@ -48,7 +48,11 @@ public class AdminBootstrap implements ApplicationRunner {
             return;
         }
         Passwords.validate(password);
-        User admin = new User(email, "admin", encoder.encode(password), "Quản trị viên");
+        String username = "admin";
+        for (int i = 1; users.existsByUsernameIgnoreCase(username); i++) {
+            username = "admin" + i;
+        }
+        User admin = new User(email, username, encoder.encode(password), "Quản trị viên");
         admin.setEmailVerifiedAt(clock.instant());
         admin.getRoles().add(roles.findByCode("ADMIN").orElseThrow());
         users.save(admin);

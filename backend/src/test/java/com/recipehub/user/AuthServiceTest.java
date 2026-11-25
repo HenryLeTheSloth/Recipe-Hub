@@ -42,7 +42,7 @@ class AuthServiceTest {
         service = new AuthService(users, roles, encoder, tokens, mail, sessions, Clock.fixed(NOW, ZoneOffset.UTC));
         lenient().when(roles.findByCode("MEMBER")).thenReturn(Optional.of(member));
         lenient().when(encoder.encode(any())).thenReturn("HASH");
-        lenient().when(users.save(any())).thenAnswer(i -> i.getArgument(0));
+        lenient().when(users.saveAndFlush(any())).thenAnswer(i -> i.getArgument(0));
         lenient().when(tokens.issue(any(), any())).thenReturn("RAW");
     }
 
@@ -52,7 +52,7 @@ class AuthServiceTest {
 
     User registered() {
         var captor = ArgumentCaptor.forClass(User.class);
-        verify(users).save(captor.capture());
+        verify(users).saveAndFlush(captor.capture());
         return captor.getValue();
     }
 
@@ -71,7 +71,7 @@ class AuthServiceTest {
 
     @Test
     void registerRejectsTakenUsername() {
-        when(users.existsByUsername("foo")).thenReturn(true);
+        when(users.existsByUsernameIgnoreCase("foo")).thenReturn(true);
         assertThatThrownBy(() -> service.register(req("foo@x.com")))
                 .hasFieldOrPropertyWithValue("code", ErrorCode.USERNAME_TAKEN);
     }
@@ -130,5 +130,22 @@ class AuthServiceTest {
         when(tokens.consume("tok", TokenType.VERIFY_EMAIL)).thenReturn(u);
         service.verifyEmail("tok");
         assertThat(u.getEmailVerifiedAt()).isEqualTo(NOW);
+    }
+
+    @Test
+    void concurrentDuplicateEmailIsConflictNot500() {
+        when(users.saveAndFlush(any())).thenThrow(new org.springframework.dao.DataIntegrityViolationException(
+                "duplicate key value violates unique constraint \"users_email_key\""));
+        assertThatThrownBy(() -> service.register(req("foo@x.com")))
+                .hasFieldOrPropertyWithValue("code", ErrorCode.EMAIL_TAKEN);
+        verifyNoInteractions(mail);
+    }
+
+    @Test
+    void concurrentDuplicateUsernameIsConflictNot500() {
+        when(users.saveAndFlush(any())).thenThrow(new org.springframework.dao.DataIntegrityViolationException(
+                "duplicate key value violates unique constraint \"users_username_lower_key\""));
+        assertThatThrownBy(() -> service.register(req("foo@x.com")))
+                .hasFieldOrPropertyWithValue("code", ErrorCode.USERNAME_TAKEN);
     }
 }
