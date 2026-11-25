@@ -12,6 +12,8 @@ const router = createRouter({
       component: PublicLayout,
       children: [
         { path: '', name: 'home', component: HomePage },
+        { path: 'recipes', component: () => import('@/pages/RecipeListPage.vue') },
+        { path: 'recipes/:slug', component: () => import('@/pages/RecipeDetailPage.vue') },
         { path: 'login', component: () => import('@/pages/LoginPage.vue') },
         { path: 'register', component: () => import('@/pages/RegisterPage.vue') },
         { path: 'verify-email', component: () => import('@/pages/VerifyEmailPage.vue') },
