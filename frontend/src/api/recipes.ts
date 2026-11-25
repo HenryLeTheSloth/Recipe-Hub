@@ -44,9 +44,10 @@ export interface RecipeDetail {
   difficulty: Difficulty
   status: RecipeStatus
   coverUrl: string | null
+  coverMediaId: number | null
   author: { id: number; username: string; displayName: string; avatarUrl: string | null }
   ingredients: { ingredientId: number; name: string; emoji: string | null; quantity: number; unit: Unit; note: string | null }[]
-  steps: { stepNo: number; content: string; imageUrl: string | null }[]
+  steps: { stepNo: number; content: string; imageUrl: string | null; mediaId: number | null }[]
   rejectionReason: string | null
   publishedAt: string | null
   createdAt: string
@@ -98,3 +99,35 @@ export function searchRecipes(s: RecipeSearch): Promise<Page<RecipeCard>> {
 }
 
 export const getRecipe = (slug: string) => api<RecipeDetail>(`/recipes/${encodeURIComponent(slug)}`)
+
+export interface RecipeRequest {
+  title: string
+  summary: string | null
+  categoryId: number | null
+  servings: number
+  prepMinutes: number
+  cookMinutes: number
+  difficulty: Difficulty
+  coverMediaId: number | null
+  tagIds: number[]
+  ingredients: { ingredientId: number; quantity: number | null; unit: Unit; note: string | null }[]
+  steps: { content: string; mediaId: number | null }[]
+}
+
+export const createRecipe = (r: RecipeRequest) => api<RecipeDetail>('/recipes', { method: 'POST', json: r })
+export const updateRecipe = (id: number, r: RecipeRequest) => api<RecipeDetail>(`/recipes/${id}`, { method: 'PUT', json: r })
+export const submitRecipe = (id: number) => api<RecipeDetail>(`/recipes/${id}/submit`, { method: 'POST' })
+export const deleteRecipe = (id: number) => api<void>(`/recipes/${id}`, { method: 'DELETE' })
+export const getMyRecipe = (id: number) => api<RecipeDetail>(`/me/recipes/${id}`)
+export function listMyRecipes(status: RecipeStatus | '', page: number) {
+  const p = new URLSearchParams({ page: String(page) })
+  if (status) p.set('status', status)
+  return api<Page<RecipeCard>>('/me/recipes?' + p)
+}
+
+export type ModerationAction = 'approve' | 'reject' | 'hide' | 'unhide'
+export const adminListRecipes = (status: RecipeStatus, page: number) =>
+  api<Page<RecipeCard>>('/admin/recipes?' + new URLSearchParams({ status, page: String(page) }))
+export const adminGetRecipe = (id: number) => api<RecipeDetail>(`/admin/recipes/${id}`)
+export const moderateRecipe = (id: number, action: ModerationAction, reason?: string) =>
+  api<RecipeDetail>(`/admin/recipes/${id}/${action}`, reason === undefined ? { method: 'POST' } : { method: 'POST', json: { reason } })

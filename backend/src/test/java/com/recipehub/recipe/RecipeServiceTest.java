@@ -183,6 +183,16 @@ class RecipeServiceTest {
     }
 
     @Test
+    void detailExposesMediaIdsForEditor() {
+        when(media.requireOwned(55L, 1L)).thenReturn(withId(new com.recipehub.media.Media(1L, "k", "image/png", 1), 55L));
+        var r = new RecipeRequest("Trứng chiên", null, null, 2, 5, 10, Difficulty.EASY, 55L, Set.of(), List.of(line(5)),
+                List.of(new RecipeStepRequest("Đập trứng", 55L)));
+        var d = service.create(authorActor, r);
+        assertThat(d.coverMediaId()).isEqualTo(55L);
+        assertThat(d.steps().getFirst().mediaId()).isEqualTo(55L);
+    }
+
+    @Test
     void symbolOnlyTitleStillGetsSlug() {
         var d = service.create(authorActor, req("!!!", null, List.of(line(5))));
         assertThat(d.slug()).isEqualTo("cong-thuc");

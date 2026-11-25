@@ -38,7 +38,7 @@ class RecipeControllerTest {
              "tagIds":[],"ingredients":[{"ingredientId":5,"quantity":2,"unit":"PIECE"}],"steps":[{"content":"Chiên"}]}
             """;
     static final RecipeDetail DETAIL = new RecipeDetail(100L, "trung-chien", "Trứng chiên", null, null, List.of(), 2, 5, 5,
-            Difficulty.EASY, RecipeStatus.DRAFT, null, null, List.of(), List.of(), null, null, Instant.EPOCH, Instant.EPOCH);
+            Difficulty.EASY, RecipeStatus.DRAFT, null, null, null, List.of(), List.of(), null, null, Instant.EPOCH, Instant.EPOCH);
 
     @Test
     @WithMockUser(authorities = "COMMUNITY_PARTICIPATE")

@@ -11,7 +11,7 @@ import java.util.List;
 
 public record RecipeDetail(Long id, String slug, String title, String summary, CategoryResponse category,
                            List<TagResponse> tags, int servings, int prepMinutes, int cookMinutes,
-                           Difficulty difficulty, RecipeStatus status, String coverUrl, AuthorView author,
+                           Difficulty difficulty, RecipeStatus status, String coverUrl, Long coverMediaId, AuthorView author,
                            List<IngredientLine> ingredients, List<StepView> steps, String rejectionReason,
                            Instant publishedAt, Instant createdAt, Instant updatedAt) {
 
@@ -22,6 +22,6 @@ public record RecipeDetail(Long id, String slug, String title, String summary, C
                                  String note) {
     }
 
-    public record StepView(int stepNo, String content, String imageUrl) {
+    public record StepView(int stepNo, String content, String imageUrl, Long mediaId) {
     }
 }

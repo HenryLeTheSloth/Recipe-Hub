@@ -22,6 +22,7 @@ function search() {
     <nav>
       <RouterLink to="/recipes">Công thức</RouterLink>
       <template v-if="auth.me">
+        <RouterLink v-if="auth.can('RECIPE_WRITE')" to="/me/recipes">Của tôi</RouterLink>
         <RouterLink v-if="auth.canAny(ADMIN_PERMISSIONS)" to="/admin">Quản trị</RouterLink>
         <RouterLink to="/account">{{ auth.me.displayName }}</RouterLink>
       </template>

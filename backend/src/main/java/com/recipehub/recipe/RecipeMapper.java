@@ -16,6 +16,7 @@ import org.mapstruct.Mapping;
 public interface RecipeMapper {
 
     @Mapping(target = "coverUrl", expression = "java(MediaService.url(r.getCover()))")
+    @Mapping(target = "coverMediaId", source = "cover.id")
     RecipeDetail detail(Recipe r);
 
     @Mapping(target = "coverUrl", expression = "java(MediaService.url(r.getCover()))")
@@ -33,6 +34,7 @@ public interface RecipeMapper {
     RecipeDetail.IngredientLine line(RecipeIngredient i);
 
     @Mapping(target = "imageUrl", expression = "java(MediaService.url(s.getMedia()))")
+    @Mapping(target = "mediaId", source = "media.id")
     RecipeDetail.StepView step(RecipeStep s);
 
     CategoryResponse category(Category c);
