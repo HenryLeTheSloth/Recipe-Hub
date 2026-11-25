@@ -1,7 +1,7 @@
 import { afterEach, beforeEach, describe, expect, it, vi, type Mock } from 'vitest'
 import { api, ApiError } from '../http'
 
-let fetchMock: Mock
+let fetchMock: Mock<typeof fetch>
 
 function clearCookies() {
   for (const c of document.cookie.split(';')) {
@@ -12,7 +12,7 @@ function clearCookies() {
 
 describe('api', () => {
   beforeEach(() => {
-    fetchMock = vi.fn()
+    fetchMock = vi.fn<typeof fetch>()
     vi.stubGlobal('fetch', fetchMock)
     clearCookies()
   })
@@ -24,14 +24,14 @@ describe('api', () => {
     )
     expect(await api('/x')).toEqual({ a: 1 })
     expect(fetchMock.mock.calls[0]![0]).toBe('/api/x')
-    expect(fetchMock.mock.calls[0]![1].credentials).toBe('same-origin')
+    expect(fetchMock.mock.calls[0]![1]!.credentials).toBe('same-origin')
   })
 
   it('sends XSRF header on POST when cookie present', async () => {
     document.cookie = 'XSRF-TOKEN=abc%3D'
     fetchMock.mockResolvedValue(new Response(null, { status: 204 }))
     await api('/x', { method: 'POST', json: { b: 2 } })
-    const init = fetchMock.mock.calls[0]![1]
+    const init = fetchMock.mock.calls[0]![1]!
     expect(new Headers(init.headers).get('X-XSRF-TOKEN')).toBe('abc=')
     expect(new Headers(init.headers).get('Content-Type')).toBe('application/json')
     expect(init.body).toBe('{"b":2}')
@@ -40,7 +40,7 @@ describe('api', () => {
   it('omits XSRF header when cookie missing', async () => {
     fetchMock.mockResolvedValue(new Response(null, { status: 204 }))
     await api('/x', { method: 'POST', json: {} })
-    const init = fetchMock.mock.calls[0]![1]
+    const init = fetchMock.mock.calls[0]![1]!
     expect(new Headers(init.headers).get('X-XSRF-TOKEN')).toBeNull()
   })
 
@@ -95,7 +95,7 @@ describe('api', () => {
     const fd = new FormData()
     fd.append('file', 'x')
     await api('/x', { method: 'POST', body: fd })
-    const init = fetchMock.mock.calls[0]![1]
+    const init = fetchMock.mock.calls[0]![1]!
     expect(init.body).toBeInstanceOf(FormData)
     expect(new Headers(init.headers).get('Content-Type')).toBeNull()
   })
