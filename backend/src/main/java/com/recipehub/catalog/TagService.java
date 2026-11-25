@@ -41,7 +41,7 @@ public class TagService {
     }
 
     private TagResponse write(Tag t, NamedRequest r) {
-        String name = r.name().trim();
+        String name = Names.clean(r.name());
         String base = Names.baseSlug(name);
         Names.requireFree(repo.findByNameIgnoreCase(name), t.getId());
         t.setName(name);

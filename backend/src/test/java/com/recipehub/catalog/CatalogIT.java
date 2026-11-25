@@ -52,6 +52,32 @@ class CatalogIT {
     }
 
     @Test
+    void springRequestErrorsAreProblemDetailsWithCode() {
+        assertThat(send("GET", "/api/ingredients?group=FOO", null, null)).hasStatus(400)
+                .bodyJson().extractingPath("$.code").isEqualTo("VALIDATION_ERROR");
+        assertThat(send("POST", "/api/admin/tags", "{not json", admin())).hasStatus(400)
+                .bodyJson().extractingPath("$.code").isEqualTo("VALIDATION_ERROR");
+    }
+
+    @Test
+    void clearedSortOrderDefaultsToZero() {
+        assertThat(send("POST", "/api/admin/categories", "{\"name\":\"Không thứ tự\",\"sortOrder\":null}", admin()))
+                .hasStatus(201).bodyJson().extractingPath("$.sortOrder").isEqualTo(0);
+    }
+
+    @Test
+    void decomposedUnicodeAndInnerSpacesCountAsSameName() {
+        Cookie a = admin();
+        String nfd = java.text.Normalizer.normalize("Bánh  cuốn", java.text.Normalizer.Form.NFD);
+        assertThat(send("POST", "/api/admin/tags", "{\"name\":\"Bánh cuốn\"}", a)).hasStatus(201);
+        assertThat(send("POST", "/api/admin/tags", "{\"name\":\"" + nfd + "\"}", a)).hasStatus(409)
+                .bodyJson().extractingPath("$.code").isEqualTo("NAME_TAKEN");
+        String caChua = java.text.Normalizer.normalize("Cà chua", java.text.Normalizer.Form.NFD);
+        assertThat(send("POST", "/api/ingredients", "{\"name\":\"" + caChua + "\",\"group\":\"VEGETABLE\"}", a))
+                .hasStatus(200).bodyJson().extractingPath("$.slug").isEqualTo("ca-chua");
+    }
+
+    @Test
     void categoryCrudAndOrdering() throws Exception {
         Cookie a = admin();
         var z = send("POST", "/api/admin/categories", "{\"name\":\"Zzz cuối\",\"sortOrder\":-1}", a);

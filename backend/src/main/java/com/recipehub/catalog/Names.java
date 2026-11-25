@@ -4,6 +4,7 @@ import com.recipehub.common.ApiException;
 import com.recipehub.common.BaseEntity;
 import com.recipehub.common.ErrorCode;
 import com.recipehub.common.Slugs;
+import java.text.Normalizer;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.function.Function;
@@ -14,6 +15,11 @@ import org.springframework.dao.DataIntegrityViolationException;
 final class Names {
 
     private Names() {
+    }
+
+    /** Chuẩn hoá tên/từ khoá: NFC (gõ "Unicode tổ hợp" vẫn khớp), gộp khoảng trắng, trim; null → "". */
+    static String clean(String s) {
+        return s == null ? "" : Normalizer.normalize(s, Normalizer.Form.NFC).replaceAll("\\s+", " ").strip();
     }
 
     /** Slug gốc từ tên đã trim; rỗng → VALIDATION_ERROR. */

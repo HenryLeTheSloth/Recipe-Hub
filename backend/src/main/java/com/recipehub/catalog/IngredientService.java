@@ -27,7 +27,7 @@ public class IngredientService {
 
     @Transactional(readOnly = true)
     public List<IngredientResponse> listApproved(String q, IngredientGroup group) {
-        String s = q == null ? "" : q.trim();
+        String s = Names.clean(q);
         return repo.search(s, Slugs.slugify(s), group, APPROVED, MAX_LIST).stream()
                 .map(IngredientService::response).toList();
     }
@@ -36,7 +36,7 @@ public class IngredientService {
      *  Trùng slug thì không coi là trùng ("Dừa" ≠ "Dứa") — slug thêm -2 theo spec. */
     @Transactional
     public SuggestResult suggest(Long userId, IngredientRequest r) {
-        String name = r.name().trim();
+        String name = Names.clean(r.name());
         String base = Names.baseSlug(name);
         var existing = repo.findByNameIgnoreCase(name);
         if (existing.isPresent()) return new SuggestResult(response(existing.get()), false);
@@ -48,14 +48,14 @@ public class IngredientService {
 
     @Transactional(readOnly = true)
     public Page<IngredientResponse> adminList(IngredientStatus status, String q, Pageable p) {
-        String s = q == null ? "" : q.trim();
+        String s = Names.clean(q);
         return repo.adminSearch(status, s, Slugs.slugify(s), p).map(IngredientService::response);
     }
 
     @Transactional
     public IngredientResponse update(Long id, IngredientRequest r, IngredientStatus status) {
         Ingredient i = repo.findById(id).orElseThrow(Names::notFound);
-        String name = r.name().trim();
+        String name = Names.clean(r.name());
         String base = Names.baseSlug(name);
         Names.requireFree(repo.findByNameIgnoreCase(name), id);
         i.setName(name);

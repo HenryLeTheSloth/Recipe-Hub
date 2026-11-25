@@ -41,12 +41,12 @@ public class CategoryService {
     }
 
     private CategoryResponse write(Category c, CategoryRequest r) {
-        String name = r.name().trim();
+        String name = Names.clean(r.name());
         String base = Names.baseSlug(name);
         Names.requireFree(repo.findByNameIgnoreCase(name), c.getId());
         c.setName(name);
         c.setSlug(Names.uniqueSlug(base, repo::findBySlug, c.getId()));
-        c.setSortOrder(r.sortOrder());
+        c.setSortOrder(r.order());
         return response(Names.save(() -> repo.saveAndFlush(c)));
     }
 
