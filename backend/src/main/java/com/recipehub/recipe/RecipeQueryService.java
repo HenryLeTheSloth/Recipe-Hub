@@ -7,6 +7,7 @@ import com.recipehub.recipe.dto.RecipeCard;
 import com.recipehub.recipe.dto.RecipeDetail;
 import com.recipehub.recipe.dto.RecipeSearch;
 import com.recipehub.user.AppUserDetails;
+import java.text.Normalizer;
 import java.util.List;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -33,8 +34,8 @@ public class RecipeQueryService {
     public Page<RecipeCard> search(RecipeSearch s, Pageable p) {
         Specification<Recipe> spec = RecipeSpecs.published();
         if (s.q() != null && !s.q().isBlank()) {
-            String q = s.q().strip().replaceAll("\\s+", " ");
-            spec = spec.and(RecipeSpecs.titleMatches(q, q.chars().allMatch(c -> c < 128) ? Slugs.slugify(q) : "")); // có dấu → chỉ khớp tiêu đề
+            String q = Normalizer.normalize(s.q(), Normalizer.Form.NFC).strip().replaceAll("(?U)\\s+", " ");
+            spec = spec.and(RecipeSpecs.titleMatches(q, Slugs.hasDiacritics(q) ? "" : Slugs.slugify(q))); // có dấu → chỉ khớp tiêu đề
         }
         if (s.category() != null && !s.category().isBlank()) spec = spec.and(RecipeSpecs.inCategory(s.category()));
         if (s.tag() != null && !s.tag().isBlank()) spec = spec.and(RecipeSpecs.hasTag(s.tag()));

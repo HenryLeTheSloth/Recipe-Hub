@@ -203,6 +203,12 @@ class RecipeServiceTest {
     }
 
     @Test
+    void titleIsStoredComposed() {
+        String nfd = java.text.Normalizer.normalize("Canh gà", java.text.Normalizer.Form.NFD);
+        assertThat(service.create(authorActor, req(nfd, null, List.of(line(5)))).title()).isEqualTo("Canh gà");
+    }
+
+    @Test
     void symbolOnlyTitleStillGetsSlug() {
         var d = service.create(authorActor, req("!!!", null, List.of(line(5))));
         assertThat(d.slug()).isEqualTo("cong-thuc");

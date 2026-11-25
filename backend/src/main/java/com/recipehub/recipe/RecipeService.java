@@ -17,6 +17,7 @@ import com.recipehub.recipe.dto.RecipeRequest;
 import com.recipehub.recipe.dto.RecipeStepRequest;
 import com.recipehub.user.AppUserDetails;
 import com.recipehub.user.UserRepository;
+import java.text.Normalizer;
 import java.util.EnumSet;
 import java.util.List;
 import java.util.Map;
@@ -114,7 +115,7 @@ public class RecipeService {
         Media cover = owned(r.coverMediaId(), authorId);
         List<Media> stepMedia = r.steps().stream().map(s -> owned(s.mediaId(), authorId)).toList();
 
-        recipe.setTitle(r.title().strip());
+        recipe.setTitle(Normalizer.normalize(r.title().strip(), Normalizer.Form.NFC)); // tìm theo tiêu đề so dạng NFC
         recipe.setSummary(r.summary() == null || r.summary().isBlank() ? null : r.summary().strip());
         recipe.setCategory(category);
         recipe.setServings(r.servings());

@@ -119,6 +119,10 @@ class RecipeQueryServiceIT {
         save("Canh " + x + " gạo", "canh-" + x + "-gao", Instant.parse("2026-11-04T00:00:00Z"), egg);
         assertThat(search("canh " + x + " gà", null, null, null).getContent()).extracting(RecipeCard::slug)
                 .containsExactly("canh-" + x + "-ga");
+        String decomposed = java.text.Normalizer.normalize("canh " + x + " gà", java.text.Normalizer.Form.NFD);
+        assertThat(search(decomposed, null, null, null).getContent()).as("gõ Unicode tổ hợp").extracting(RecipeCard::slug)
+                .containsExactly("canh-" + x + "-ga");
+        assertThat(search("canh\u00a0" + x + "\u00a0ga", null, null, null).getTotalElements()).as("NBSP, không dấu").isEqualTo(2);
     }
 
     @Test
