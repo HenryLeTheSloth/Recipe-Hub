@@ -2,6 +2,7 @@ package com.recipehub.user;
 
 import com.recipehub.user.dto.ChangePasswordRequest;
 import com.recipehub.user.dto.MeResponse;
+import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -30,7 +31,7 @@ public class MeController {
     @PutMapping("/password")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void changePassword(@AuthenticationPrincipal AppUserDetails principal,
-                               @Valid @RequestBody ChangePasswordRequest r) {
-        auth.changePassword(principal.id(), r.currentPassword(), r.newPassword());
+                               @Valid @RequestBody ChangePasswordRequest r, HttpSession session) {
+        auth.changePassword(principal.id(), r.currentPassword(), r.newPassword(), session.getId());
     }
 }

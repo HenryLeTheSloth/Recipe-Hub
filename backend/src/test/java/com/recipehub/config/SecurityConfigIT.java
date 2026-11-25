@@ -40,6 +40,14 @@ class SecurityConfigIT {
         assertThat(res.headers().allValues("Set-Cookie")).noneMatch(c -> c.startsWith("SESSION="));
     }
 
+    @Test
+    void anonymous401IsProblemDetailWithCode() throws Exception {
+        var res = send("GET", "/api/me");
+        assertThat(res.statusCode()).isEqualTo(401);
+        assertThat(res.headers().firstValue("Content-Type")).hasValueSatisfying(t -> assertThat(t).contains("problem+json"));
+        assertThat(res.body()).contains("\"code\":\"UNAUTHENTICATED\"");
+    }
+
     // MockMvc + csrf() thay repository của CsrfFilter, nên cookie thật chỉ kiểm được qua server thật.
     @Test
     void csrfEndpointSetsXsrfCookie() throws Exception {

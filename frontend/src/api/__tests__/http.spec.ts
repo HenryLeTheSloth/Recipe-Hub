@@ -99,4 +99,15 @@ describe('api', () => {
     expect(init.body).toBeInstanceOf(FormData)
     expect(new Headers(init.headers).get('Content-Type')).toBeNull()
   })
+
+  it('dispatches api:unauthenticated when session is gone', async () => {
+    const seen = vi.fn<() => void>()
+    window.addEventListener('api:unauthenticated', seen)
+    fetchMock.mockResolvedValue(new Response(JSON.stringify({ code: 'UNAUTHENTICATED' }), { status: 401 }))
+    await api('/x').catch(() => {})
+    fetchMock.mockResolvedValue(new Response(JSON.stringify({ code: 'BAD_CREDENTIALS' }), { status: 401 }))
+    await api('/auth/login', { method: 'POST' }).catch(() => {})
+    window.removeEventListener('api:unauthenticated', seen)
+    expect(seen).toHaveBeenCalledTimes(1)
+  })
 })

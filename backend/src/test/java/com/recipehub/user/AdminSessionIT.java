@@ -26,6 +26,7 @@ class AdminSessionIT {
 
     @Autowired MockMvcTester mvc;
     @Autowired UserRepository users;
+    @Autowired javax.sql.DataSource dataSource;
     @MockitoBean MailService mail;
 
     MvcTestResult send(String method, String path, String json, Cookie session) {
@@ -110,5 +111,32 @@ class AdminSessionIT {
         assertThat(send("GET", "/api/admin/roles", null, admin)).hasStatusOk()
                 .bodyJson().extractingPath("$[?(@.code=='ADMIN')].userCount").asArray().containsExactly(1);
         assertThat(send("DELETE", "/api/admin/roles/" + roleId, null, admin)).hasStatus(204);
+    }
+
+    @Test
+    void userListKeepsIdOrderAfterUpdate() {
+        long a = member("orda"), b = member("ordb"), c = member("ordc");
+        Cookie admin = login("root@test.local", "RootPass123");
+        // UPDATE ghi tuple mới cuối trang heap: không có ORDER BY thì 'a' nhảy xuống cuối.
+        assertThat(send("PATCH", "/api/admin/users/" + a + "/lock", "{\"locked\":true}", admin)).hasStatusOk();
+        assertThat(send("GET", "/api/admin/users?q=ord", null, admin)).hasStatusOk()
+                .bodyJson().extractingPath("$.content[*].id").asArray().containsExactly((int) a, (int) b, (int) c);
+    }
+
+    // Chống write skew của LAST_ADMIN: mọi thay đổi user phải chờ khóa hàng role ADMIN.
+    @Test
+    void adminChangesWaitForAdminRoleLock() throws Exception {
+        long id = member("waiter");
+        Cookie admin = login("root@test.local", "RootPass123");
+        try (var holder = dataSource.getConnection()) {
+            holder.setAutoCommit(false);
+            holder.createStatement().execute("select id from roles where code = 'ADMIN' for update");
+            var call = java.util.concurrent.CompletableFuture.supplyAsync(
+                    () -> send("PATCH", "/api/admin/users/" + id + "/lock", "{\"locked\":true}", admin));
+            Thread.sleep(1000);
+            assertThat(call).as("lock request must block on ADMIN role row").isNotDone();
+            holder.rollback();
+            assertThat(call.get(10, java.util.concurrent.TimeUnit.SECONDS)).hasStatusOk();
+        }
     }
 }

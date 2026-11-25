@@ -89,13 +89,14 @@ public class AuthService {
     }
 
     @Transactional
-    public void changePassword(Long userId, String currentPassword, String newPassword) {
+    public void changePassword(Long userId, String currentPassword, String newPassword, String currentSessionId) {
         User user = users.findById(userId).orElseThrow(() -> new ApiException(ErrorCode.UNAUTHENTICATED, "Chưa đăng nhập"));
         if (!encoder.matches(currentPassword, user.getPasswordHash())) {
             throw new ApiException(ErrorCode.WRONG_PASSWORD, "Mật khẩu hiện tại không đúng");
         }
         Passwords.validate(newPassword);
         user.setPasswordHash(encoder.encode(newPassword));
+        sessions.invalidateOthers(user.getEmail(), currentSessionId);
     }
 
     @Transactional(readOnly = true)

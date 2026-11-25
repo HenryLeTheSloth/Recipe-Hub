@@ -15,6 +15,13 @@ public class SessionService {
 
     /** Xóa mọi phiên đăng nhập của user (principal name = email). */
     public void invalidateAll(String email) {
-        sessions.findByPrincipalName(email).keySet().forEach(sessions::deleteById);
+        invalidateOthers(email, null);
+    }
+
+    /** Như invalidateAll nhưng giữ lại phiên keepId (phiên đang thao tác). */
+    public void invalidateOthers(String email, String keepId) {
+        sessions.findByPrincipalName(email).keySet().stream()
+                .filter(id -> !id.equals(keepId))
+                .forEach(sessions::deleteById);
     }
 }

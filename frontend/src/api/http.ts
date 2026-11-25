@@ -52,6 +52,8 @@ export async function api<T>(path: string, init: RequestInit & { json?: unknown 
   const body = text ? parse(text) : undefined
   if (!res.ok) {
     const p = (body ?? {}) as { detail?: string; code?: string; errors?: Record<string, string> }
+    // Phiên hết hạn hoặc bị admin xóa; main.ts nghe sự kiện này để đưa về trạng thái chưa đăng nhập.
+    if (p.code === 'UNAUTHENTICATED') window.dispatchEvent(new Event('api:unauthenticated'))
     throw new ApiError(res.status, p.detail ?? `Lỗi máy chủ (${res.status})`, p.code, p.errors)
   }
   return body as T

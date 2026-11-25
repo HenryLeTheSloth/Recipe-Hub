@@ -1,7 +1,7 @@
-import { describe, expect, it } from 'vitest'
+import { describe, expect, it, vi } from 'vitest'
 import type { RouteLocationNormalized, RouteMeta } from 'vue-router'
 import type { Permission } from '@/api/auth'
-import { ADMIN_PERMISSIONS, guard } from '../guard'
+import { ADMIN_PERMISSIONS, guard, onSessionLost } from '../guard'
 
 function route(fullPath: string, meta: RouteMeta = {}) {
   return { fullPath, path: fullPath, meta } as RouteLocationNormalized
@@ -38,5 +38,30 @@ describe('guard', () => {
 
   it('lets logged-in user into auth route', () => {
     expect(guard(route('/account', { auth: true }), member)).toBe(true)
+  })
+})
+
+describe('onSessionLost', () => {
+  function setup(path: string, meta: RouteMeta) {
+    const auth = {
+      me: {} as unknown,
+      get isLoggedIn() { return this.me !== null },
+      canAny: () => true,
+    }
+    const router = { currentRoute: { value: route(path, meta) }, replace: vi.fn<(r: unknown) => void>() }
+    onSessionLost(router, auth)
+    return { auth, router }
+  }
+
+  it('clears me and sends protected page to login', () => {
+    const { auth, router } = setup('/admin/users', { permission: 'USER_READ' })
+    expect(auth.me).toBeNull()
+    expect(router.replace).toHaveBeenCalledWith({ path: '/login', query: { redirect: '/admin/users' } })
+  })
+
+  it('stays on public page', () => {
+    const { auth, router } = setup('/', {})
+    expect(auth.me).toBeNull()
+    expect(router.replace).not.toHaveBeenCalled()
   })
 })

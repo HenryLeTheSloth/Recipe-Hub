@@ -10,7 +10,6 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.crypto.factory.PasswordEncoderFactories;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
-import org.springframework.security.web.authentication.HttpStatusEntryPoint;
 import org.springframework.security.web.authentication.logout.HttpStatusReturningLogoutSuccessHandler;
 import org.springframework.security.web.context.HttpSessionSecurityContextRepository;
 import org.springframework.security.web.context.SecurityContextRepository;
@@ -36,7 +35,13 @@ public class SecurityConfig {
                 .securityContext(c -> c.securityContextRepository(contextRepository))
                 // SPA không cần redirect về request cũ; tránh tạo session cho mỗi 401 ẩn danh.
                 .requestCache(c -> c.requestCache(new NullRequestCache()))
-                .exceptionHandling(e -> e.authenticationEntryPoint(new HttpStatusEntryPoint(HttpStatus.UNAUTHORIZED)))
+                // 401 dạng ProblemDetail như mọi lỗi API khác, để frontend nhận ra phiên đã mất (code UNAUTHENTICATED).
+                .exceptionHandling(e -> e.authenticationEntryPoint((req, res, ex) -> {
+                    res.setStatus(HttpStatus.UNAUTHORIZED.value());
+                    res.setContentType("application/problem+json;charset=UTF-8");
+                    res.getWriter().write("{\"title\":\"Unauthorized\",\"status\":401,"
+                            + "\"detail\":\"Chưa đăng nhập\",\"code\":\"UNAUTHENTICATED\"}");
+                }))
                 .logout(l -> l.logoutUrl("/api/auth/logout")
                         .logoutSuccessHandler(new HttpStatusReturningLogoutSuccessHandler(HttpStatus.NO_CONTENT)))
                 .build();

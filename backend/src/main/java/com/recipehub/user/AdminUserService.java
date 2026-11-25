@@ -32,6 +32,7 @@ public class AdminUserService {
 
     @Transactional
     public AdminUserResponse setLocked(AppUserDetails actor, Long id, boolean locked) {
+        roles.lockAdminRole();
         User target = target(actor, id);
         if (locked) {
             guardLastAdmin(target);
@@ -45,6 +46,7 @@ public class AdminUserService {
 
     @Transactional
     public AdminUserResponse setRoles(AppUserDetails actor, Long id, Set<String> roleCodes) {
+        roles.lockAdminRole();
         User target = target(actor, id);
         List<Role> newRoles = roles.findAllByCodeIn(roleCodes);
         if (newRoles.size() != roleCodes.size()) {
@@ -61,6 +63,7 @@ public class AdminUserService {
 
     @Transactional
     public void delete(AppUserDetails actor, Long id) {
+        roles.lockAdminRole();
         User target = target(actor, id);
         guardLastAdmin(target);
         try {

@@ -189,6 +189,17 @@ class AuthFlowIT {
     }
 
     @Test
+    void changePasswordSignsOutOtherSessionsButKeepsCurrent() {
+        String email = register("password1", true);
+        Cookie current = session(login(email, "password1"));
+        Cookie other = session(login(email, "password1"));
+        assertThat(put("/api/me/password", "{\"currentPassword\":\"password1\",\"newPassword\":\"newpassword\"}", current))
+                .hasStatus(204);
+        assertThat(get("/api/me", other)).hasStatus(401);
+        assertThat(get("/api/me", current)).hasStatusOk();
+    }
+
+    @Test
     void duplicateRegisterIs409() {
         String email = register("password1", false);
         assertThat(post("/api/auth/register", """

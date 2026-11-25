@@ -25,6 +25,7 @@ public interface UserRepository extends JpaRepository<User, Long> {
             where lower(u.email) like lower(concat('%', :q, '%'))
                or lower(u.username) like lower(concat('%', :q, '%'))
                or lower(u.displayName) like lower(concat('%', :q, '%'))
+            order by u.id
             """)
     Page<User> search(String q, Pageable pageable);
 
