@@ -26,7 +26,7 @@ public class SecurityConfig {
                         // Không chặn /error, nếu không 403/406... bị viết lại thành 401.
                         .dispatcherTypeMatchers(DispatcherType.ERROR).permitAll()
                         .requestMatchers(HttpMethod.GET, "/api/health", "/api/auth/csrf", "/api/media/*/file",
-                                "/api/categories", "/api/tags", "/api/ingredients").permitAll()
+                                "/api/categories", "/api/tags", "/api/ingredients", "/api/recipes", "/api/recipes/**").permitAll()
                         .requestMatchers(HttpMethod.POST,
                                 "/api/auth/register", "/api/auth/login", "/api/auth/verify-email",
                                 "/api/auth/resend-verification", "/api/auth/forgot-password",
