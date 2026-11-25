@@ -24,7 +24,10 @@ public enum ErrorCode {
     NAME_TAKEN(HttpStatus.CONFLICT),
     IN_USE(HttpStatus.CONFLICT),
     MEDIA_TOO_LARGE(HttpStatus.CONTENT_TOO_LARGE),
-    MEDIA_TYPE(HttpStatus.UNSUPPORTED_MEDIA_TYPE);
+    MEDIA_TYPE(HttpStatus.UNSUPPORTED_MEDIA_TYPE),
+    INVALID_TRANSITION(HttpStatus.CONFLICT),
+    RECIPE_INCOMPLETE(HttpStatus.BAD_REQUEST),
+    DUPLICATE_INGREDIENT(HttpStatus.BAD_REQUEST);
 
     private final HttpStatus status;
 
