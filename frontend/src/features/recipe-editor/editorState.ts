@@ -26,7 +26,7 @@ export interface EditorState {
 
 export const emptyState = (): EditorState => ({
   title: '', summary: '', categoryId: null, servings: 2, prepMinutes: 10, cookMinutes: 15, difficulty: 'EASY',
-  cover: null, tagIds: [], ingredients: [], steps: [{ content: '', media: null }],
+  cover: null, tagIds: [], ingredients: [], steps: [],
 })
 
 const media = (id: number | null, url: string | null): MediaRef | null => (id && url ? { id, url } : null)

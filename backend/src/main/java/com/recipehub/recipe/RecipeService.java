@@ -69,6 +69,7 @@ public class RecipeService {
         Recipe recipe = own(actor, id);
         recipe.markEdited();
         apply(recipe, r, actor.id());
+        if (recipe.getStatus() == RecipeStatus.PENDING) recipe.requireComplete(); // bản đã đăng sửa → chờ duyệt lại
         return mapper.detail(recipe);
     }
 

@@ -13,6 +13,10 @@ describe('editorState', () => {
     expect(s.ingredients).toHaveLength(0)
   })
 
+  it('a new draft with only a title sends no blank step', () => {
+    expect(toRequest({ ...emptyState(), title: 'Nháp' }).steps).toEqual([])
+  })
+
   it('moveStep reorders and toRequest keeps order', () => {
     const s = { ...emptyState(), steps: ['A', 'B', 'C'].map((content) => ({ content, media: null })) }
     const r = toRequest(moveStep(s, 2, 0))

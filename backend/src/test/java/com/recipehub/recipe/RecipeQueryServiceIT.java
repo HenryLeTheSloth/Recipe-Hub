@@ -114,6 +114,14 @@ class RecipeQueryServiceIT {
     }
 
     @Test
+    void accentedQueryMatchesTitleOnly() {
+        save("Canh " + x + " gà", "canh-" + x + "-ga", Instant.parse("2026-11-04T00:00:00Z"), egg);
+        save("Canh " + x + " gạo", "canh-" + x + "-gao", Instant.parse("2026-11-04T00:00:00Z"), egg);
+        assertThat(search("canh " + x + " gà", null, null, null).getContent()).extracting(RecipeCard::slug)
+                .containsExactly("canh-" + x + "-ga");
+    }
+
+    @Test
     void filtersByCategoryAndTag() {
         assertThat(search(null, "mon-chinh", "nhanh-" + x, null).getTotalElements()).isEqualTo(3);
         assertThat(search(null, "mon-canh", "nhanh-" + x, null).getTotalElements()).isZero();

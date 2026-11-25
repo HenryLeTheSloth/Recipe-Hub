@@ -177,9 +177,19 @@ class RecipeServiceTest {
     @Test
     void editingPublishedSendsBackToPending() {
         stored(RecipeStatus.PUBLISHED);
-        var d = service.update(authorActor, 100L, req("Cà chua xào trứng", null, List.of(line(5))));
+        when(categories.findById(3L)).thenReturn(Optional.of(new Category("Món chính", "mon-chinh", 1)));
+        var r = new RecipeRequest("Cà chua xào trứng", null, 3L, 2, 5, 10, Difficulty.EASY, null, Set.of(),
+                List.of(line(5)), List.of(new RecipeStepRequest("Xào", null)));
+        var d = service.update(authorActor, 100L, r);
         assertThat(d.status()).isEqualTo(RecipeStatus.PENDING);
         assertThat(d.publishedAt()).isEqualTo(Instant.EPOCH);
+    }
+
+    @Test
+    void editingPublishedCannotDropRequiredParts() {
+        stored(RecipeStatus.PUBLISHED);
+        assertCode(() -> service.update(authorActor, 100L, req("Cà chua xào trứng", null, List.of(line(5)))),
+                ErrorCode.RECIPE_INCOMPLETE);
     }
 
     @Test

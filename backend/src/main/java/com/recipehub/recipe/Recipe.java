@@ -114,11 +114,16 @@ public class Recipe extends BaseEntity {
 
     public void submit() {
         require(status == DRAFT || status == REJECTED, "Chỉ gửi duyệt được bản nháp hoặc bản bị từ chối");
+        requireComplete();
+        status = PENDING;
+    }
+
+    /** Thiếu phần bắt buộc → RECIPE_INCOMPLETE "Còn thiếu: …". */
+    public void requireComplete() {
         List<String> missing = missingForSubmit();
         if (!missing.isEmpty()) {
             throw new ApiException(ErrorCode.RECIPE_INCOMPLETE, "Còn thiếu: " + String.join(", ", missing));
         }
-        status = PENDING;
     }
 
     /** Gọi trước khi tác giả lưu thay đổi: bản đã đăng phải được duyệt lại. */
