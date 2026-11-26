@@ -74,4 +74,21 @@ class IngredientControllerTest {
         assertThat(mvc.put().uri("/api/admin/ingredients/1").with(csrf()).contentType(MediaType.APPLICATION_JSON)
                 .content("{\"name\":\"A\",\"group\":\"VEGETABLE\"}").exchange()).hasStatus(400);
     }
+
+    @Test
+    @WithMockUser(authorities = "CATALOG_MANAGE")
+    void mergeReturns204AndNeedsTarget() {
+        assertThat(mvc.post().uri("/api/admin/ingredients/3/merge").with(csrf()).contentType(MediaType.APPLICATION_JSON)
+                .content("{\"targetId\":4}").exchange()).hasStatus(204);
+        org.mockito.Mockito.verify(service).merge(3L, 4L);
+        assertThat(mvc.post().uri("/api/admin/ingredients/3/merge").with(csrf()).contentType(MediaType.APPLICATION_JSON)
+                .content("{}").exchange()).hasStatus(400);
+    }
+
+    @Test
+    @WithMockUser(authorities = "RECIPE_WRITE")
+    void memberCannotMerge() {
+        assertThat(mvc.post().uri("/api/admin/ingredients/3/merge").with(csrf()).contentType(MediaType.APPLICATION_JSON)
+                .content("{\"targetId\":4}").exchange()).hasStatus(403);
+    }
 }

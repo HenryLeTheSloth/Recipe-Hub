@@ -130,7 +130,7 @@ async function saveRoles() {
       <form class="form" @submit.prevent="saveRoles">
         <div v-for="r in allRoles" :key="r.code" class="perm">
           <Checkbox v-model="chosen" :value="r.code" :input-id="`role-${r.code}`" />
-          <label :for="`role-${r.code}`"><code>{{ r.code }}</code> — {{ r.name }}</label>
+          <label :for="`role-${r.code}`"><code>{{ r.code }}</code> {{ r.name }}</label>
         </div>
         <p class="hint">Người dùng sẽ bị đăng xuất để nhận quyền mới.</p>
         <Message v-if="save.error.value" severity="error" :closable="false">{{ save.error.value }}</Message>

@@ -10,6 +10,9 @@ export default defineConfig({
     vue(),
     vueDevTools(),
   ],
+  // Dùng chung .env ở gốc repo; chỉ VITE_* và PRIMEUI_* được đưa ra client (ADMIN_* thì không)
+  envDir: '..',
+  envPrefix: ['VITE_', 'PRIMEUI_'],
   server: {
     proxy: { '/api': 'http://localhost:8080' },
   },

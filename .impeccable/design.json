@@ -1,0 +1,388 @@
+{
+  "schemaVersion": 2,
+  "generatedAt": "2026-11-26T00:00:00Z",
+  "title": "Design System: Recipe Hub",
+  "extensions": {
+    "colorMeta": {
+      "red": {
+        "role": "primary",
+        "displayName": "Calendar Red",
+        "tonalRamp": [
+          "#3d0b08",
+          "#6b1610",
+          "#851912",
+          "#a81e15",
+          "#d2281d",
+          "#ec867d",
+          "#f4b5af",
+          "#fdf1f0"
+        ]
+      },
+      "red-deep": {
+        "role": "primary",
+        "displayName": "Dried Seal Red",
+        "tonalRamp": [
+          "#3d0b08",
+          "#6b1610",
+          "#851912",
+          "#a81e15",
+          "#d2281d",
+          "#ec867d",
+          "#f4b5af",
+          "#fdf1f0"
+        ]
+      },
+      "blue": {
+        "role": "secondary",
+        "displayName": "Ink Blue",
+        "tonalRamp": [
+          "#01052c",
+          "#051763",
+          "#1c3885",
+          "#3858a8",
+          "#5679cd",
+          "#769bf2",
+          "#a6c3ff",
+          "#e6efff"
+        ]
+      },
+      "ok": {
+        "role": "tertiary",
+        "displayName": "Ledger Green",
+        "tonalRamp": [
+          "#001100",
+          "#003001",
+          "#0a4d1e",
+          "#306d3c",
+          "#518e5a",
+          "#72b07b",
+          "#a5d2aa",
+          "#e6f2e7"
+        ]
+      },
+      "paper": {
+        "role": "neutral",
+        "displayName": "Printing Paper",
+        "tonalRamp": [
+          "#110f0d",
+          "#1d1a17",
+          "#45403a",
+          "#5f5951",
+          "#b9b2a5",
+          "#d9d4c9",
+          "#f4f3ee",
+          "#fbfaf6"
+        ]
+      },
+      "wall": {
+        "role": "neutral",
+        "displayName": "Kitchen Wall",
+        "tonalRamp": [
+          "#110f0d",
+          "#1d1a17",
+          "#45403a",
+          "#5f5951",
+          "#b9b2a5",
+          "#d9d4c9",
+          "#f4f3ee",
+          "#fbfaf6"
+        ]
+      },
+      "ink": {
+        "role": "neutral",
+        "displayName": "Lampblack Ink",
+        "tonalRamp": [
+          "#110f0d",
+          "#1d1a17",
+          "#45403a",
+          "#5f5951",
+          "#b9b2a5",
+          "#d9d4c9",
+          "#f4f3ee",
+          "#fbfaf6"
+        ]
+      },
+      "muted": {
+        "role": "neutral",
+        "displayName": "Faded Print",
+        "tonalRamp": [
+          "#110f0d",
+          "#1d1a17",
+          "#45403a",
+          "#5f5951",
+          "#b9b2a5",
+          "#d9d4c9",
+          "#f4f3ee",
+          "#fbfaf6"
+        ]
+      },
+      "rule": {
+        "role": "neutral",
+        "displayName": "Ruling Line",
+        "tonalRamp": [
+          "#110f0d",
+          "#1d1a17",
+          "#45403a",
+          "#5f5951",
+          "#b9b2a5",
+          "#d9d4c9",
+          "#f4f3ee",
+          "#fbfaf6"
+        ]
+      },
+      "accent-text": {
+        "role": "neutral",
+        "displayName": "White",
+        "tonalRamp": [
+          "#110f0d",
+          "#1d1a17",
+          "#45403a",
+          "#5f5951",
+          "#b9b2a5",
+          "#d9d4c9",
+          "#f4f3ee",
+          "#fbfaf6"
+        ]
+      }
+    },
+    "typographyMeta": {
+      "display": {
+        "displayName": "Count numeral",
+        "purpose": "The home count only; sized min(34svh, 205cqi / digit count, 26rem), 48svh cap from 900px."
+      },
+      "headline": {
+        "displayName": "Headline",
+        "purpose": "Page h1."
+      },
+      "headline-recipe": {
+        "displayName": "Recipe title",
+        "purpose": "Dish title on recipe detail, max 18ch."
+      },
+      "title": {
+        "displayName": "Section title",
+        "purpose": "Display-face section heads."
+      },
+      "figure": {
+        "displayName": "Figure",
+        "purpose": "Red numerals: step numbers, facts, result count, card minutes."
+      },
+      "title-sans": {
+        "displayName": "Card title",
+        "purpose": "Card titles and plain h2."
+      },
+      "body": {
+        "displayName": "Body",
+        "purpose": "Default text."
+      },
+      "body-reading": {
+        "displayName": "Step text",
+        "purpose": "Recipe steps read mid-cooking."
+      },
+      "label": {
+        "displayName": "Label",
+        "purpose": "Group labels and stamps, sentence case."
+      }
+    },
+    "shadows": [
+      {
+        "name": "sheet-stack",
+        "value": "0 3px 0 -1px var(--paper), 0 3px 0 0 var(--rule), 0 6px 0 -1px var(--paper), 0 6px 0 0 var(--rule)",
+        "purpose": "Two hard paper edges under every sheet: the pad beneath."
+      },
+      {
+        "name": "card-edge",
+        "value": "0 3px 0 -1px var(--paper), 0 3px 0 0 var(--rule)",
+        "purpose": "One paper edge under a recipe card."
+      }
+    ],
+    "motion": [
+      {
+        "name": "ease-out",
+        "value": "cubic-bezier(0.16, 1, 0.3, 1)",
+        "purpose": "--ease-out; the tear transform and clip."
+      },
+      {
+        "name": "tear",
+        "value": "leave 0.38s: transform translateY(-22%) rotate(-9deg) from origin 0 0, clip-path inset(0 0 55% 0) on --ease-out; opacity to 0 ease-in",
+        "purpose": "The old count numeral torn off the spine; the new one is already beneath."
+      },
+      {
+        "name": "state",
+        "value": "0.15s",
+        "purpose": "Button background/colour and card title colour changes."
+      },
+      {
+        "name": "reduced-motion",
+        "value": "transition-duration and animation-duration 0.01ms !important under prefers-reduced-motion: reduce",
+        "purpose": "Global; removes the tear."
+      }
+    ],
+    "breakpoints": [
+      {
+        "name": "ruled-row",
+        "value": "600px"
+      },
+      {
+        "name": "facts-4col",
+        "value": "640px"
+      },
+      {
+        "name": "sheet-wide",
+        "value": "720px"
+      },
+      {
+        "name": "recipe-cols",
+        "value": "820px"
+      },
+      {
+        "name": "topbar-row",
+        "value": "860px"
+      },
+      {
+        "name": "home-split",
+        "value": "900px"
+      }
+    ]
+  },
+  "components": [
+    {
+      "name": "Primary Button",
+      "kind": "button",
+      "refersTo": "button-primary",
+      "description": "The one red action per view: submit, register, the tear-line \"Xem N món\".",
+      "html": "<button class=\"ds-btn-primary\">Xem 4 món nấu được</button>",
+      "css": ".ds-btn-primary { display: inline-flex; align-items: center; justify-content: center; gap: 0.4rem; min-height: 44px; font-family: var(--font-body); font-size: 1rem; font-weight: 600; padding: 0.55rem 1.1rem; border-radius: var(--radius); cursor: pointer; text-decoration: none; transition: background-color 0.15s, color 0.15s; background: var(--red); border: 1px solid var(--red); color: #fff; } .ds-btn-primary:hover { background: var(--red-deep); border-color: var(--red-deep); } .ds-btn-primary:focus-visible { outline: 2px solid var(--blue); outline-offset: 2px; }"
+    },
+    {
+      "name": "Outline Button",
+      "kind": "button",
+      "refersTo": "button-outline",
+      "description": "Default button: ink stroke, inverts to ink on hover.",
+      "html": "<button class=\"ds-btn\">Lưu nháp</button>",
+      "css": ".ds-btn { display: inline-flex; align-items: center; justify-content: center; gap: 0.4rem; min-height: 44px; font-family: var(--font-body); font-size: 1rem; font-weight: 600; padding: 0.55rem 1.1rem; border-radius: var(--radius); cursor: pointer; text-decoration: none; transition: background-color 0.15s, color 0.15s; background: transparent; border: 1px solid var(--ink); color: var(--ink); } .ds-btn:hover { background: var(--ink); color: var(--paper); } .ds-btn:focus-visible { outline: 2px solid var(--blue); outline-offset: 2px; }"
+    },
+    {
+      "name": "Link Button",
+      "kind": "button",
+      "refersTo": "link-button",
+      "description": "Secondary action as underlined ink-blue text, still 44px tall.",
+      "html": "<button class=\"ds-link-btn\">Bỏ chọn</button>",
+      "css": ".ds-link-btn { font-family: var(--font-body); font-size: 1rem; background: none; border: 0; padding: 0.25rem 0; min-height: 44px; cursor: pointer; color: var(--blue); text-decoration: underline; text-underline-offset: 0.2em; } .ds-link-btn:hover { color: var(--red-deep); } .ds-link-btn:focus-visible { outline: 2px solid var(--blue); outline-offset: 2px; }"
+    },
+    {
+      "name": "Text Field",
+      "kind": "input",
+      "refersTo": "input",
+      "description": "White slip on the sheet, blue focus.",
+      "html": "<label class=\"ds-field\">Tên món<input class=\"ds-input\" placeholder=\"Tìm theo tên món\"></label>",
+      "css": ".ds-field { display: flex; flex-direction: column; gap: 0.35rem; font-family: var(--font-body); font-weight: 600; font-size: 0.95rem; color: var(--ink); } .ds-input { font-family: var(--font-body); font-weight: 400; font-size: 1rem; min-height: 44px; padding: 0.55rem 0.75rem; border: 1px solid #8c857a; border-radius: var(--radius); background: #fff; color: var(--ink); } .ds-input:focus { outline: 2px solid var(--blue); outline-offset: 0; border-color: var(--blue); }"
+    },
+    {
+      "name": "Public Navigation",
+      "kind": "nav",
+      "refersTo": "nav-link-active",
+      "description": "Ink links, red active link with a 2px underline, red register button.",
+      "html": "<nav class=\"ds-nav\"><a href=\"#\" class=\"ds-active\">Công thức</a><a href=\"#\">Đăng nhập</a><a href=\"#\" class=\"ds-nav-btn\">Đăng ký</a></nav>",
+      "css": ".ds-nav { display: flex; align-items: center; gap: 1rem; font-family: var(--font-body); border-top: 1px solid var(--rule); } .ds-nav a { color: var(--ink); text-decoration: none; font-weight: 500; padding: 0.6rem 0; } .ds-nav a:hover { color: var(--red); } .ds-nav a.ds-active { color: var(--red); text-decoration: underline; text-decoration-thickness: 2px; text-underline-offset: 0.45em; } .ds-nav a.ds-nav-btn { margin-left: auto; min-height: 44px; display: inline-flex; align-items: center; padding: 0.55rem 1.1rem; background: var(--red); color: #fff; font-weight: 600; border-radius: var(--radius); } .ds-nav a.ds-nav-btn:hover { background: var(--red-deep); } .ds-nav a:focus-visible { outline: 2px solid var(--blue); outline-offset: 2px; }"
+    },
+    {
+      "name": "Status Stamps",
+      "kind": "chip",
+      "refersTo": "stamp",
+      "description": "Rubber stamps whose line form carries the state.",
+      "html": "<div class=\"ds-stamps\"><span class=\"ds-stamp ds-draft\">Bản nháp</span><span class=\"ds-stamp ds-pending\">Chờ duyệt</span><span class=\"ds-stamp ds-published\">Đã đăng</span><span class=\"ds-stamp ds-rejected\">Bị từ chối</span><span class=\"ds-stamp ds-hidden\">Đã ẩn</span></div>",
+      "css": ".ds-stamps { display: flex; flex-wrap: wrap; gap: 0.75rem; padding: 0.5rem; background: var(--paper); } .ds-stamp { display: inline-block; padding: 0.15rem 0.55rem; border: 2px solid currentColor; border-radius: 3px; font-family: var(--font-body); font-weight: 700; font-size: 0.8rem; letter-spacing: 0.02em; line-height: 1.4; white-space: nowrap; color: var(--ink); } .ds-draft { border-style: dotted; color: var(--muted); } .ds-pending { border-style: dashed; color: var(--blue); } .ds-published { color: var(--ok); } .ds-rejected { color: var(--red); transform: rotate(-2deg); } .ds-hidden { color: var(--muted); text-decoration: line-through; }"
+    },
+    {
+      "name": "Calendar Sheet",
+      "kind": "card",
+      "refersTo": "sheet",
+      "description": "Every public surface: paper, red spine, dotted perforation, stacked edges.",
+      "html": "<section class=\"ds-sheet\"><h1>Trong bếp có gì?</h1><p>Thứ Năm, 26 tháng 11, 2026</p></section>",
+      "css": ".ds-sheet { position: relative; background: var(--paper); color: var(--ink); border-top: 10px solid var(--red); padding: 1.25rem 1.25rem 1.5rem; box-shadow: 0 3px 0 -1px var(--paper), 0 3px 0 0 var(--rule), 0 6px 0 -1px var(--paper), 0 6px 0 0 var(--rule); margin-bottom: 6px; font-family: var(--font-body); } .ds-sheet::before { content: ''; position: absolute; inset: 6px 0 auto; border-top: 2px dotted var(--rule); } .ds-sheet h1 { font-family: var(--font-display); font-weight: 800; font-size: 2.25rem; letter-spacing: -0.01em; line-height: 1.15; margin: 0 0 0.5rem; } .ds-sheet p { margin: 0; color: var(--muted); }"
+    },
+    {
+      "name": "Recipe Card",
+      "kind": "card",
+      "refersTo": "recipe-card",
+      "description": "Card with a 5px spine; no photo prints the minutes as a red numeral.",
+      "html": "<a href=\"#\" class=\"ds-card\"><div class=\"ds-noimg\"><span class=\"ds-mins\">25</span><span class=\"ds-unit\">phút</span></div><div class=\"ds-card-body\"><h3>Cà chua xào trứng</h3><ul class=\"ds-facts\"><li>Dễ</li><li>Món chính</li></ul><p class=\"ds-by\">bởi Đầu bếp nhà</p></div></a>",
+      "css": ".ds-card { display: flex; flex-direction: column; max-width: 18rem; background: var(--paper); border-top: 5px solid var(--red); box-shadow: 0 3px 0 -1px var(--paper), 0 3px 0 0 var(--rule); color: var(--ink); text-decoration: none; font-family: var(--font-body); } .ds-card:hover h3 { color: var(--red); } .ds-card:focus-visible { outline: 2px solid var(--blue); outline-offset: 2px; } .ds-noimg { aspect-ratio: 16 / 9; display: flex; align-items: flex-end; gap: 0.4rem; padding: 0 1rem 0.5rem; border-bottom: 1px solid var(--rule); color: var(--red); } .ds-mins { font-family: var(--font-display); font-weight: 900; font-size: 6.5rem; line-height: 0.8; letter-spacing: -0.03em; font-variant-numeric: tabular-nums; } .ds-unit { font-weight: 700; padding-bottom: 0.2rem; } .ds-card-body { padding: 0.85rem 1rem 1rem; display: flex; flex-direction: column; gap: 0.5rem; } .ds-card h3 { margin: 0; font-size: 1.15rem; line-height: 1.15; transition: color 0.15s; } .ds-facts { list-style: none; margin: 0; padding: 0; display: flex; border-top: 1px solid var(--rule); border-bottom: 1px solid var(--rule); font-size: 0.875rem; } .ds-facts li { padding: 0.3rem 0.6rem; border-right: 1px solid var(--rule); } .ds-facts li:first-child { padding-left: 0; } .ds-facts li:last-child { border-right: 0; } .ds-by { margin: 0; color: var(--muted); font-size: 0.875rem; }"
+    },
+    {
+      "name": "Ingredient Table",
+      "kind": "custom",
+      "refersTo": "ingredient-cell",
+      "description": "Ruled group rows of 44px tap cells; pressed cells fill red.",
+      "html": "<div class=\"ds-table\"><div class=\"ds-row\"><span class=\"ds-group\">Rau củ</span><div class=\"ds-cells\"><button class=\"ds-cell\" aria-pressed=\"true\"><span aria-hidden=\"true\">🍅</span>Cà chua</button><button class=\"ds-cell\" aria-pressed=\"false\"><span aria-hidden=\"true\">🥕</span>Cà rốt</button></div></div><div class=\"ds-row\"><span class=\"ds-group\">Trứng</span><div class=\"ds-cells\"><button class=\"ds-cell\" aria-pressed=\"false\"><span aria-hidden=\"true\">🥚</span>Trứng gà</button></div></div></div>",
+      "css": ".ds-table { border-top: 2px solid var(--ink); background: var(--paper); font-family: var(--font-body); } .ds-row { display: grid; grid-template-columns: 7.5rem 1fr; border-bottom: 1px solid var(--rule); } .ds-group { padding: 0.8rem 0.75rem 0.8rem 0; border-right: 1px solid var(--rule); font-size: 0.85rem; font-weight: 700; color: var(--muted); } .ds-cells { display: flex; flex-wrap: wrap; padding-left: 0.25rem; } .ds-cell { display: inline-flex; align-items: center; gap: 0.35rem; min-height: 44px; margin: 0.2rem 0.25rem; padding: 0.3rem 0.7rem; font-family: var(--font-body); font-size: 0.95rem; color: var(--ink); background: transparent; border: 1px solid transparent; border-radius: var(--radius); cursor: pointer; white-space: nowrap; } .ds-cell:hover { border-color: var(--rule); } .ds-cell[aria-pressed='true'] { background: var(--red); color: #fff; font-weight: 600; } .ds-cell:focus-visible { outline: 2px solid var(--blue); outline-offset: 2px; }"
+    },
+    {
+      "name": "Count Numeral",
+      "kind": "custom",
+      "refersTo": "count-numeral",
+      "description": "The giant red count with its caption bottom-aligned beside it; tears off when it changes.",
+      "html": "<div class=\"ds-count\"><span class=\"ds-numeral\" style=\"--d: 1\">4</span><p class=\"ds-caption\">món nấu được với <b>🍅 Cà chua, 🥚 Trứng gà.</b></p></div>",
+      "css": ".ds-count { container-type: inline-size; display: flex; flex-wrap: wrap; align-items: flex-end; gap: 0.75rem 1rem; background: var(--paper); font-family: var(--font-body); color: var(--ink); } .ds-numeral { display: block; width: fit-content; font-family: var(--font-display); font-weight: 900; font-size: min(34svh, calc(205cqi / var(--d, 3)), 26rem); line-height: 0.78; letter-spacing: -0.03em; color: var(--red); background: var(--paper); font-variant-numeric: tabular-nums; transform-origin: 0 0; } .ds-caption { flex: 1 1 9rem; margin: 0; font-size: 1.05rem; max-width: 34ch; } .ds-caption b { font-weight: 600; }"
+    }
+  ],
+  "narrative": {
+    "northStar": "The Tờ Lịch Bloc",
+    "overview": "**Creative North Star: \"The Tờ Lịch Bloc\"**\n\nRecipe Hub is the tear-off wall calendar that hangs in every Vietnamese kitchen: one thin sheet of grey-white printing paper per day, a red glued spine across the top, and one giant red numeral that dominates the sheet. Here the numeral counts the dishes the cook can make with what is in the kitchen. Every public surface is a sheet on that pad; the page behind them is the kitchen wall.\n\nThe world is flat, printed and ruled. Colour is spot ink on paper: black for words, calendar red for numbers, Sundays and the one primary action, ink blue for links and secondary marks. Depth comes only from the sheets stacked underneath (hard paper edges, no blur) and from the red spine. Lists and facts sit in ruled cells like the giờ hoàng đạo box printed on a real lịch bloc. Status is a rubber stamp whose line form carries the meaning, so it reads without colour.\n\nDensity is generous and one-handed: big targets, legible steps at arm's length, a sticky action pinned at the sheet's torn foot. The one orchestrated motion is the tear: when the count changes, the old numeral is torn off the spine and the new one is already printed beneath. The admin area keeps PrimeVue (Aura) but is re-inked with the same red and paper ramps, so it reads as the same pad.",
+    "keyCharacteristics": [
+      "Paper sheets on a wall, red glued spine (10px) at the top of every sheet, dotted perforation just below it.",
+      "Condensed, tall Big Shoulders Display for numerals and headlines; Be Vietnam Pro for every word you read.",
+      "Numbers are red, words are ink.",
+      "Ruled cells: a 2px ink rule opens a table, 1px warm rules divide it.",
+      "Rubber-stamp states: dotted, dashed, solid, rotated, struck.",
+      "Flat colour, no gradients, no blurred shadows; depth is stacked paper.",
+      "One signature motion: the tear-off numeral, removed under reduced motion."
+    ],
+    "rules": [
+      {
+        "name": "The Numbers Are Red Rule",
+        "body": "Every Big Shoulders numeral (count, card minutes, step number, fact figure, result count, 403 code) is red; every headline and paragraph is ink. Red words are reserved for the Sunday date, the active nav link, the pressed cell and actions.",
+        "section": "colors"
+      },
+      {
+        "name": "The Four Inks Rule",
+        "body": "The palette is paper, ink, red and blue, plus green only for done/published. No gradients, no tints used as fills, no new hue for decoration.",
+        "section": "colors"
+      },
+      {
+        "name": "The Two Faces Rule",
+        "body": "Big Shoulders is for numerals and headlines only; anything a cook reads in a sentence is Be Vietnam Pro.",
+        "section": "typography"
+      },
+      {
+        "name": "The Sentence Case Rule",
+        "body": "No all-caps labels and no letter-spaced eyebrows above headings. The only case transform in the build capitalises the first letter of the weekday that `Intl` returns in lower case.",
+        "section": "typography"
+      },
+      {
+        "name": "The Stacked Sheet Rule",
+        "body": "Depth is paper under paper: hard edges in paper and rule colours, never a blurred or tinted shadow, never a gradient.",
+        "section": "elevation"
+      }
+    ],
+    "dos": [
+      "Do keep every text pair at 4.5:1 or better; the shipped pairs run from 4.65:1 (red on paper) to 15.59:1 (ink on paper).",
+      "Do make every public tap target at least 44px tall (52px for the tear-line action, 48px for recipe ingredient rows).",
+      "Do print numbers in red Big Shoulders and words in ink Be Vietnam Pro.",
+      "Do put meta (minutes, difficulty, category, facts) in ruled cells divided by 1px rules.",
+      "Do give every new state a stamp line form (dotted, dashed, solid, rotated, struck) plus a word, never colour alone.",
+      "Do start every new surface as a sheet: paper, red spine, dotted perforation, stacked edges.",
+      "Do keep the tear as the single orchestrated motion and let the global reduced-motion rule remove it.",
+      "Do make every surface complete without photos, as the minutes-numeral card face does."
+    ],
+    "donts": [
+      "Don't use all-caps or letter-spaced labels; labels are sentence case.",
+      "Don't put eyebrows or kickers above headings.",
+      "Don't join meta with middle dots (\"25 phút · Dễ · Món chính\"); use ruled cells.",
+      "Don't use \"→\" arrows in link or button text.",
+      "Don't add gradients, blurred shadows or glows; depth is stacked paper only.",
+      "Don't add a hue outside paper, ink, red, blue and done-green.",
+      "Don't add motion that ignores `prefers-reduced-motion`."
+    ]
+  }
+}

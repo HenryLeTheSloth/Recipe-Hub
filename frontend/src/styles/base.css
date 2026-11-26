@@ -1,69 +1,133 @@
+/* Recipe Hub: tờ lịch bloc. Giấy, mực đen, đỏ lịch, xanh mực; màu phẳng, chiều sâu chỉ từ chồng tờ. */
 :root {
-  --bg: #fbf7f2;
+  /* Bếp xanh: nền kem, thẻ trắng bo tròn, xanh rừng làm màu thương hiệu, chanh non chỉ làm mảng nền nút nổi bật. */
+  --bg: #f7f4ec;
   --surface: #ffffff;
-  --text: #2b2420;
-  --muted: #74675e;
-  --border: #e6dcd2;
-  --accent: #c2541b;
+  --accent: #1e4d3a;
+  --accent-deep: #143528;
   --accent-text: #ffffff;
-  --danger: #b42318;
-  --ok: #2f7a3e;
-  --radius: 10px;
-  font-family: system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+  --lime: #c9e86b;
+  --lime-soft: #eef6d3;
+  --sage: #e6efe6;
+  --text: #1c2420;
+  --muted: #5b635e;
+  --border: #e3ded2;
+  --field: #767c75; /* viền ô nhập: ≥3:1 trên trắng */
+  --star: #a35908;
+  --danger: #b3261e;
+  --ok: #1e6b3a;
+
+  --radius: 8px;
+  --radius-lg: 16px;
+  --radius-xl: 24px;
+  --shadow-card: 0 1px 2px rgb(20 53 40 / 0.06), 0 2px 8px rgb(20 53 40 / 0.06);
+  --shadow-lift: 0 8px 24px rgb(20 53 40 / 0.12);
+
+  --font-body: 'Be Vietnam Pro', system-ui, sans-serif;
+  --font-display: var(--font-body);
+  --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+
+  color-scheme: light;
+  font-family: var(--font-body);
   color: var(--text);
   background: var(--bg);
-  line-height: 1.5;
-}
-@media (prefers-color-scheme: dark) {
-  :root {
-    --bg: #1b1714;
-    --surface: #26201c;
-    --text: #f2ebe5;
-    --muted: #b3a69c;
-    --border: #3d342e;
-    --accent: #e9773c;
-    --danger: #f97066;
-    --ok: #6cc17e;
-  }
+  line-height: 1.55;
+  -webkit-text-size-adjust: 100%;
+  accent-color: var(--accent);
+  caret-color: var(--accent);
 }
 * { box-sizing: border-box; }
 body { margin: 0; background: var(--bg); }
-a { color: var(--accent); }
-h1 { font-size: 1.5rem; margin: 0 0 1rem; }
+::selection { background: var(--accent); color: #fff; }
+a { color: var(--accent); text-underline-offset: 0.2em; text-decoration-thickness: 1px; }
+a:hover { color: var(--accent-deep); }
+:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+h1, h2, h3 { text-wrap: balance; line-height: 1.15; }
+h1 { font-weight: 800; font-size: clamp(1.75rem, 4vw, 2.5rem); letter-spacing: -0.02em; margin: 0 0 1rem; }
+h2 { font-size: 1.5rem; font-weight: 700; margin: 0 0 0.75rem; }
+img { max-width: 100%; }
+.num { font-variant-numeric: tabular-nums; }
 
-.auth-card {
-  max-width: 420px;
-  margin: 3rem auto;
-  padding: 2rem;
+/* Mảng nội dung: thẻ trắng bo tròn trên nền kem. */
+.sheet, .auth-card {
   background: var(--surface);
-  border: 1px solid var(--border);
-  border-radius: var(--radius);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-card);
+  padding: 1.25rem 1.25rem 1.5rem;
 }
-.form { display: flex; flex-direction: column; gap: 0.9rem; }
-.field { display: flex; flex-direction: column; gap: 0.3rem; font-weight: 500; }
-.field input {
-  font: inherit;
-  padding: 0.6rem 0.75rem;
-  border: 1px solid var(--border);
-  border-radius: 8px;
-  background: var(--bg);
+@media (min-width: 720px) { .sheet { padding: 1.75rem 2rem 2rem; } }
+
+/* Con dấu trạng thái: hình nét mang nghĩa, không chỉ màu. */
+.stamp {
+  display: inline-block;
+  padding: 0.15rem 0.55rem;
+  border: 2px solid currentColor;
+  border-radius: 3px;
+  font-weight: 700;
+  font-size: 0.8rem;
+  letter-spacing: 0.02em;
+  line-height: 1.4;
+  white-space: nowrap;
   color: var(--text);
 }
-.field input:focus { outline: 2px solid var(--accent); outline-offset: 1px; }
-.field-error { color: var(--danger); font-weight: 400; font-size: 0.875rem; }
-.hint { color: var(--muted); font-weight: 400; font-size: 0.875rem; }
-.form-error { color: var(--danger); margin: 0; }
-.form-ok { color: var(--ok); margin: 0; }
+.stamp[data-status='DRAFT'] { border-style: dotted; color: var(--muted); }
+.stamp[data-status='PENDING'] { border-style: dashed; color: var(--star); }
+.stamp[data-status='PUBLISHED'] { color: var(--ok); }
+.stamp[data-status='REJECTED'] { color: var(--danger); transform: rotate(-2deg); }
+.stamp[data-status='HIDDEN'] { color: var(--muted); text-decoration: line-through; }
+
+.auth-card { max-width: 440px; margin: 2.5rem auto; }
+.form { display: flex; flex-direction: column; gap: 1rem; }
+.field { display: flex; flex-direction: column; gap: 0.35rem; font-weight: 600; font-size: 0.95rem; }
+.field input, .field select, .field textarea, .input {
+  font: inherit;
+  font-weight: 400;
+  font-size: 1rem;
+  min-height: 44px;
+  padding: 0.55rem 0.75rem;
+  border: 1px solid var(--field);
+  border-radius: var(--radius);
+  background: #fff;
+  color: var(--text);
+}
+.field input:focus, .field select:focus, .field textarea:focus, .input:focus { outline: 2px solid var(--accent); outline-offset: 0; border-color: var(--accent); }
+.field-error { color: var(--danger); font-weight: 500; font-size: 0.875rem; }
+.hint { color: var(--muted); font-weight: 400; font-size: 0.9rem; }
+.form-error { color: var(--danger); margin: 0; font-weight: 500; }
+.form-ok { color: var(--ok); margin: 0; font-weight: 500; }
+
 .btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.4rem;
+  min-height: 44px;
   font: inherit;
   font-weight: 600;
-  padding: 0.6rem 1rem;
-  border-radius: 8px;
-  border: 1px solid var(--border);
-  background: var(--surface);
-  color: var(--text);
+  padding: 0.55rem 1.25rem;
+  border-radius: 999px;
+  border: 1px solid var(--accent);
+  background: transparent;
+  color: var(--accent);
   cursor: pointer;
+  text-decoration: none;
+  transition: background-color 0.15s, color 0.15s;
 }
+.btn:hover { background: var(--sage); color: var(--accent-deep); }
 .btn.primary { background: var(--accent); border-color: var(--accent); color: var(--accent-text); }
-.btn:disabled { opacity: 0.6; cursor: progress; }
-.links { margin-top: 1.25rem; color: var(--muted); font-size: 0.9rem; }
+.btn.primary:hover { background: var(--accent-deep); border-color: var(--accent-deep); }
+.btn:disabled { opacity: 0.55; cursor: not-allowed; }
+.btn:disabled:hover { background: transparent; color: var(--accent); }
+.btn.lime { background: var(--lime); border-color: var(--lime); color: var(--accent-deep); font-weight: 700; }
+.btn.lime:hover { background: #b8dc4f; border-color: #b8dc4f; }
+.btn.primary:disabled:hover { background: var(--accent); color: #fff; }
+.btn.icon { padding: 0; width: 44px; }
+.link-btn { font: inherit; background: none; border: 0; padding: 0.25rem 0; min-height: 44px; cursor: pointer; color: var(--accent); text-decoration: underline; text-underline-offset: 0.2em; }
+.link-btn.danger { color: var(--danger); }
+.links { margin-top: 1.5rem; color: var(--muted); font-size: 0.95rem; display: flex; flex-wrap: wrap; gap: 0.5rem 1.25rem; }
+
+.pager { display: flex; align-items: center; justify-content: center; gap: 1rem; margin: 2rem 0; }
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { transition-duration: 0.01ms !important; animation-duration: 0.01ms !important; }
+}

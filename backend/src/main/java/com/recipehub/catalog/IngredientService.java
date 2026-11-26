@@ -3,6 +3,8 @@ package com.recipehub.catalog;
 import com.recipehub.catalog.dto.IngredientRequest;
 import com.recipehub.catalog.dto.IngredientResponse;
 import com.recipehub.catalog.dto.SuggestResult;
+import com.recipehub.common.ApiException;
+import com.recipehub.common.ErrorCode;
 import com.recipehub.common.Slugs;
 import java.util.List;
 import org.springframework.data.domain.Limit;
@@ -82,5 +84,18 @@ public class IngredientService {
     static IngredientResponse response(Ingredient i) {
         return new IngredientResponse(i.getId(), i.getName(), i.getSlug(), i.getIngredientGroup(), i.getEmoji(),
                 i.getStatus());
+    }
+
+    /** Gộp source vào target (trùng tên/biến thể); mọi công thức dùng source chuyển sang target. */
+    @Transactional
+    public void merge(Long sourceId, Long targetId) {
+        if (sourceId.equals(targetId)) throw new ApiException(ErrorCode.VALIDATION_ERROR, "Không thể gộp vào chính nó");
+        if (!repo.existsById(sourceId) || !repo.existsById(targetId)) {
+            throw new ApiException(ErrorCode.NOT_FOUND, "Không tìm thấy nguyên liệu");
+        }
+        repo.foldDuplicateLinesIntoTargetNote(sourceId, targetId);
+        repo.dropRecipeLinesDuplicatedByTarget(sourceId, targetId);
+        repo.repointRecipeLines(sourceId, targetId);
+        repo.deleteNative(sourceId);
     }
 }

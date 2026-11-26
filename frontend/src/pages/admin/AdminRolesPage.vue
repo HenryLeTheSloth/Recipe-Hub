@@ -113,7 +113,7 @@ async function remove(role: Role) {
           <small v-if="lockedPerms" class="hint">Quyền của ADMIN cố định.</small>
           <div v-for="p in permissions" :key="p.code" class="perm">
             <Checkbox v-model="form.permissionCodes" :value="p.code" :input-id="`perm-${p.code}`" :disabled="lockedPerms" />
-            <label :for="`perm-${p.code}`"><code>{{ p.code }}</code> — {{ p.description }}</label>
+            <label :for="`perm-${p.code}`"><code>{{ p.code }}</code> {{ p.description }}</label>
           </div>
         </fieldset>
         <Message v-if="save.error.value" severity="error" :closable="false">{{ save.error.value }}</Message>
@@ -132,6 +132,6 @@ async function remove(role: Role) {
 .actions { display: flex; gap: 0.5rem; }
 .actions.end { justify-content: flex-end; }
 .ml { margin-left: 0.5rem; }
-.perms { border: 1px solid var(--border); border-radius: 8px; padding: 0.75rem; display: grid; gap: 0.5rem; }
+.perms { border: 1px solid var(--border); border-radius: var(--radius); padding: 0.75rem; display: grid; gap: 0.5rem; }
 .perm { display: flex; gap: 0.5rem; align-items: center; }
 </style>

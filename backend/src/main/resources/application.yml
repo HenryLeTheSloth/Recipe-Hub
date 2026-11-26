@@ -11,6 +11,8 @@ spring:
     hibernate:
       ddl-auto: validate
     open-in-view: false
+    properties:
+      hibernate.default_batch_fetch_size: 50 # chi tiết công thức: nguyên liệu nạp theo lô, không N+1
   data:
     web:
       pageable:

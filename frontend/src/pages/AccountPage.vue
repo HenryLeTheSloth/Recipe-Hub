@@ -50,7 +50,7 @@ async function logout() {
 
     <h2>Ảnh đại diện</h2>
     <div class="avatar">
-      <ImageUpload :model-value="avatar" @update:model-value="changeAvatar" />
+      <ImageUpload :model-value="avatar" @update:model-value="(m) => m && changeAvatar(m)" />
       <p v-if="avatarForm.error.value" class="form-error" role="alert">{{ avatarForm.error.value }}</p>
     </div>
 

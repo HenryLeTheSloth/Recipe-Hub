@@ -16,6 +16,7 @@
     "test": "vitest run"
   },
   "dependencies": {
+    "@primeicons/vue": "^8.0.2",
     "@primeuix/themes": "^3.1.1",
     "pinia": "^4.0.3",
     "primevue": "^5.0.5",
