@@ -41,6 +41,17 @@ class RatingControllerTest {
     }
 
     @Test
+    void myRatingNeedsLoginAndReturnsOwnOr204() {
+        var member = with("COMMUNITY_PARTICIPATE");
+        assertThat(mvc.get().uri("/api/recipes/100/my-rating").exchange()).hasStatus(401);
+        when(service.mine(eq(member), eq(100L))).thenReturn(java.util.Optional.of(VIEW));
+        assertThat(mvc.get().uri("/api/recipes/100/my-rating").with(user(member)).exchange()).hasStatusOk()
+                .bodyJson().extractingPath("$.stars").isEqualTo(5);
+        when(service.mine(eq(member), eq(100L))).thenReturn(java.util.Optional.empty());
+        assertThat(mvc.get().uri("/api/recipes/100/my-rating").with(user(member)).exchange()).hasStatus(204);
+    }
+
+    @Test
     void rateNeedsLoginAndPermission() {
         String body = "{\"stars\":5}";
         assertThat(mvc.put().uri("/api/recipes/100/my-rating").with(csrf()).contentType(MediaType.APPLICATION_JSON)

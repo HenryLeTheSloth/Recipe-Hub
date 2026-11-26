@@ -212,6 +212,22 @@ class RecipeQueryServiceIT {
     }
 
     @Test
+    void sortByRatingIgnoresHiddenRatings() {
+        rate("a-" + x, 3);
+        rate("b-" + x, 4);
+        Recipe a = recipes.findBySlug("a-" + x).orElseThrow();
+        for (int i = 0; i < 2; i++) {
+            User u = users.save(new User("h" + i + x + "@x.com", "h" + i + x, "{noop}x", "H"));
+            var hidden = new com.recipehub.community.Rating(u, a, 5, null);
+            hidden.setHidden(true);
+            ratings.save(hidden);
+        }
+        assertThat(service.search(new RecipeSearch(null, null, null, List.of(egg.getId()), "rating"),
+                PageRequest.of(0, 12)).map(RecipeCard::slug).getContent())
+                .containsExactly("b-" + x, "a-" + x, "trung-chien-" + x);
+    }
+
+    @Test
     void cardsAndDetailCarryAverage() {
         rate("b-" + x, 4, 5);
         RecipeCard c = search(null, null, null, List.of(egg.getId())).getContent().getFirst();

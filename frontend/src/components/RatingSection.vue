@@ -25,7 +25,7 @@ async function load() {
   loadError.value = ''
   try {
     // ponytail: chỉ trang đầu (20 đánh giá mới nhất); thêm "Xem thêm" khi cần.
-    const [p, own] = await Promise.all([listRatings(props.recipeId), canRate.value ? getMyRating(props.recipeId) : null])
+    const [p, own] = await Promise.all([listRatings(props.recipeId), canRate.value ? getMyRating(props.recipeId).catch(() => null) : null])
     ratings.value = p.content
     total.value = p.page.totalElements
     mine.value = own

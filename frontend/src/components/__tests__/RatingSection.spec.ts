@@ -38,4 +38,13 @@ describe('RatingSection', () => {
     expect(w.find('textarea').element.value).toBe('Của tôi') // từ my-rating, không phụ thuộc trang đầu của danh sách
     expect(w.text()).toContain('Xóa đánh giá')
   })
+
+  it('keeps public ratings when my-rating fails', async () => {
+    const w = await setup(9, 7)
+    vi.mocked(getMyRating).mockRejectedValue(new Error('x'))
+    useAuthStore().me = { ...useAuthStore().me!, id: 10 } // kích hoạt load lại
+    await flushPromises()
+    expect(w.text()).toContain('Ngon')
+    expect(w.find('[role="alert"]').exists()).toBe(false)
+  })
 })

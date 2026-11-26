@@ -25,6 +25,8 @@ public class SecurityConfig {
                 .authorizeHttpRequests(auth -> auth
                         // Không chặn /error, nếu không 403/406... bị viết lại thành 401.
                         .dispatcherTypeMatchers(DispatcherType.ERROR).permitAll()
+                        // Phải đứng trước permitAll của /api/recipes/**: ẩn danh → 401 (không phải 403 từ @PreAuthorize).
+                        .requestMatchers(HttpMethod.GET, "/api/recipes/*/my-rating").authenticated()
                         .requestMatchers(HttpMethod.GET, "/api/health", "/api/auth/csrf", "/api/media/*/file",
                                 "/api/categories", "/api/tags", "/api/ingredients", "/api/recipes", "/api/recipes/**").permitAll()
                         .requestMatchers(HttpMethod.POST,
