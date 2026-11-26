@@ -36,7 +36,7 @@ import org.springframework.transaction.annotation.Transactional;
 @Transactional
 public class RecipeService {
 
-    static final String MODERATE = "CONTENT_MODERATE";
+    public static final String MODERATE = "CONTENT_MODERATE";
 
     private final RecipeRepository recipes;
     private final CategoryRepository categories;

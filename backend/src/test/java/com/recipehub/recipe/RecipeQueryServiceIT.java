@@ -45,6 +45,7 @@ class RecipeQueryServiceIT {
     @Autowired CategoryRepository categories;
     @Autowired TagRepository tags;
     @Autowired IngredientRepository ingredients;
+    @Autowired com.recipehub.community.RatingRepository ratings;
     @Autowired jakarta.persistence.EntityManagerFactory emf;
     @MockitoBean MailService mail;
 
@@ -182,5 +183,43 @@ class RecipeQueryServiceIT {
     void newestFirstByPublishedAt() {
         assertThat(search(null, null, null, List.of(egg.getId())).getContent()).extracting(RecipeCard::slug)
                 .containsExactly("b-" + x, "trung-chien-" + x, "a-" + x);
+    }
+
+    void rate(String slug, int... stars) {
+        Recipe r = recipes.findBySlug(slug).orElseThrow();
+        for (int i = 0; i < stars.length; i++) {
+            User u = users.save(new User("r" + i + slug + "@x.com", "r" + i + slug, "{noop}x", "R"));
+            ratings.save(new com.recipehub.community.Rating(u, r, stars[i], null));
+        }
+    }
+
+    @Test
+    void sortByRatingPutsUnratedLast() {
+        rate("a-" + x, 3);
+        rate("b-" + x, 4, 5);
+        List<String> order = service.search(new RecipeSearch(null, null, null, List.of(egg.getId()), "rating"),
+                PageRequest.of(0, 12)).map(RecipeCard::slug).getContent();
+        assertThat(order).containsExactly("b-" + x, "a-" + x, "trung-chien-" + x);
+    }
+
+    @Test
+    void sortByRatingTiesNewestFirst() {
+        rate("a-" + x, 4);
+        rate("b-" + x, 4);
+        assertThat(service.search(new RecipeSearch(null, null, null, List.of(egg.getId()), "rating"),
+                PageRequest.of(0, 12)).map(RecipeCard::slug).getContent())
+                .containsExactly("b-" + x, "a-" + x, "trung-chien-" + x);
+    }
+
+    @Test
+    void cardsAndDetailCarryAverage() {
+        rate("b-" + x, 4, 5);
+        RecipeCard c = search(null, null, null, List.of(egg.getId())).getContent().getFirst();
+        assertThat(c.slug()).isEqualTo("b-" + x);
+        assertThat(c.avgRating()).isEqualTo(4.5);
+        assertThat(c.ratingCount()).isEqualTo(2);
+        assertThat(service.getBySlug("b-" + x, null).avgRating()).isEqualTo(4.5);
+        assertThat(service.getBySlug("a-" + x, null).avgRating()).isNull();
+        assertThat(service.getBySlug("a-" + x, null).ratingCount()).isZero();
     }
 }

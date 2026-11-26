@@ -17,12 +17,16 @@ public interface RecipeMapper {
 
     @Mapping(target = "coverUrl", expression = "java(MediaService.url(r.getCover()))")
     @Mapping(target = "coverMediaId", source = "cover.id")
+    @Mapping(target = "avgRating", ignore = true)
+    @Mapping(target = "ratingCount", ignore = true)
     RecipeDetail detail(Recipe r);
 
     @Mapping(target = "coverUrl", expression = "java(MediaService.url(r.getCover()))")
     @Mapping(target = "categoryName", source = "category.name")
     @Mapping(target = "totalMinutes", expression = "java(r.getPrepMinutes() + r.getCookMinutes())")
     @Mapping(target = "authorName", source = "author.displayName")
+    @Mapping(target = "avgRating", ignore = true)
+    @Mapping(target = "ratingCount", ignore = true)
     RecipeCard card(Recipe r);
 
     @Mapping(target = "avatarUrl", expression = "java(MediaService.url(u.getAvatar()))")

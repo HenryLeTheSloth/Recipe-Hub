@@ -13,7 +13,14 @@ public record RecipeDetail(Long id, String slug, String title, String summary, C
                            List<TagResponse> tags, int servings, int prepMinutes, int cookMinutes,
                            Difficulty difficulty, RecipeStatus status, String coverUrl, Long coverMediaId, AuthorView author,
                            List<IngredientLine> ingredients, List<StepView> steps, String rejectionReason,
-                           Instant publishedAt, Instant createdAt, Instant updatedAt) {
+                           Instant publishedAt, Instant createdAt, Instant updatedAt, Double avgRating,
+                           long ratingCount) {
+
+    public RecipeDetail withRating(Double avgRating, long ratingCount) {
+        return new RecipeDetail(id, slug, title, summary, category, tags, servings, prepMinutes, cookMinutes,
+                difficulty, status, coverUrl, coverMediaId, author, ingredients, steps, rejectionReason, publishedAt,
+                createdAt, updatedAt, avgRating, ratingCount);
+    }
 
     public record AuthorView(Long id, String username, String displayName, String avatarUrl) {
     }

@@ -9,6 +9,11 @@ import com.recipehub.recipe.dto.RecipeSearch;
 import com.recipehub.user.AppUserDetails;
 import java.text.Normalizer;
 import java.util.List;
+import java.util.Map;
+import java.util.function.Function;
+import java.util.stream.Collectors;
+import com.recipehub.community.RatingRepository;
+import com.recipehub.community.RatingStats;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -25,9 +30,11 @@ public class RecipeQueryService {
 
     private final RecipeRepository recipes;
     private final RecipeMapper mapper;
+    private final RatingRepository ratings;
 
-    public RecipeQueryService(RecipeRepository recipes, RecipeMapper mapper) {
+    public RecipeQueryService(RecipeRepository recipes, RecipeMapper mapper, RatingRepository ratings) {
         this.recipes = recipes;
+        this.ratings = ratings;
         this.mapper = mapper;
     }
 
@@ -43,16 +50,33 @@ public class RecipeQueryService {
             List<Long> ids = s.ingredientIds().stream().distinct().toList();
             spec = spec.and(RecipeSpecs.containsAllIngredients(ids));
         }
-        // ponytail: chỉ "newest"; GĐ4 thêm "rating" ở đây.
-        Sort sort = Sort.by(Sort.Order.desc("publishedAt"), Sort.Order.desc("id"));
-        return recipes.findAll(spec, PageRequest.of(p.getPageNumber(), p.getPageSize(), sort)).map(mapper::card);
+        Sort newest = Sort.by(Sort.Order.desc("publishedAt"), Sort.Order.desc("id"));
+        if ("rating".equals(s.sort())) {
+            spec = spec.and(RecipeSpecs.orderByRating()); // thứ tự nằm trong spec; hòa điểm → mới nhất trước
+            newest = Sort.unsorted();
+        }
+        return cards(recipes.findAll(spec, PageRequest.of(p.getPageNumber(), p.getPageSize(), newest)));
+    }
+
+    /** Trang công thức → thẻ kèm điểm trung bình, lấy điểm một lần cho cả trang (dùng chung cho danh sách yêu thích). */
+    public Page<RecipeCard> cards(Page<Recipe> page) {
+        Map<Long, RatingStats> stats = ratings.statsFor(page.map(Recipe::getId).getContent()).stream()
+                .collect(Collectors.toMap(RatingStats::recipeId, Function.identity()));
+        return page.map(r -> {
+            RatingStats st = stats.get(r.getId());
+            return mapper.card(r).withRating(st == null ? null : st.avg(), st == null ? 0 : st.count());
+        });
     }
 
     public RecipeDetail getBySlug(String slug, @Nullable AppUserDetails viewer) {
         return recipes.findBySlug(slug)
                 .filter(r -> r.getStatus() == RecipeStatus.PUBLISHED || viewer != null
                         && (r.getAuthor().getId().equals(viewer.id()) || viewer.can(RecipeService.MODERATE)))
-                .map(mapper::detail)
+                .map(r -> {
+                    var st = ratings.statsFor(List.of(r.getId()));
+                    return mapper.detail(r).withRating(st.isEmpty() ? null : st.getFirst().avg(),
+                            st.isEmpty() ? 0 : st.getFirst().count());
+                })
                 .orElseThrow(() -> new ApiException(ErrorCode.NOT_FOUND, "Không tìm thấy công thức"));
     }
 }

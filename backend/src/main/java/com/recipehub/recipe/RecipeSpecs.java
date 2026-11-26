@@ -45,6 +45,18 @@ final class RecipeSpecs {
         };
     }
 
+    /** Sắp theo điểm trung bình (đánh giá hiển thị) giảm dần, chưa có đánh giá = 0 nên xếp cuối; hòa thì mới đăng trước. */
+    static Specification<Recipe> orderByRating() {
+        return (r, query, cb) -> {
+            var sub = query.subquery(Double.class);
+            var rt = sub.from(com.recipehub.community.Rating.class);
+            sub.select(cb.avg(rt.<Integer>get("stars")))
+                    .where(cb.equal(rt.get("recipe"), r), cb.isFalse(rt.get("hidden")));
+            query.orderBy(cb.desc(cb.coalesce(sub, 0.0)), cb.desc(r.get("publishedAt")), cb.desc(r.get("id")));
+            return null;
+        };
+    }
+
     private static String escape(String s) {
         return s.replace("\\", "\\\\").replace("%", "\\%").replace("_", "\\_");
     }
