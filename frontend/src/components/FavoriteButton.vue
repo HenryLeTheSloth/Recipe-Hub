@@ -11,10 +11,13 @@ const router = useRouter()
 const route = useRoute()
 const on = ref(props.favorited)
 const error = ref('')
+const pending = ref(false)
 watch(() => props.favorited, (v) => (on.value = v))
 
 async function toggle() {
   if (!auth.me) return router.push('/login?redirect=' + encodeURIComponent(route.fullPath))
+  if (pending.value) return
+  pending.value = true
   const before = on.value
   on.value = !before // lạc quan; lỗi thì trả về trạng thái cũ
   error.value = ''
@@ -23,6 +26,8 @@ async function toggle() {
   } catch (e) {
     on.value = before
     error.value = messageFor(e)
+  } finally {
+    pending.value = false
   }
 }
 </script>

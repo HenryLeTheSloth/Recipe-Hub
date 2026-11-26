@@ -8,6 +8,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PagedModel;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -34,6 +35,12 @@ public class RatingController {
                                        Pageable pageable) {
         return new PagedModel<>(service.list(id, viewer,
                 PageRequest.of(pageable.getPageNumber(), pageable.getPageSize())));
+    }
+
+    @GetMapping("/my-rating")
+    @PreAuthorize("hasAuthority('COMMUNITY_PARTICIPATE')")
+    public ResponseEntity<RatingView> mine(@AuthenticationPrincipal AppUserDetails actor, @PathVariable Long id) {
+        return service.mine(actor, id).map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.noContent().build());
     }
 
     @PutMapping("/my-rating")

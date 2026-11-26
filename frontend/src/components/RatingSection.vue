@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { computed, ref, watch } from 'vue'
 import { RouterLink } from 'vue-router'
-import { deleteMyRating, hideRating, listRatings, putMyRating, type Rating } from '@/api/community'
+import { deleteMyRating, getMyRating, hideRating, listRatings, putMyRating, type Rating } from '@/api/community'
 import { messageFor } from '@/api/messages'
 import { useForm } from '@/composables/useForm'
 import { useAuthStore } from '@/stores/auth'
@@ -18,19 +18,19 @@ const review = ref('')
 const { busy, error, run } = useForm()
 
 const canRate = computed(() => !!auth.me && auth.can('COMMUNITY_PARTICIPATE') && auth.me.id !== props.authorId)
-const mine = computed(() => ratings.value.find((r) => r.author.id === auth.me?.id))
+const mine = ref<Rating | null>(null)
 const moderator = computed(() => auth.can('CONTENT_MODERATE'))
 
 async function load() {
   loadError.value = ''
   try {
     // ponytail: chỉ trang đầu (20 đánh giá mới nhất); thêm "Xem thêm" khi cần.
-    const p = await listRatings(props.recipeId)
+    const [p, own] = await Promise.all([listRatings(props.recipeId), canRate.value ? getMyRating(props.recipeId) : null])
     ratings.value = p.content
     total.value = p.page.totalElements
-    // Không có endpoint GET my-rating: điền form từ danh sách (PUT là upsert).
-    stars.value = mine.value?.stars ?? 0
-    review.value = mine.value?.review ?? ''
+    mine.value = own
+    stars.value = own?.stars ?? 0
+    review.value = own?.review ?? ''
   } catch (e) {
     loadError.value = messageFor(e)
   }
@@ -39,7 +39,7 @@ watch(() => [props.recipeId, auth.me?.id], load, { immediate: true })
 
 const after = async () => { await load(); emit('changed') }
 const submit = () => stars.value && run(async () => { await putMyRating(props.recipeId, stars.value, review.value.trim()); await after() })
-const remove = () => run(async () => { await deleteMyRating(props.recipeId); stars.value = 0; review.value = ''; await after() })
+const remove = () => run(async () => { await deleteMyRating(props.recipeId); await after() })
 const toggleHidden = (r: Rating) => run(async () => { await hideRating(r.id, !r.hidden); await after() })
 </script>
 

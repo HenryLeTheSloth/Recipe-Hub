@@ -2,12 +2,12 @@ import { beforeEach, describe, expect, it, vi } from 'vitest'
 import { flushPromises, mount } from '@vue/test-utils'
 import { createPinia, setActivePinia } from 'pinia'
 import { createMemoryHistory, createRouter } from 'vue-router'
-import { addFavorite } from '@/api/community'
+import { addFavorite, removeFavorite } from '@/api/community'
 import { ApiError } from '@/api/http'
 import { useAuthStore } from '@/stores/auth'
 import FavoriteButton from '../FavoriteButton.vue'
 
-vi.mock('@/api/community', () => ({ addFavorite: vi.fn<typeof addFavorite>(), removeFavorite: vi.fn() }))
+vi.mock('@/api/community', () => ({ addFavorite: vi.fn<typeof addFavorite>(), removeFavorite: vi.fn<typeof removeFavorite>() }))
 
 async function setup(loggedIn: boolean) {
   const pinia = createPinia()
@@ -34,6 +34,15 @@ describe('FavoriteButton', () => {
     await flushPromises()
     expect(btn.attributes('aria-pressed')).toBe('false')
     expect(w.find('[role=alert]').text()).toContain('Lỗi máy chủ')
+  })
+
+  it('ignores a second click while a request is pending', async () => {
+    vi.mocked(addFavorite).mockReturnValue(new Promise(() => {}))
+    const { w } = await setup(true)
+    await w.find('button').trigger('click')
+    await w.find('button').trigger('click')
+    expect(addFavorite).toHaveBeenCalledTimes(1)
+    expect(removeFavorite).not.toHaveBeenCalled()
   })
 
   it('redirects anonymous to login', async () => {

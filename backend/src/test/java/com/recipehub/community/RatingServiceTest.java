@@ -117,6 +117,17 @@ class RatingServiceTest {
     }
 
     @Test
+    void mineReturnsOwnRatingOrEmptyAnd404ForUnpublished() {
+        assertThat(service.mine(raterActor, 100L)).isEmpty();
+        Rating r = withId(new Rating(rater, recipe, 3, "Ổn"), 55L);
+        when(ratings.findByUser_IdAndRecipe_Id(7L, 100L)).thenReturn(Optional.of(r));
+        assertThat(service.mine(raterActor, 100L)).get().extracting(RatingView::stars).isEqualTo(3);
+        ReflectionTestUtils.setField(recipe, "status", RecipeStatus.HIDDEN);
+        assertThatThrownBy(() -> service.mine(raterActor, 100L))
+                .isInstanceOfSatisfying(ApiException.class, e -> assertThat(e.code()).isEqualTo(ErrorCode.NOT_FOUND));
+    }
+
+    @Test
     void moderatorCanHide() {
         Rating r = withId(new Rating(rater, recipe, 3, null), 55L);
         when(ratings.findById(55L)).thenReturn(Optional.of(r));

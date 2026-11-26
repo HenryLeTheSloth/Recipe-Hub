@@ -6,6 +6,8 @@ export interface Rating { id: number; stars: number; review: string | null; auth
 export interface Comment { id: number; content: string; author: Author; hidden: boolean; createdAt: string; replies: Comment[] }
 
 export const listRatings = (recipeId: number, page = 0) => api<Page<Rating>>(`/recipes/${recipeId}/ratings?page=${page}&size=20`)
+/** null khi chưa chấm (204). */
+export const getMyRating = (recipeId: number) => api<Rating | undefined>(`/recipes/${recipeId}/my-rating`).then((r) => r ?? null)
 export const putMyRating = (recipeId: number, stars: number, review: string) =>
   api<Rating>(`/recipes/${recipeId}/my-rating`, { method: 'PUT', json: { stars, review } })
 export const deleteMyRating = (recipeId: number) => api<void>(`/recipes/${recipeId}/my-rating`, { method: 'DELETE' })

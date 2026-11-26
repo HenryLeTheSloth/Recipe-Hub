@@ -50,6 +50,13 @@ public class RatingService {
         return view(ratings.save(rating));
     }
 
+    /** Đánh giá của chính người xem (kể cả đã bị ẩn), rỗng nếu chưa chấm. */
+    @Transactional(readOnly = true)
+    public java.util.Optional<RatingView> mine(AppUserDetails actor, Long recipeId) {
+        published(recipeId);
+        return ratings.findByUser_IdAndRecipe_Id(actor.id(), recipeId).map(this::view);
+    }
+
     public void deleteMine(AppUserDetails actor, Long recipeId) {
         ratings.findByUser_IdAndRecipe_Id(actor.id(), recipeId).ifPresent(ratings::delete);
     }
