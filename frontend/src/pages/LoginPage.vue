@@ -50,7 +50,7 @@ async function resendMail() {
       <button type="submit" class="btn primary" :disabled="busy">{{ busy ? 'Đang đăng nhập…' : 'Đăng nhập' }}</button>
     </form>
     <p class="links">
-      <RouterLink to="/forgot-password">Quên mật khẩu?</RouterLink> ·
+      <RouterLink to="/forgot-password">Quên mật khẩu?</RouterLink>
       <RouterLink to="/register">Tạo tài khoản</RouterLink>
     </p>
   </section>

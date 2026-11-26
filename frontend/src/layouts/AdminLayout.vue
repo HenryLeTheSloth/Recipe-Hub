@@ -2,6 +2,7 @@
 import { computed } from 'vue'
 import { RouterLink, RouterView, useRoute } from 'vue-router'
 import type { Permission } from '@/api/auth'
+import BrandMark from '@/components/BrandMark.vue'
 import { useAuthStore } from '@/stores/auth'
 
 const auth = useAuthStore()
@@ -21,7 +22,7 @@ const items = computed(() => ITEMS.filter((i) => auth.can(i.permission)))
 <template>
   <div class="admin">
     <aside>
-      <RouterLink to="/" class="brand">🍲 Recipe Hub</RouterLink>
+      <RouterLink to="/" class="brand"><BrandMark />Recipe Hub</RouterLink>
       <p class="section">Quản trị</p>
       <nav>
         <RouterLink v-for="i in items" :key="i.to" :to="i.to">{{ i.label }}</RouterLink>
@@ -36,26 +37,30 @@ const items = computed(() => ITEMS.filter((i) => auth.can(i.permission)))
 </template>
 
 <style scoped>
-.admin { display: grid; grid-template-columns: 220px 1fr; min-height: 100vh; }
+.admin { display: grid; grid-template-columns: 232px 1fr; min-height: 100vh; }
 aside {
   display: flex;
   flex-direction: column;
   gap: 0.25rem;
   padding: 1rem;
-  background: var(--surface);
-  border-right: 1px solid var(--border);
+  background: var(--paper);
+  border-top: 10px solid var(--red);
+  border-right: 1px solid var(--rule);
 }
-.brand { font-weight: 700; color: var(--text); text-decoration: none; margin-bottom: 1rem; }
-.section { color: var(--muted); font-size: 0.8rem; text-transform: uppercase; letter-spacing: 0.05em; margin: 0; }
-nav { display: flex; flex-direction: column; gap: 0.15rem; }
-nav a { padding: 0.45rem 0.6rem; border-radius: 6px; color: var(--text); text-decoration: none; }
-nav a.router-link-active { background: var(--bg); color: var(--accent); font-weight: 600; }
+.brand { display: inline-flex; align-items: center; gap: 0.5rem; font-family: var(--font-display); font-weight: 800; font-size: 1.5rem; color: var(--ink); text-decoration: none; margin-bottom: 1rem; }
+.section { color: var(--muted); font-weight: 700; font-size: 0.9rem; margin: 0 0 0.25rem; padding-bottom: 0.4rem; border-bottom: 2px solid var(--ink); }
+nav { display: flex; flex-direction: column; }
+nav a { display: flex; align-items: center; min-height: 44px; padding: 0 0.6rem; border-bottom: 1px solid var(--rule); color: var(--ink); text-decoration: none; }
+nav a:hover { color: var(--red); }
+nav a.router-link-active { background: var(--red); color: #fff; font-weight: 600; }
 .who { margin-top: auto; color: var(--muted); font-size: 0.9rem; }
 main { padding: 1.5rem; min-width: 0; }
 .welcome { color: var(--muted); }
 @media (max-width: 720px) {
   .admin { grid-template-columns: 1fr; grid-template-rows: auto 1fr; }
-  aside { border-right: 0; border-bottom: 1px solid var(--border); }
+  aside { border-right: 0; border-bottom: 1px solid var(--rule); }
+  nav { flex-direction: row; overflow-x: auto; scrollbar-width: none; }
+  nav a { flex: none; border-bottom: 0; border-right: 1px solid var(--rule); }
   .who { display: none; }
 }
 </style>

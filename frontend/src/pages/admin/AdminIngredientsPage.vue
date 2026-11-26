@@ -166,7 +166,7 @@ async function submit() {
 .emoji { font-size: 1.2rem; }
 .muted { color: var(--muted); font-size: 0.85rem; }
 .native {
-  padding: 0.5rem 0.6rem; border: 1px solid var(--border); border-radius: 6px;
+  padding: 0.5rem 0.6rem; border: 1px solid var(--border); border-radius: var(--radius);
   background: var(--surface); color: var(--text); font: inherit;
 }
 .native:focus { outline: 2px solid var(--accent); outline-offset: 1px; }

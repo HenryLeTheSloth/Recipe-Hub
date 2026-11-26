@@ -93,6 +93,7 @@ public class IngredientService {
         if (!repo.existsById(sourceId) || !repo.existsById(targetId)) {
             throw new ApiException(ErrorCode.NOT_FOUND, "Không tìm thấy nguyên liệu");
         }
+        repo.foldDuplicateLinesIntoTargetNote(sourceId, targetId);
         repo.dropRecipeLinesDuplicatedByTarget(sourceId, targetId);
         repo.repointRecipeLines(sourceId, targetId);
         repo.deleteNative(sourceId);

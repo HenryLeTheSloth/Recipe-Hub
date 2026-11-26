@@ -49,4 +49,10 @@ describe('ImageUpload', () => {
     const w = mount(ImageUpload, { props: { modelValue: { id: 3, url: '/api/media/3/file' } } })
     expect(w.find('img').attributes('src')).toBe('/api/media/3/file')
   })
+
+  it('emits null when the image is removed', async () => {
+    const w = mount(ImageUpload, { props: { modelValue: { id: 3, url: '/api/media/3/file' }, clearable: true } })
+    await w.findAll('button').find((b) => b.text() === 'Bỏ ảnh')!.trigger('click')
+    expect(w.emitted('update:modelValue')).toEqual([[null]])
+  })
 })

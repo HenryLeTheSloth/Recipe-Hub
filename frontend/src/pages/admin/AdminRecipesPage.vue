@@ -6,6 +6,8 @@ import {
   adminGetRecipe, adminListRecipes, moderateRecipe, STATUS_LABELS,
   type ModerationAction, type Page, type RecipeCard, type RecipeDetail, type RecipeStatus,
 } from '@/api/recipes'
+import ChevronLeftIcon from '@primeicons/vue/chevron-left'
+import ChevronRightIcon from '@primeicons/vue/chevron-right'
 import { formatQuantity } from '@/utils/units'
 
 const TABS: RecipeStatus[] = ['PENDING', 'PUBLISHED', 'HIDDEN']
@@ -67,7 +69,7 @@ function ask(recipe: RecipeCard, action: 'reject' | 'hide') {
       <ul class="rows">
         <li v-for="r in result.content" :key="r.id">
           <button type="button" class="link title" @click="open(r)">{{ r.title }}</button>
-          <span class="hint">{{ r.authorName }} · {{ r.categoryName ?? '—' }}</span>
+          <span class="hint">{{ r.authorName }}<template v-if="r.categoryName">, {{ r.categoryName }}</template></span>
           <span class="actions">
             <template v-if="r.status === 'PENDING'">
               <button type="button" class="btn primary" @click="act(r, 'approve')">Duyệt</button>
@@ -79,9 +81,9 @@ function ask(recipe: RecipeCard, action: 'reject' | 'hide') {
         </li>
       </ul>
       <nav v-if="result.page.totalPages > 1" class="pager">
-        <button class="btn" :disabled="page === 0" @click="page--">‹ Trước</button>
+        <button class="btn" :disabled="page === 0" @click="page--"><ChevronLeftIcon aria-hidden="true" />Trước</button>
         <span>Trang {{ page + 1 }} / {{ result.page.totalPages }}</span>
-        <button class="btn" :disabled="page + 1 >= result.page.totalPages" @click="page++">Sau ›</button>
+        <button class="btn" :disabled="page + 1 >= result.page.totalPages" @click="page++">Sau<ChevronRightIcon aria-hidden="true" /></button>
       </nav>
     </template>
 
@@ -90,12 +92,16 @@ function ask(recipe: RecipeCard, action: 'reject' | 'hide') {
       <template v-if="preview">
         <img v-if="preview.coverUrl" :src="preview.coverUrl" alt="" class="cover" />
         <p v-if="preview.summary">{{ preview.summary }}</p>
-        <p class="hint">{{ preview.author.displayName }} · {{ preview.category?.name ?? 'Chưa có danh mục' }}
-          · {{ preview.servings }} người · {{ preview.prepMinutes + preview.cookMinutes }} phút</p>
+        <ul class="facts">
+          <li>bởi {{ preview.author.displayName }}</li>
+          <li>{{ preview.category?.name ?? 'Chưa có danh mục' }}</li>
+          <li class="num">{{ preview.servings }} người</li>
+          <li class="num">{{ preview.prepMinutes + preview.cookMinutes }} phút</li>
+        </ul>
         <h3>Nguyên liệu</h3>
         <ul>
           <li v-for="i in preview.ingredients" :key="i.ingredientId">
-            {{ i.emoji }} {{ i.name }} — {{ formatQuantity(i.quantity, i.unit) }}<span v-if="i.note"> ({{ i.note }})</span>
+            {{ i.emoji }} {{ i.name }}: {{ formatQuantity(i.quantity, i.unit) }}<span v-if="i.note"> ({{ i.note }})</span>
           </li>
         </ul>
         <h3>Các bước</h3>
@@ -122,9 +128,14 @@ function ask(recipe: RecipeCard, action: 'reject' | 'hide') {
 </template>
 
 <style scoped>
-.tabs { display: flex; flex-wrap: wrap; gap: 0.4rem; margin-bottom: 1rem; }
-.tabs button { font: inherit; padding: 0.35rem 0.8rem; border: 1px solid var(--border); border-radius: 999px; background: var(--surface); color: var(--text); cursor: pointer; }
-.tabs button.active { border-color: var(--accent); color: var(--accent); font-weight: 600; }
+.tabs { display: flex; border-top: 2px solid var(--ink); border-bottom: 1px solid var(--rule); margin-bottom: 1rem; }
+.tabs button { min-height: 44px; padding: 0.5rem 1rem; font: inherit; border: 0; border-right: 1px solid var(--rule); background: none; color: var(--ink); cursor: pointer; }
+.tabs button.active { background: var(--ink); color: var(--paper); font-weight: 600; }
+.facts { list-style: none; display: flex; flex-wrap: wrap; margin: 0 0 1rem; padding: 0; border-top: 1px solid var(--rule); border-bottom: 1px solid var(--rule); color: var(--muted); }
+.facts li { padding: 0.3rem 0.75rem; border-right: 1px solid var(--rule); }
+.facts li:first-child { padding-left: 0; }
+.facts li:last-child { border-right: 0; }
+.pager .btn svg { width: 0.85rem; height: 0.85rem; }
 .rows { list-style: none; padding: 0; margin: 0; }
 .rows li { display: flex; flex-wrap: wrap; gap: 0.5rem 1rem; align-items: center; padding: 0.7rem 0; border-bottom: 1px solid var(--border); }
 .title { flex: 1 1 220px; text-align: left; font-weight: 600; }
@@ -132,7 +143,7 @@ function ask(recipe: RecipeCard, action: 'reject' | 'hide') {
 .actions { display: flex; gap: 0.5rem; }
 .actions .btn { padding: 0.4rem 0.8rem; }
 .pager { display: flex; align-items: center; justify-content: center; gap: 1rem; margin: 1.5rem 0; }
-.cover { width: 100%; max-height: 280px; object-fit: cover; border-radius: var(--radius); }
-.step-img { display: block; max-width: 240px; margin-top: 0.4rem; border-radius: 6px; }
-textarea { font: inherit; padding: 0.55rem 0.7rem; border: 1px solid var(--border); border-radius: 8px; background: var(--bg); color: var(--text); }
+.cover { width: 100%; max-height: 280px; object-fit: cover; }
+.step-img { display: block; max-width: 240px; margin-top: 0.4rem; }
+ol li { white-space: pre-line; }
 </style>

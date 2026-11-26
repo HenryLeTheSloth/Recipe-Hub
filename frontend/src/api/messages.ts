@@ -7,7 +7,6 @@ const MESSAGES: Record<string, string> = {
   ACCOUNT_LOCKED: 'Tài khoản đã bị khóa. Liên hệ quản trị viên.',
   INVALID_TOKEN: 'Liên kết không hợp lệ hoặc đã hết hạn',
   UNAUTHENTICATED: 'Phiên đăng nhập đã hết, hãy đăng nhập lại',
-  FORBIDDEN: 'Bạn không có quyền thực hiện thao tác này',
   MEDIA_TYPE: 'Chỉ nhận ảnh JPEG, PNG hoặc WebP',
   MEDIA_TOO_LARGE: 'Ảnh tối đa 5MB',
   NAME_TAKEN: 'Tên này đã có, hãy chọn tên khác',

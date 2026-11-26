@@ -5,8 +5,9 @@ import { messageFor } from '@/api/messages'
 
 const MAX_BYTES = 5 * 1024 * 1024
 
-defineProps<{ modelValue: MediaRef | null }>()
-const emit = defineEmits<{ 'update:modelValue': [MediaRef] }>()
+defineProps<{ modelValue: MediaRef | null; clearable?: boolean }>()
+// MediaRef sau khi tải lên; null khi bấm "Bỏ ảnh" (chỉ có lúc clearable).
+const emit = defineEmits<{ 'update:modelValue': [MediaRef | null] }>()
 
 const busy = ref(false)
 const error = ref('')
@@ -40,6 +41,7 @@ async function onChange(e: Event) {
       {{ busy ? 'Đang tải lên…' : modelValue ? 'Đổi ảnh' : 'Chọn ảnh' }}
       <input type="file" accept="image/jpeg,image/png,image/webp" :disabled="busy" class="visually-hidden" @change="onChange" />
     </label>
+    <button v-if="clearable && modelValue && !busy" type="button" class="link-btn danger" @click="emit('update:modelValue', null)">Bỏ ảnh</button>
     <small class="hint">JPEG, PNG hoặc WebP, tối đa 5MB.</small>
     <p v-if="error" class="form-error" role="alert">{{ error }}</p>
   </div>
@@ -47,8 +49,8 @@ async function onChange(e: Event) {
 
 <style scoped>
 .image-upload { display: flex; flex-direction: column; align-items: flex-start; gap: 0.5rem; }
-.preview { width: 96px; height: 96px; object-fit: cover; border-radius: var(--radius); border: 1px solid var(--border); }
+.preview { width: 112px; height: 84px; object-fit: cover; border: 1px solid var(--rule); }
 .pick { position: relative; cursor: pointer; }
-.pick:focus-within { outline: 2px solid var(--accent); outline-offset: 2px; }
+.pick:focus-within { outline: 2px solid var(--blue); outline-offset: 2px; }
 .visually-hidden { position: absolute; width: 1px; height: 1px; opacity: 0; overflow: hidden; }
 </style>

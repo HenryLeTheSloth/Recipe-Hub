@@ -45,6 +45,7 @@ class RecipeQueryServiceIT {
     @Autowired CategoryRepository categories;
     @Autowired TagRepository tags;
     @Autowired IngredientRepository ingredients;
+    @Autowired jakarta.persistence.EntityManagerFactory emf;
     @MockitoBean MailService mail;
 
     String x;
@@ -123,6 +124,29 @@ class RecipeQueryServiceIT {
         assertThat(search(decomposed, null, null, null).getContent()).as("gõ Unicode tổ hợp").extracting(RecipeCard::slug)
                 .containsExactly("canh-" + x + "-ga");
         assertThat(search("canh\u00a0" + x + "\u00a0ga", null, null, null).getTotalElements()).as("NBSP, không dấu").isEqualTo(2);
+    }
+
+    @Test
+    void asciiQueryMatchesCurrentTitleNotSlug() {
+        Instant t = Instant.parse("2026-11-05T00:00:00Z");
+        save("Canh cá " + x, "canh-ga-" + x, t, egg); // đổi tên sau khi đăng, slug giữ tên cũ
+        save("Canh cá " + x, "canh-ca-" + x + "-2", t, egg); // slug trùng → hậu tố -2
+        assertThat(search("canh ga " + x, null, null, null).getTotalElements()).as("tên cũ").isZero();
+        assertThat(search("canh ca " + x + " 2", null, null, null).getTotalElements()).as("hậu tố slug").isZero();
+        assertThat(search("canh ca " + x, null, null, null).getTotalElements()).isEqualTo(2);
+    }
+
+    @Test
+    void detailQueryCountDoesNotGrowWithIngredients() {
+        save("Một " + x, "mot-" + x, Instant.parse("2026-11-05T00:00:00Z"), egg);
+        var stats = emf.unwrap(org.hibernate.SessionFactory.class).getStatistics();
+        stats.setStatisticsEnabled(true);
+        stats.clear();
+        service.getBySlug("mot-" + x, null);
+        long one = stats.getPrepareStatementCount();
+        stats.clear();
+        service.getBySlug("trung-chien-" + x, null); // 3 nguyên liệu
+        assertThat(stats.getPrepareStatementCount()).isEqualTo(one);
     }
 
     @Test

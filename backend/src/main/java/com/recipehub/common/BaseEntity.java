@@ -24,6 +24,10 @@ public abstract class BaseEntity {
     @Column(nullable = false)
     private Instant updatedAt;
 
+    protected void touch() {
+        updatedAt = Instant.now();
+    }
+
     public Long getId() {
         return id;
     }

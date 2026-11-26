@@ -90,4 +90,29 @@ class RecipeServiceIT {
         assertThat(edited.status()).isEqualTo(RecipeStatus.PENDING);
         assertThat(service.getMine(a, d.id()).publishedAt()).isEqualTo(approvedAt);
     }
+
+    @Test
+    void childOnlyEditBumpsUpdatedAt() {
+        AppUserDetails a = newAuthor();
+        RecipeDetail d = service.create(a, req(List.of("trung-ga"), List.of("A")));
+        Instant before = recipes.findById(d.id()).orElseThrow().getUpdatedAt();
+        service.update(a, d.id(), req(List.of("trung-ga"), List.of("A", "B")));
+        assertThat(recipes.findById(d.id()).orElseThrow().getUpdatedAt()).isAfter(before);
+    }
+
+    @Test
+    void incompleteEditOfPublishedRecipeRollsBack() {
+        AppUserDetails a = newAuthor();
+        RecipeDetail d = service.create(a, req(List.of("trung-ga"), List.of("A")));
+        service.submit(a, d.id());
+        tx.executeWithoutResult(s -> recipes.findById(d.id()).orElseThrow()
+                .approve(users.getReferenceById(a.id()), Instant.parse("2026-11-01T00:00:00Z")));
+
+        org.assertj.core.api.Assertions.assertThatThrownBy(() -> service.update(a, d.id(), req(List.of("trung-ga"), List.of())))
+                .isInstanceOfSatisfying(com.recipehub.common.ApiException.class,
+                        e -> assertThat(e.code()).isEqualTo(com.recipehub.common.ErrorCode.RECIPE_INCOMPLETE));
+        RecipeDetail back = service.getMine(a, d.id());
+        assertThat(back.status()).isEqualTo(RecipeStatus.PUBLISHED);
+        assertThat(back.steps()).extracting(RecipeDetail.StepView::content).containsExactly("A");
+    }
 }

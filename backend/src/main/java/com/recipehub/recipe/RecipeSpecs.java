@@ -1,5 +1,6 @@
 package com.recipehub.recipe;
 
+import jakarta.persistence.criteria.Expression;
 import java.util.List;
 import org.springframework.data.jpa.domain.Specification;
 
@@ -13,11 +14,12 @@ final class RecipeSpecs {
         return (r, q, cb) -> cb.equal(r.get("status"), RecipeStatus.PUBLISHED);
     }
 
-    /** q có dấu khớp tiêu đề; qSlug (không dấu) khớp slug. Ký tự % _ \ trong q được escape. */
-    static Specification<Recipe> titleMatches(String q, String qSlug) {
+    /** q có dấu khớp nguyên dấu; q không dấu khớp unaccent(tiêu đề). Ký tự % _ \ trong q được escape. */
+    static Specification<Recipe> titleMatches(String q, boolean accented) {
         return (r, query, cb) -> {
-            var title = cb.like(cb.lower(r.get("title")), "%" + escape(q.toLowerCase()) + "%", '\\');
-            return qSlug.isEmpty() ? title : cb.or(title, cb.like(r.get("slug"), "%" + qSlug + "%"));
+            Expression<String> title = cb.lower(r.get("title"));
+            if (!accented) title = cb.function("unaccent", String.class, title);
+            return cb.like(title, "%" + escape(q.toLowerCase()) + "%", '\\');
         };
     }
 

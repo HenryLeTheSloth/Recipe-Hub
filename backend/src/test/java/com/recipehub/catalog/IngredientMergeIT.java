@@ -77,13 +77,15 @@ class IngredientMergeIT {
     }
 
     @Test
-    void mergeDropsDuplicateWhenRecipeHasBoth() {
+    void mergeFoldsDuplicateIntoTargetNote() {
         Long id = recipe("r2", src, "200", tgt, "300");
         service.merge(src.getId(), tgt.getId());
         var rows = lines(id);
         assertThat(rows).hasSize(1);
         assertThat(((Number) rows.getFirst().get("ingredient_id")).longValue()).isEqualTo(tgt.getId());
         assertThat((BigDecimal) rows.getFirst().get("quantity")).isEqualByComparingTo("300");
+        assertThat(jdbc.queryForObject("select note from recipe_ingredients where recipe_id = ?", String.class, id))
+                .as("dòng nguồn không mất").isEqualTo("thêm 200 g");
     }
 
     @Test

@@ -35,7 +35,7 @@ public class RecipeQueryService {
         Specification<Recipe> spec = RecipeSpecs.published();
         if (s.q() != null && !s.q().isBlank()) {
             String q = Normalizer.normalize(s.q(), Normalizer.Form.NFC).strip().replaceAll("(?U)\\s+", " ");
-            spec = spec.and(RecipeSpecs.titleMatches(q, Slugs.hasDiacritics(q) ? "" : Slugs.slugify(q))); // có dấu → chỉ khớp tiêu đề
+            spec = spec.and(RecipeSpecs.titleMatches(q, Slugs.hasDiacritics(q)));
         }
         if (s.category() != null && !s.category().isBlank()) spec = spec.and(RecipeSpecs.inCategory(s.category()));
         if (s.tag() != null && !s.tag().isBlank()) spec = spec.and(RecipeSpecs.hasTag(s.tag()));

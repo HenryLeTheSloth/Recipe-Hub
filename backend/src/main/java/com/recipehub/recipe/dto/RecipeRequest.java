@@ -21,6 +21,6 @@ public record RecipeRequest(
         @NotNull Difficulty difficulty,
         Long coverMediaId,
         @NotNull Set<@NotNull Long> tagIds,
-        @NotNull @Size(max = 50) List<@NotNull @Valid RecipeIngredientRequest> ingredients,
-        @NotNull @Size(max = 30) List<@NotNull @Valid RecipeStepRequest> steps) {
+        @NotNull @Size(max = 50, message = "Tối đa {max} nguyên liệu") List<@NotNull @Valid RecipeIngredientRequest> ingredients,
+        @NotNull @Size(max = 30, message = "Tối đa {max} bước") List<@NotNull @Valid RecipeStepRequest> steps) {
 }

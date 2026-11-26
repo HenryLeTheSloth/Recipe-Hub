@@ -125,6 +125,13 @@ class RecipeTransitionsTest {
     }
 
     @Test
+    void resubmitClearsRejectionReason() {
+        Recipe r = in(RecipeStatus.REJECTED);
+        r.submit();
+        assertThat(r.getRejectionReason()).isNull();
+    }
+
+    @Test
     void approveClearsRejectionReason() {
         Recipe r = in(RecipeStatus.REJECTED);
         assertThat(r.getRejectionReason()).isEqualTo("Thiếu ảnh");

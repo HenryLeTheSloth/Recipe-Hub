@@ -36,7 +36,20 @@ public interface IngredientRepository extends JpaRepository<Ingredient, Long> {
             """)
     Page<Ingredient> adminSearch(IngredientStatus status, String q, String qSlug, Pageable pageable);
 
-    // Gộp nguyên liệu: bỏ dòng nguồn ở công thức đã có đích, trỏ phần còn lại sang đích, rồi xóa nguồn.
+    // Gộp nguyên liệu: công thức có cả hai → ghi lượng của dòng nguồn vào ghi chú dòng đích rồi bỏ dòng nguồn;
+    // phần còn lại trỏ sang đích; cuối cùng xóa nguồn.
+    @Modifying
+    @Query(nativeQuery = true, value = """
+            update recipe_ingredients t set note = left(concat_ws('; ', t.note, concat_ws(' ', 'thêm',
+                trim_scale(s.quantity)::text,
+                case s.unit when 'TSP' then 'thìa cà phê' when 'TBSP' then 'thìa canh' when 'CUP' then 'cốc'
+                            when 'PIECE' then 'cái/quả' when 'PINCH' then 'nhúm' else lower(s.unit) end,
+                s.note)), 100)
+            from recipe_ingredients s
+            where s.recipe_id = t.recipe_id and s.ingredient_id = :src and t.ingredient_id = :tgt
+            """)
+    void foldDuplicateLinesIntoTargetNote(Long src, Long tgt);
+
     @Modifying
     @Query(nativeQuery = true, value = """
             delete from recipe_ingredients s where s.ingredient_id = :src

@@ -116,6 +116,7 @@ public class Recipe extends BaseEntity {
         require(status == DRAFT || status == REJECTED, "Chỉ gửi duyệt được bản nháp hoặc bản bị từ chối");
         requireComplete();
         status = PENDING;
+        rejectionReason = null;
     }
 
     /** Thiếu phần bắt buộc → RECIPE_INCOMPLETE "Còn thiếu: …". */
@@ -130,6 +131,7 @@ public class Recipe extends BaseEntity {
     public void markEdited() {
         require(status != PENDING && status != HIDDEN, "Không sửa được công thức đang chờ duyệt hoặc đã bị ẩn");
         if (status == PUBLISHED) status = PENDING;
+        touch(); // sửa chỉ bước/nguyên liệu không làm dòng recipes bẩn → @UpdateTimestamp không tự chạy
     }
 
     public void approve(User moderator, Instant now) {
