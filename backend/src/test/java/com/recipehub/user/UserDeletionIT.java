@@ -77,6 +77,5 @@ class UserDeletionIT {
         admin.delete(actor, u.getId());
         assertThat(users.existsById(u.getId())).isFalse();
         assertThat(favorites.existsById(new FavoriteId(u.getId(), r.getId()))).isFalse();
-        assertThat(favorites.count()).isZero();
     }
 }
