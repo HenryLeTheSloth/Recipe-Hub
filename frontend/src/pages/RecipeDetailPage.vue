@@ -5,6 +5,10 @@ import { ApiError } from '@/api/http'
 import { DIFFICULTY_LABELS, getRecipe, STATUS_LABELS, type RecipeDetail } from '@/api/recipes'
 import CheckIcon from '@primeicons/vue/check'
 import { formatQuantity } from '@/utils/units'
+import CommentSection from '@/components/CommentSection.vue'
+import FavoriteButton from '@/components/FavoriteButton.vue'
+import RatingSection from '@/components/RatingSection.vue'
+import StarRating from '@/components/StarRating.vue'
 
 const route = useRoute()
 const recipe = ref<RecipeDetail | null>(null)
@@ -12,6 +16,11 @@ const error = ref('')
 // Đánh dấu khi đang nấu: chỉ sống trong phiên xem, không lưu đi đâu.
 const done = reactive({ ingredients: new Set<number>(), steps: new Set<number>() })
 const flip = (set: Set<number>, id: number) => (set.has(id) ? set.delete(id) : set.add(id))
+
+// Tải lại để điểm trung bình khớp sau khi chấm, xóa hoặc ẩn đánh giá.
+async function refresh() {
+  try { recipe.value = await getRecipe(route.params.slug as string) } catch { /* giữ bản đang xem */ }
+}
 
 watch(
   () => route.params.slug as string,
@@ -47,6 +56,14 @@ watch(
         <template v-if="recipe.category">trong
           <RouterLink :to="{ path: '/recipes', query: { category: recipe.category.slug } }">{{ recipe.category.name }}</RouterLink>
         </template>
+      </p>
+      <p v-if="recipe.status === 'PUBLISHED'" class="social">
+        <template v-if="recipe.ratingCount && recipe.avgRating != null">
+          <StarRating :model-value="Math.round(recipe.avgRating)" readonly />
+          <span class="num"><strong>{{ recipe.avgRating.toFixed(1) }}</strong> ({{ recipe.ratingCount }} lượt)</span>
+        </template>
+        <span v-else class="by">Chưa có đánh giá</span>
+        <FavoriteButton :recipe-id="recipe.id" :favorited="recipe.favorited" />
       </p>
     </header>
 
@@ -91,6 +108,12 @@ watch(
         </ol>
       </section>
     </div>
+
+    <!-- Bản chưa đăng không có khu cộng đồng (API cũng trả 404). -->
+    <template v-if="recipe.status === 'PUBLISHED'">
+      <RatingSection :recipe-id="recipe.id" :author-id="recipe.author.id" @changed="refresh" />
+      <CommentSection :recipe-id="recipe.id" />
+    </template>
   </article>
 </template>
 
@@ -102,6 +125,7 @@ watch(
 .head h1 { font-size: clamp(2.5rem, 8vw, 4.5rem); line-height: 0.95; max-width: 18ch; }
 .summary { font-size: 1.1rem; max-width: 60ch; margin: 0 0 0.5rem; }
 .by { margin: 0; color: var(--muted); }
+.social { display: flex; flex-wrap: wrap; align-items: center; gap: 0.25rem 1rem; margin: 0.5rem 0 0; }
 .cover { display: block; width: 100%; max-height: 440px; object-fit: cover; margin-bottom: 1.25rem; }
 
 .facts { display: grid; grid-template-columns: repeat(2, 1fr); margin: 0 0 1rem; border-top: 2px solid var(--ink); border-bottom: 1px solid var(--rule); }

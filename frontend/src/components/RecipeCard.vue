@@ -18,6 +18,7 @@ defineProps<{ recipe: RecipeCard }>()
         <li>{{ DIFFICULTY_LABELS[recipe.difficulty] }}</li>
         <li v-if="recipe.categoryName">{{ recipe.categoryName }}</li>
       </ul>
+      <p v-if="recipe.ratingCount" class="rate num"><span aria-hidden="true">★</span> {{ recipe.avgRating?.toFixed(1) }} ({{ recipe.ratingCount }})</p>
       <p class="by">bởi {{ recipe.authorName }}</p>
     </div>
   </RouterLink>
@@ -52,5 +53,6 @@ h3 { margin: 0; font-size: 1.15rem; transition: color 0.15s; }
 .facts li { padding: 0.3rem 0.6rem; border-right: 1px solid var(--rule); }
 .facts li:first-child { padding-left: 0; }
 .facts li:last-child { border-right: 0; }
+.rate { margin: 0; font-size: 0.875rem; font-weight: 600; color: var(--red); }
 .by { margin: auto 0 0; color: var(--muted); font-size: 0.875rem; }
 </style>

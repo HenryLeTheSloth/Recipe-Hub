@@ -10,6 +10,7 @@ const MESSAGES: Record<string, string> = {
   MEDIA_TYPE: 'Chỉ nhận ảnh JPEG, PNG hoặc WebP',
   MEDIA_TOO_LARGE: 'Ảnh tối đa 5MB',
   NAME_TAKEN: 'Tên này đã có, hãy chọn tên khác',
+  COMMENT_DEPTH: 'Chỉ được trả lời bình luận gốc',
   IN_USE: 'Mục này đang được dùng nên không xóa được',
 }
 

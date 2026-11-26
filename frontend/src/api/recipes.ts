@@ -29,6 +29,8 @@ export interface RecipeCard {
   authorName: string
   status: RecipeStatus
   publishedAt: string | null
+  avgRating: number | null
+  ratingCount: number
 }
 
 export interface RecipeDetail {
@@ -49,6 +51,9 @@ export interface RecipeDetail {
   ingredients: { ingredientId: number; name: string; emoji: string | null; quantity: number; unit: Unit; note: string | null }[]
   steps: { stepNo: number; content: string; imageUrl: string | null; mediaId: number | null }[]
   rejectionReason: string | null
+  avgRating: number | null
+  ratingCount: number
+  favorited: boolean
   publishedAt: string | null
   createdAt: string
   updatedAt: string

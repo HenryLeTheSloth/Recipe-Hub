@@ -18,6 +18,7 @@ const router = createRouter({
         { path: 'me/recipes/new', component: () => import('@/pages/RecipeEditorPage.vue'), meta: { permission: 'RECIPE_WRITE' } },
         { path: 'me/recipes/:id(\\d+)/edit', component: () => import('@/pages/RecipeEditorPage.vue'),
           meta: { permission: 'RECIPE_WRITE' } },
+        { path: 'me/favorites', component: () => import('@/pages/MyFavoritesPage.vue'), meta: { auth: true } },
         { path: 'login', component: () => import('@/pages/LoginPage.vue') },
         { path: 'register', component: () => import('@/pages/RegisterPage.vue') },
         { path: 'verify-email', component: () => import('@/pages/VerifyEmailPage.vue') },

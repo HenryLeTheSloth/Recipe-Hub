@@ -71,6 +71,11 @@ const page = computed(() => search.value.page ?? 1)
     </header>
 
     <form class="filters" @submit.prevent="apply({ q: q.trim() || undefined })">
+      <select class="input" :value="search.sort ?? 'newest'" aria-label="Sắp xếp"
+        @change="apply({ sort: ($event.target as HTMLSelectElement).value === 'rating' ? 'rating' : undefined })">
+        <option value="newest">Mới nhất</option>
+        <option value="rating">Điểm cao</option>
+      </select>
       <input v-model="q" type="search" class="input name" placeholder="Tìm theo tên món" aria-label="Tìm theo tên món" />
       <select class="input" :value="search.category ?? ''" aria-label="Danh mục"
         @change="apply({ category: ($event.target as HTMLSelectElement).value || undefined })">
