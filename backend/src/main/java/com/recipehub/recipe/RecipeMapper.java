@@ -19,6 +19,7 @@ public interface RecipeMapper {
     @Mapping(target = "coverMediaId", source = "cover.id")
     @Mapping(target = "avgRating", ignore = true)
     @Mapping(target = "ratingCount", ignore = true)
+    @Mapping(target = "favorited", ignore = true)
     RecipeDetail detail(Recipe r);
 
     @Mapping(target = "coverUrl", expression = "java(MediaService.url(r.getCover()))")

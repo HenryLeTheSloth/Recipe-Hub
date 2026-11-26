@@ -27,7 +27,8 @@ public enum ErrorCode {
     MEDIA_TYPE(HttpStatus.UNSUPPORTED_MEDIA_TYPE),
     INVALID_TRANSITION(HttpStatus.CONFLICT),
     RECIPE_INCOMPLETE(HttpStatus.BAD_REQUEST),
-    DUPLICATE_INGREDIENT(HttpStatus.BAD_REQUEST);
+    DUPLICATE_INGREDIENT(HttpStatus.BAD_REQUEST),
+    COMMENT_DEPTH(HttpStatus.BAD_REQUEST);
 
     private final HttpStatus status;
 

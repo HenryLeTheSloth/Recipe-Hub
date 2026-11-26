@@ -12,6 +12,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.function.Function;
 import java.util.stream.Collectors;
+import com.recipehub.community.FavoriteId;
+import com.recipehub.community.FavoriteRepository;
 import com.recipehub.community.RatingRepository;
 import com.recipehub.community.RatingStats;
 import org.springframework.data.domain.Page;
@@ -31,8 +33,11 @@ public class RecipeQueryService {
     private final RecipeRepository recipes;
     private final RecipeMapper mapper;
     private final RatingRepository ratings;
+    private final FavoriteRepository favorites;
 
-    public RecipeQueryService(RecipeRepository recipes, RecipeMapper mapper, RatingRepository ratings) {
+    public RecipeQueryService(RecipeRepository recipes, RecipeMapper mapper, RatingRepository ratings,
+                             FavoriteRepository favorites) {
+        this.favorites = favorites;
         this.recipes = recipes;
         this.ratings = ratings;
         this.mapper = mapper;
@@ -75,7 +80,8 @@ public class RecipeQueryService {
                 .map(r -> {
                     var st = ratings.statsFor(List.of(r.getId()));
                     return mapper.detail(r).withRating(st.isEmpty() ? null : st.getFirst().avg(),
-                            st.isEmpty() ? 0 : st.getFirst().count());
+                            st.isEmpty() ? 0 : st.getFirst().count())
+                            .withFavorited(viewer != null && favorites.existsById(new FavoriteId(viewer.id(), r.getId())));
                 })
                 .orElseThrow(() -> new ApiException(ErrorCode.NOT_FOUND, "Không tìm thấy công thức"));
     }
