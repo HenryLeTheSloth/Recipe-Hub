@@ -1,55 +1,51 @@
 ---
 name: Recipe Hub
-description: A tear-off kitchen wall calendar (lịch bloc) where the giant red numeral counts the dishes you can cook with what you have.
+description: "Bếp xanh": a cream kitchen counter with white recipe cards, forest green as the brand and young-lime as the one bright fill, built around picking what is in the kitchen and seeing what you can cook.
 colors:
-  wall: "#e4e3dc"
-  paper: "#f4f3ee"
-  ink: "#1d1a17"
-  red: "#d2281d"
-  red-deep: "#a81e15"
-  blue: "#23408e"
-  rule: "#d9d4c9"
-  field: "#8c857a"
-  muted: "#5f5951"
-  ok: "#2e6b3a"
+  bg: "#f7f4ec"
+  surface: "#ffffff"
+  accent: "#1e4d3a"
+  accent-deep: "#143528"
   accent-text: "#ffffff"
+  lime: "#c9e86b"
+  lime-soft: "#eef6d3"
+  sage: "#e6efe6"
+  text: "#1c2420"
+  muted: "#5b635e"
+  border: "#e3ded2"
+  field: "#767c75"
+  star: "#a35908"
+  danger: "#b3261e"
+  ok: "#1e6b3a"
 typography:
-  display:
-    fontFamily: "Big Shoulders Display, Be Vietnam Pro, sans-serif"
-    fontSize: "min(34svh, calc(205cqi / var(--d, 3)), 26rem)"
-    fontWeight: 900
-    lineHeight: 0.78
-    letterSpacing: "-0.03em"
-    fontFeature: "tnum"
   headline:
-    fontFamily: "Big Shoulders Display, Be Vietnam Pro, sans-serif"
-    fontSize: "clamp(2.25rem, 6vw, 3.5rem)"
-    fontWeight: 800
-    lineHeight: 1.15
-    letterSpacing: "-0.01em"
-  headline-recipe:
-    fontFamily: "Big Shoulders Display, Be Vietnam Pro, sans-serif"
-    fontSize: "clamp(2.5rem, 8vw, 4.5rem)"
-    fontWeight: 800
-    lineHeight: 0.95
-    letterSpacing: "-0.01em"
-  title:
-    fontFamily: "Big Shoulders Display, Be Vietnam Pro, sans-serif"
-    fontSize: "2rem"
-    fontWeight: 800
-    lineHeight: 1.15
-    letterSpacing: "-0.01em"
-  figure:
-    fontFamily: "Big Shoulders Display, Be Vietnam Pro, sans-serif"
-    fontSize: "2.75rem"
-    fontWeight: 900
-    lineHeight: 0.85
-    fontFeature: "tnum"
-  title-sans:
     fontFamily: "Be Vietnam Pro, system-ui, sans-serif"
-    fontSize: "1.15rem"
-    fontWeight: 700
+    fontSize: "clamp(1.75rem, 4vw, 2.5rem)"
+    fontWeight: 800
     lineHeight: 1.15
+    letterSpacing: "-0.02em"
+  headline-recipe:
+    fontFamily: "Be Vietnam Pro, system-ui, sans-serif"
+    fontSize: "clamp(2rem, 5vw, 3rem)"
+    fontWeight: 800
+    lineHeight: 1.1
+    letterSpacing: "-0.02em"
+  title:
+    fontFamily: "Be Vietnam Pro, system-ui, sans-serif"
+    fontSize: "1.5rem"
+    fontWeight: 800
+    lineHeight: 1.2
+  figure:
+    fontFamily: "Be Vietnam Pro, system-ui, sans-serif"
+    fontSize: "1.75rem"
+    fontWeight: 800
+    lineHeight: 1
+    fontFeature: "tnum"
+  card-title:
+    fontFamily: "Be Vietnam Pro, system-ui, sans-serif"
+    fontSize: "1.1rem"
+    fontWeight: 700
+    lineHeight: 1.3
   body:
     fontFamily: "Be Vietnam Pro, system-ui, sans-serif"
     fontSize: "1rem"
@@ -63,254 +59,269 @@ typography:
   label:
     fontFamily: "Be Vietnam Pro, system-ui, sans-serif"
     fontSize: "0.85rem"
-    fontWeight: 700
+    fontWeight: 600
     lineHeight: 1.4
 rounded:
-  radius: "4px"
-  stamp: "3px"
+  control: "8px"
+  card: "16px"
+  hero: "24px"
+  pill: "999px"
+elevation:
+  card: "0 1px 2px rgb(20 53 40 / 0.06), 0 2px 8px rgb(20 53 40 / 0.06)"
+  lift: "0 8px 24px rgb(20 53 40 / 0.12)"
 components:
+  button:
+    backgroundColor: "transparent"
+    textColor: "{colors.accent}"
+    borderColor: "{colors.accent}"
+    rounded: "{rounded.pill}"
+    height: "44px"
+  button-hover:
+    backgroundColor: "{colors.sage}"
+    textColor: "{colors.accent-deep}"
   button-primary:
-    backgroundColor: "{colors.red}"
+    backgroundColor: "{colors.accent}"
     textColor: "{colors.accent-text}"
-    rounded: "{rounded.radius}"
-    padding: "0.55rem 1.1rem"
+    rounded: "{rounded.pill}"
     height: "44px"
   button-primary-hover:
-    backgroundColor: "{colors.red-deep}"
-    textColor: "{colors.accent-text}"
-  button-tear-line:
-    backgroundColor: "{colors.red}"
-    textColor: "{colors.accent-text}"
-    rounded: "{rounded.radius}"
-    padding: "0.55rem 1.75rem"
-    height: "52px"
-  button-outline:
-    backgroundColor: "transparent"
-    textColor: "{colors.ink}"
-    rounded: "{rounded.radius}"
-    padding: "0.55rem 1.1rem"
-    height: "44px"
-  button-outline-hover:
-    backgroundColor: "{colors.ink}"
-    textColor: "{colors.paper}"
-  link-button:
-    textColor: "{colors.blue}"
-    padding: "0.25rem 0"
-    height: "44px"
+    backgroundColor: "{colors.accent-deep}"
+  button-lime:
+    backgroundColor: "{colors.lime}"
+    textColor: "{colors.accent-deep}"
+    rounded: "{rounded.pill}"
+    height: "48px"
+  button-lime-hover:
+    backgroundColor: "#b8dc4f"
   input:
-    backgroundColor: "#ffffff"
-    textColor: "{colors.ink}"
-    rounded: "{rounded.radius}"
-    padding: "0.55rem 0.75rem"
+    backgroundColor: "{colors.surface}"
+    textColor: "{colors.text}"
+    borderColor: "{colors.field}"
+    rounded: "{rounded.control}"
     height: "44px"
-  sheet:
-    backgroundColor: "{colors.paper}"
-    textColor: "{colors.ink}"
-    padding: "1.25rem 1.25rem 1.5rem"
-  sheet-wide:
-    padding: "1.75rem 2rem 2rem"
-  ingredient-cell:
+  hero:
+    backgroundColor: "{colors.accent}"
+    textColor: "#ffffff"
+    rounded: "{rounded.hero}"
+    padding: "2.5rem"
+  picked-bar:
+    backgroundColor: "{colors.surface}"
+    rounded: "{rounded.pill}"
+  group-tab:
     backgroundColor: "transparent"
-    textColor: "{colors.ink}"
-    rounded: "{rounded.radius}"
-    padding: "0.3rem 0.7rem"
+    textColor: "#ffffff"
+    borderColor: "rgb(255 255 255 / 0.35)"
+    rounded: "{rounded.pill}"
     height: "44px"
-  ingredient-cell-pressed:
-    backgroundColor: "{colors.red}"
-    textColor: "{colors.accent-text}"
+  group-tab-active:
+    backgroundColor: "#ffffff"
+    textColor: "{colors.accent-deep}"
+  chip:
+    backgroundColor: "rgb(255 255 255 / 0.12)"
+    textColor: "#ffffff"
+    rounded: "{rounded.pill}"
+    height: "44px"
+  chip-pressed:
+    backgroundColor: "{colors.lime}"
+    textColor: "{colors.accent-deep}"
+  recipe-card:
+    backgroundColor: "{colors.surface}"
+    textColor: "{colors.text}"
+    rounded: "{rounded.card}"
+    elevation: "{elevation.card}"
+  badge-difficulty:
+    backgroundColor: "{colors.lime-soft}"
+    textColor: "{colors.accent-deep}"
+    rounded: "{rounded.pill}"
+  badge-category:
+    backgroundColor: "{colors.sage}"
+    textColor: "{colors.accent-deep}"
+    rounded: "{rounded.pill}"
+  time-pill:
+    backgroundColor: "{colors.surface}"
+    textColor: "{colors.accent-deep}"
+    rounded: "{rounded.pill}"
   stamp:
-    textColor: "{colors.ink}"
-    rounded: "{rounded.stamp}"
-    padding: "0.15rem 0.55rem"
+    textColor: "{colors.text}"
+    rounded: "{rounded.control}"
   stamp-draft:
     textColor: "{colors.muted}"
   stamp-pending:
-    textColor: "{colors.blue}"
+    textColor: "{colors.star}"
   stamp-published:
     textColor: "{colors.ok}"
   stamp-rejected:
-    textColor: "{colors.red}"
+    textColor: "{colors.danger}"
   stamp-hidden:
     textColor: "{colors.muted}"
-  recipe-card:
-    backgroundColor: "{colors.paper}"
-    textColor: "{colors.ink}"
-    padding: "0.85rem 1rem 1rem"
-  count-numeral:
-    textColor: "{colors.red}"
-    backgroundColor: "{colors.paper}"
-    typography: "{typography.display}"
   nav-link-active:
-    textColor: "{colors.red}"
+    textColor: "{colors.accent}"
 ---
 
 # Design System: Recipe Hub
 
 ## Overview
 
-**Creative North Star: "The Tờ Lịch Bloc"**
+**Creative North Star: "Bếp xanh"**
 
-Recipe Hub is the tear-off wall calendar that hangs in every Vietnamese kitchen: one thin sheet of grey-white printing paper per day, a red glued spine across the top, and one giant red numeral that dominates the sheet. Here the numeral counts the dishes the cook can make with what is in the kitchen. Every public surface is a sheet on that pad; the page behind them is the kitchen wall.
+Recipe Hub is a clean cream kitchen counter with white recipe cards laid out on it. Forest green is the brand: the header mark, the home hero, the primary actions. One young-lime fill marks the single thing to press next and the ingredients you have picked. Everything else is quiet. Cream is the background, white is the cards, and dark green-black is the text.
 
-The world is flat, printed and ruled. Colour is spot ink on paper: black for words, calendar red for numbers, Sundays and the one primary action, ink blue for links and secondary marks. Depth comes only from the sheets stacked underneath (hard paper edges, no blur) and from the red spine. Lists and facts sit in ruled cells like the giờ hoàng đạo box printed on a real lịch bloc. Status is a rubber stamp whose line form carries the meaning, so it reads without colour.
+The home page is built around one job: pick what is in the kitchen, then see what you can cook. A compact green hero holds the whole picker. It has the picked tags in a white bar, the lime "Xem N món" action, ingredient groups as tabs and the ingredients as chips. Results follow straight after as a grid of photo cards. The page does not show a giant count. The number of matches is plain text inside the heading and the button.
 
-Density is generous and one-handed: big targets, legible steps at arm's length, a sticky action pinned at the sheet's torn foot. The one orchestrated motion is the tear: when the count changes, the old numeral is torn off the spine and the new one is already printed beneath. The admin area keeps PrimeVue (Aura) but is re-inked with the same red and paper ramps, so it reads as the same pad.
+Depth is soft and green-tinted: cards sit on a two-layer shadow and lift 2px on hover. Shapes are rounded on a three-step scale: 8px for controls, 16px for cards, 24px for the hero, and pills for anything tappable that is not a field. The admin area keeps PrimeVue (Aura), re-tinted with the same green and warm-neutral ramps in `main.ts`, so it reads as the same product.
 
-**Key Characteristics:**
-- Paper sheets on a wall, red glued spine (10px) at the top of every sheet, dotted perforation just below it.
-- Condensed, tall Big Shoulders Display for numerals and headlines; Be Vietnam Pro for every word you read.
-- Numbers are red, words are ink.
-- Ruled cells: a 2px ink rule opens a table, 1px warm rules divide it.
-- Rubber-stamp states: dotted, dashed, solid, rotated, struck.
-- Flat colour, no gradients, no blurred shadows; depth is stacked paper.
-- One signature motion: the tear-off numeral, removed under reduced motion.
+**Key characteristics:**
+- Cream background, white rounded cards, a forest green brand colour, lime used only as a fill.
+- One typeface, Be Vietnam Pro, at weights 400 to 800. Hierarchy comes from weight and size.
+- Photo-first cards at 4:3, with a time pill, a 2-line title, an author line, badges and a rating row.
+- Pills for buttons, chips, tabs and badges. Fields keep an 8px corner so they read as fields.
+- Soft green-tinted shadows. No gradients and no glows.
+- Status is a stamp whose border style carries the meaning, so it reads without colour.
 
 ## Colors
 
-Spot ink on thin grey-white paper: one red, one blue, one black, a green reserved for "done".
-
 ### Primary
-- **Calendar Red** (red): the numerals, the Sunday date, the glued spine on every sheet and card, the pressed ingredient cell, the primary action and the active nav link. 4.65:1 on paper, so red text is legal at body size but it is spent on numbers and actions, not paragraphs.
-- **Dried Seal Red** (red-deep): hover and pressed state of red actions, link hover, and the value behind `--danger` for field and form errors (6.61:1 on paper).
+- **Forest** (`accent` #1e4d3a): the brand. It is used for the header brand, the home hero fill, primary buttons, outline button strokes and text, links, the active nav link, step numbers, fact figures and the focus ring. 9.64:1 with white, so white text on it is always legal.
+- **Deep forest** (`accent-deep` #143528): hover for primary actions, and text on lime, lime-soft and sage fills (9.71:1 on lime).
 
 ### Secondary
-- **Ink Blue** (blue): links, the link-style button, the focus ring (2px outline, 2px offset) and the pending stamp (8.61:1 on paper).
+- **Young lime** (`lime` #c9e86b): a fill only, never text. Used for the one "go" action (`.btn.lime`), pressed ingredient chips, and count badges on group tabs. Always paired with deep-forest text.
+- **Lime soft** (`lime-soft` #eef6d3): picked-ingredient tags in the bar, the difficulty badge, and the pressed favourite button.
+- **Sage** (`sage` #e6efe6): category badges, recipe fact tiles, "Cách dùng" tiles, the no-photo card face and button hover.
 
-### Tertiary
-- **Ledger Green** (ok): only the published stamp, the "Xong" done stamp on recipe steps and success messages (5.76:1 on paper). It never decorates.
+### Status
+- **Star amber** (`star` #a35908): rating stars and the pending stamp (5.26:1 on white).
+- **Danger** (`danger` #b3261e): field errors, destructive actions and the rejected stamp (6.54:1 on white).
+- **Ok** (`ok` #1e6b3a): the published stamp, the "Xong" step stamp and success messages (6.52:1 on white).
 
 ### Neutral
-- **Printing Paper** (paper): every sheet, card, sticky tear-line and the top search field; also the fill behind the count numeral so a leaving sheet hides the new one.
-- **Kitchen Wall** (wall): the page background behind the sheets (`--bg`), and the scrollbar track.
-- **Lampblack Ink** (ink): all text (15.59:1 on paper), the 2px rule that opens a ruled table, the outline button stroke.
-- **Faded Print** (muted): secondary text such as the lunar date, author lines, group labels, hints (6.23:1 on paper, 5.38:1 on wall).
-- **Ruling Line** (rule): 1px cell dividers, the dotted perforation, the stacked sheet edges (1.33:1 on paper, so it divides; it does not carry meaning).
-- **Field Edge** (field): 1px stroke on inputs and selects (3.7:1 on white, 3.4:1 on paper), so controls read as controls.
-- **White** (accent-text): text on red. Field interiors are also plain white (#ffffff) so inputs read as a slip laid on the sheet.
+- **Counter cream** (`bg` #f7f4ec): the page background.
+- **White** (`surface` #ffffff): cards, the header bar, toolbars, fields and the picked bar.
+- **Text** (`text` #1c2420): all body text (15.88:1 on white, 14.45:1 on cream).
+- **Muted** (`muted` #5b635e): author lines, counts next to headings, hints and placeholders (6.19:1 on white, 5.63:1 on cream).
+- **Border** (`border` #e3ded2): 1px dividers and card or toolbar edges. It separates surfaces and never carries meaning.
+- **Field** (`field` #767c75): the 1px stroke on inputs and selects (4.28:1 on white), so controls read as controls.
+- On the green hero, secondary text uses #dfe9e2 (7.76:1).
 
-Legacy aliases kept so every page and the admin share one palette: `--bg` = wall, `--surface` = paper, `--text` = ink, `--border` = rule, `--accent` = red, `--danger` = #a81e15 (same value as red-deep).
+### Named rules
+**The One Lime Rule.** Each view gets at most one lime action. Lime also marks what is selected (pressed chips, picked tags). It is never used for text or decoration.
 
-### Named Rules
-**The Numbers Are Red Rule.** Every Big Shoulders numeral (count, card minutes, step number, fact figure, result count, 403 code) is red; every headline and paragraph is ink. Red words are reserved for the Sunday date, the active nav link, the pressed cell and actions.
-
-**The Four Inks Rule.** The palette is paper, ink, red and blue, plus green only for done/published. No gradients, no tints used as fills, no new hue for decoration.
+**The Green Carries the Brand Rule.** Forest is the only saturated brand hue. Amber, danger and ok exist for status only. Do not add a new hue for decoration.
 
 ## Typography
 
-**Display Font:** Big Shoulders Display, weights 700/800/900 (falls back to Be Vietnam Pro, then sans-serif)
-**Body Font:** Be Vietnam Pro, weights 400/500/600/700 (falls back to system-ui, sans-serif)
+**Font:** Be Vietnam Pro, weights 400/500/600/700/800 (falls back to system-ui, sans-serif). It loads from Google Fonts with `display=swap` and has full Vietnamese diacritics. `--font-display` is kept as an alias of `--font-body` so older components resolve to the same face.
 
-Both load from Google Fonts with `display=swap`, and both carry full Vietnamese diacritics.
-
-**Character:** A condensed, tall poster numeral like the ones printed on a calendar sheet, over a sturdy Vietnamese workhorse sans that stays legible at arm's length in kitchen light.
+**Character:** A sturdy, friendly Vietnamese sans. Headlines are tight (800 weight, -0.02em tracking) and the reading text stays legible at arm's length in kitchen light.
 
 ### Hierarchy
-- **Display** (900, the count numeral, line-height 0.78, -0.03em, tabular): the home count only. Sized by the numeral rule below.
-- **Headline** (800, clamp(2.25rem, 6vw, 3.5rem), 1.15, -0.01em): page h1 ("Trong bếp có gì?", "Công thức"). Balanced wrapping.
-- **Headline, recipe** (800, clamp(2.5rem, 8vw, 4.5rem), 0.95, max 18ch): the dish title on recipe detail.
-- **Title** (800, 2rem, -0.01em): display-face section heads (Nguyên liệu, Cách làm, Nấu được ngay, Theo danh mục); the editor uses 1.9rem.
-- **Figure** (900, 2.25 to 2.75rem, 0.85 to 1, red, tabular): step numbers, recipe facts, result count. Larger figures (6rem empty-state zero, 6.5rem card minutes, 8rem 403 code) are the same role scaled up.
-- **Title, sans** (700, 1.15rem, 1.15): card titles and plain h2.
-- **Body** (400, 1rem, 1.55): default text; captions at 1.05rem, max 34ch beside the numeral.
-- **Body, reading** (400, 1.1rem, 1.6, pre-line): recipe steps, read mid-cooking.
-- **Label** (700, 0.85rem): ingredient group labels and stamps (stamps 0.8rem, +0.02em). Sentence case, never uppercase. Form field labels are 600 at 0.95rem.
+- **Headline** (800, clamp(1.75rem, 4vw, 2.5rem), -0.02em): page h1 ("Trong bếp có gì?", "Công thức"). Balanced wrapping.
+- **Headline, recipe** (800, clamp(2rem, 5vw, 3rem)): the dish title on recipe detail.
+- **Title** (800, 1.5rem): section heads (Nguyên liệu, Cách làm, Đánh giá, Bình luận, the result heading on home).
+- **Figure** (800, 1.75rem, forest, tabular): recipe fact numbers. Step numbers are 800-weight white numbers in a 2.25rem forest circle.
+- **Card title** (700, 1.1rem, clamped to 2 lines).
+- **Body** (400, 1rem, 1.55): default text.
+- **Body, reading** (400, 1.1rem, 1.6, pre-line): recipe steps, which are read mid-cooking.
+- **Label** (600, 0.85 to 0.95rem): badges, pills, form labels and stamps. Sentence case.
 
-### The numeral sizing rule
-The count numeral is sized against both the viewport and its own column, divided by its digit count (`--d`, set from the number's length) inside an inline-size container:
+### Named rules
+**The Sentence Case Rule.** No all-caps labels and no letter-spaced eyebrows above headings.
 
-- Below 900px: `font-size: min(34svh, calc(205cqi / var(--d, 3)), 26rem)`. One digit grows as tall as possible; three digits still fit the width; the 34svh cap keeps the first ingredient rows visible in the first viewport.
-- At 900px and up: `font-size: min(48svh, calc(205cqi / var(--d, 3)), 26rem)`, numeral in a sticky left column.
-
-### Named Rules
-**The Two Faces Rule.** Big Shoulders is for numerals and headlines only; anything a cook reads in a sentence is Be Vietnam Pro.
-
-**The Sentence Case Rule.** No all-caps labels and no letter-spaced eyebrows above headings. The only case transform in the build capitalises the first letter of the weekday that `Intl` returns in lower case.
+**The Quiet Number Rule.** Counts are information, not decoration. They go in running text ("12 món nấu được với…"), in a button ("Xem 12 món") or in a small badge. Never use a display-size numeral.
 
 ## Layout
 
-Public pages sit in a centred 1200px column with 1rem gutters (1.5rem from 860px). The topbar is a two-row grid on mobile (brand and search, then a horizontally scrolling ruled nav strip) and one row from 860px.
+Public pages sit in a centred 1200px column with 1rem gutters (1.5rem from 860px). The header is a full-width white bar with a 1px bottom border, and its content is aligned to the same column. On mobile the nav scrolls sideways under the brand and search.
 
-The home sheet is one column on mobile in reading order: date header (solar date, red on Sundays; lunar date in muted), the numeral with its one-line caption bottom-aligned beside it (the caption wraps below when three digits fill the width, `flex: 1 1 9rem`), the ingredient table, then the sticky tear-line footer. From 900px the body becomes a 5fr / 7fr grid: sticky numeral column on the left divided by a 1px rule, ingredient table on the right.
+**Home, top to bottom:**
+1. Green hero (edge to edge on mobile, 24px corners and 2.5rem padding from 720px). It holds the h1, a one-line lede and the picked bar. The bar is a white pill on desktop and a 16px card on mobile; the "Xem N món" lime button goes full width below 520px. Below the bar come the group tabs and the chips of the active group.
+2. Results: an `aria-live` h2 with the count in words, a "Xem tất cả" link, and the card grid (first 8 matches, or the newest when nothing is picked).
+3. "Cách dùng": three sage tiles with numbered steps. This is a real sequence, so the numbers are earned.
+4. Category pills.
 
-Ruled tables stack their group label above the cells on mobile and put it in a 7.5rem ruled left column from 600px. Recipe detail puts ingredients and steps in a 2fr / 3fr grid from 820px; recipe facts go from 2 to 4 ruled columns at 640px. Card grids use `repeat(auto-fill, minmax(min(100%, 15rem), 1fr))` with 1.5rem / 1.25rem gaps.
+On mobile, the group tabs scroll sideways. The chips form a 2-row grid that scrolls sideways with scroll-snap, so the picker never pushes results far down.
 
-Spacing is in rem without a named scale: sheet inset 1.25rem (2rem from 720px), 0.75rem to 1.5rem between rows, 3rem between home sections. Breakpoints in use: 600, 640, 720, 820, 860, 900px.
+**Other pages.** The recipe list puts its filters in a white 16px toolbar (desktop grid `9rem minmax(0,2fr) repeat(3, minmax(0,1fr)) auto`) above the card grid. Recipe detail puts ingredients and steps in a 2fr / 3fr grid from 820px. Recipe facts are sage tiles in 2 columns, then 4 from 640px. Card grids use `repeat(auto-fill, minmax(min(100%, 16rem), 1fr))` with 1.5rem / 1.25rem gaps.
+
+Home sections are 3rem apart. Breakpoints in use: 520, 640, 720, 820, 860px.
 
 ## Elevation & Depth
 
-Flat. Depth exists only as a stack of paper: each sheet casts two hard, zero-blur paper edges below it, each outlined by the ruling line, so you see the next sheets of the pad peeking out. Cards carry one such edge. Nothing floats, glows or blurs.
+Surfaces separate by colour first (white on cream) and by a soft, green-tinted shadow second.
 
-### Shadow Vocabulary
-- **Sheet stack** (`box-shadow: 0 3px 0 -1px var(--paper), 0 3px 0 0 var(--rule), 0 6px 0 -1px var(--paper), 0 6px 0 0 var(--rule)`): every sheet and the auth card, with 6px bottom margin to clear it.
-- **Card edge** (`box-shadow: 0 3px 0 -1px var(--paper), 0 3px 0 0 var(--rule)`): recipe cards.
+- **Card** (`--shadow-card`: `0 1px 2px rgb(20 53 40 / 0.06), 0 2px 8px rgb(20 53 40 / 0.06)`): recipe cards, sheets, the auth card.
+- **Lift** (`--shadow-lift`: `0 8px 24px rgb(20 53 40 / 0.12)`): a card on hover, together with a 2px translate. There is no translate under reduced motion.
 
-### Named Rules
-**The Stacked Sheet Rule.** Depth is paper under paper: hard edges in paper and rule colours, never a blurred or tinted shadow, never a gradient.
+The green hero needs no shadow; its fill is its elevation.
 
 ## Shapes
 
-Sheets and cards are square-cornered paper with a red spine (10px on sheets, 5px on cards, 4px on the ingredient picker dropdown) and a 2px dotted perforation 6px below the spine on sheets. Controls use a barely softened 4px corner (`--radius`); stamps use 3px. The tear-line footer and every ruled table are bounded by lines, not boxes: a 2px ink rule to open, 1px rule dividers inside, 2px dotted rule for the tear line.
+Three radii plus a pill:
+- **8px** (`--radius`): inputs, selects, textareas and stamps.
+- **16px** (`--radius-lg`): cards, sheets, toolbars, photos on detail, tiles, and the picked bar on mobile.
+- **24px** (`--radius-xl`): the home hero from 720px.
+- **Pill** (999px): every button, chip, tab, badge, tag, the time pill and the header search.
 
 ## Components
 
 ### Buttons
-Printed and confident; colour fills on hover, no lift.
-- **Shape:** gently squared (4px), min-height 44px, 600 weight, 0.4rem icon gap.
-- **Primary:** calendar red fill, white text, red border; hover to red-deep.
-- **Outline (default):** transparent with a 1px ink stroke and ink text; hover inverts to ink fill with paper text. Background and colour transition over 0.15s.
-- **Tear-line action:** the primary button pinned in the sheet's sticky footer, 52px tall, 1.05rem; full width on mobile beside an optional "Bỏ chọn" link button, natural width with 1.75rem inline padding from 720px.
-- **Link button:** blue underlined text, no box, still 44px tall; a danger variant uses red-deep.
-- **Icon button:** 44 × 44px square.
+- **Shape:** pill, min-height 44px, 600 weight.
+- **Default (outline):** 1px forest stroke and forest text; hover fills sage with deep-forest text.
+- **Primary:** forest fill and white text; hover deep-forest.
+- **Lime:** lime fill, deep-forest 700 text, 48px tall on home; hover #b8dc4f. Used only for the one "go" action in a view. It is hidden when there is nothing to go to (count 0).
+- **Link button:** forest underlined text, no box, still 44px tall; the danger variant uses `danger`.
+- **Icon button:** 44 × 44px.
 - **Disabled:** 0.55 opacity, no hover change.
 
-### Chips (selected filters)
-- **Style:** red fill, white 600 text, 4px corners, 44px tall, with a small × icon; hover to red-deep. They exist only as "remove this filter" actions on the recipe list.
+### Hero and picker (signature)
+- **Hero:** forest fill, white h1, #dfe9e2 lede; focus rings inside it are lime.
+- **Picked bar:** white. Each picked ingredient is a lime-soft pill tag with "×" (36px), followed by a muted "Bỏ chọn" link. With nothing picked it shows the placeholder "Chưa chọn nguyên liệu nào".
+- **Group tabs:** pill buttons with `aria-pressed` and `aria-controls`. Inactive tabs have white text and a 35%-white stroke; the active tab is white with deep-forest text. A lime badge shows how many items are picked in that group.
+- **Chips:** 44px pills with a 12% white fill, showing the emoji and then the name. Pressed chips (`aria-pressed`) turn lime with deep-forest 700 text and a ✓.
+- The selection lives in the URL, so Back keeps it.
 
-### Cards / Containers
-- **Sheet:** paper, 10px red spine, dotted perforation, sheet-stack edges, square corners, inset 1.25rem (1.75rem 2rem 2rem from 720px). The auth card is a 440px sheet.
-- **Recipe card:** paper, 5px red spine, one paper edge, square corners. Cover photo at 16:9; with no photo, the same 16:9 slot prints the total minutes as a 6.5rem red numeral with "phút", ruled off below, so a card without a picture still looks deliberate. Facts (minutes, difficulty, category) sit in a row of ruled cells, never a dotted meta string. Hover turns the title red.
+### Recipe card
+- White card, 16px corners, card shadow, and a lift on hover.
+- **Media:** 4:3 with a sage background; the photo is `object-fit: cover`. With no photo, the brand bowl mark sits centred at 56px in forest at 50% opacity.
+- **Time pill:** white, top-left over the photo, total minutes.
+- **Body:** a 2-line title, the muted line "bởi {tác giả}", then badges (difficulty on lime-soft, category on sage).
+- **Rating row:** a border-top divider, then "★ 4.8 (6 đánh giá)" with the star in amber.
 
 ### Inputs / Fields
-- **Style:** white field, 1px field stroke (`--field` #8c857a, 3.7:1 on white), 4px corners, 44px min-height, 1rem text. The topbar search sits on paper with the same field stroke and a muted search icon; the ingredient picker uses a 1px dashed ink stroke.
-- **Focus:** 2px ink-blue outline and blue border.
-- **Error:** red-deep text at 0.875rem, 500 weight, under the field; form errors in red-deep, success in green.
+- White field, 1px `field` stroke, 8px corners, 44px min-height, 1rem text.
+- The header search is a pill on cream with a transparent stroke.
+- **Focus:** 2px forest outline with a 2px offset.
+- **Error:** `danger` text at 0.875rem and 500 weight, under the field.
 
 ### Navigation
-- **Public:** ink links, 500 weight; hover red; the active link turns red with a 2px underline offset 0.45em. On mobile the links become a ruled strip that scrolls sideways without wrapping; "Đăng ký" is a primary button.
-- **Admin:** a 232px paper sidebar with a red spine; links are 44px ruled rows, the active one filled red with white text. Below 720px the sidebar becomes a horizontal ruled strip.
+- **Public:** text-coloured 600 links; hover and active links are forest. "Đăng ký" is a primary button.
+- **Admin:** PrimeVue sidebar on the Kitchen preset (forest primary ramp, warm-neutral surface ramp), with the brand in forest.
 
 ### Stamps (status)
-A rubber stamp: 2px border in the text colour, 3px corners, 700 weight at 0.8rem, +0.02em, never wraps. The line form carries the state so it reads without colour:
-- **Bản nháp** (draft): dotted border, muted.
-- **Chờ duyệt** (pending): dashed border, blue.
-- **Đã đăng** (published): solid border, green.
-- **Bị từ chối** (rejected): solid border, red, rotated -2deg as if stamped in a hurry.
-- **Đã ẩn** (hidden): solid border, muted, text struck through.
-- **Xong** (step done, recipe detail): green 2px stamp with a check icon, rotated -4deg on paper; done step text turns muted. Prepared ingredients are struck with a 2px red line.
-
-### Ingredient table (signature)
-Ruled cells like the giờ hoàng đạo box: a 2px ink rule on top, one row per group divided by 1px rules, the group label in muted 700 0.85rem. Each ingredient is a 44px tap cell (emoji at 1.15em, then the name), transparent until hover shows a rule-coloured border; pressed (`aria-pressed`) fills red with white 600 text. Selection lives in the URL so Back keeps it.
-
-### Count numeral and tear (signature)
-The giant red numeral sits on a paper fill, sized by the numeral rule. Its caption beside it is `aria-live`; the numeral itself is `aria-hidden` and the number is repeated for screen readers inside the caption. When the count changes, the new numeral is already printed in the same grid cell underneath; the old one is torn off the spine: over 0.38s it moves up 22% and rotates -9deg about its top-left corner while its lower 55% is clipped away (`cubic-bezier(0.16, 1, 0.3, 1)`), and it fades with ease-in. The numeral is `width: fit-content` so the leaving sheet covers only the digits, never the rule beside it. Under `prefers-reduced-motion: reduce` every transition and animation collapses to 0.01ms, so the number simply changes.
+A 2px border in the text colour, 8px corners, 700 weight at 0.8rem, never wraps. The border style carries the state, so it reads without colour:
+- **Bản nháp** (draft): dotted, muted.
+- **Chờ duyệt** (pending): dashed, amber.
+- **Đã đăng** (published): solid, ok green.
+- **Bị từ chối** (rejected): solid, danger, rotated -2deg.
+- **Đã ẩn** (hidden): solid, muted, struck through.
+- **Xong** (step done): ok green with a check icon; the text of a done step turns muted.
 
 ## Do's and Don'ts
 
 ### Do:
-- **Do** keep every text pair at 4.5:1 or better; the shipped pairs run from 4.65:1 (red on paper) to 15.59:1 (ink on paper).
-- **Do** make every public tap target at least 44px tall (52px for the tear-line action, 48px for recipe ingredient rows).
-- **Do** print numbers in red Big Shoulders and words in ink Be Vietnam Pro.
-- **Do** put meta (minutes, difficulty, category, facts) in ruled cells divided by 1px rules.
-- **Do** give every new state a stamp line form (dotted, dashed, solid, rotated, struck) plus a word, never colour alone.
-- **Do** start every new surface as a sheet: paper, red spine, dotted perforation, stacked edges.
-- **Do** keep the tear as the single orchestrated motion and let the global reduced-motion rule remove it.
-- **Do** make every surface complete without photos, as the minutes-numeral card face does.
+- **Do** keep every text pair at 4.5:1 or better.
+- **Do** make every public tap target at least 44px tall (48px for the home "go" button).
+- **Do** keep lime to one action per view plus selected states, always with deep-forest text.
+- **Do** put counts in words, buttons or badges.
+- **Do** give every new state a stamp border style plus a word, never colour alone.
+- **Do** make every surface complete without photos, as the bowl-mark card face does.
+- **Do** respect `prefers-reduced-motion`: the global rule collapses transitions and the card lift drops its translate.
 
 ### Don't:
-- **Don't** use all-caps or letter-spaced labels; labels are sentence case.
-- **Don't** put eyebrows or kickers above headings.
-- **Don't** join meta with middle dots ("25 phút · Dễ · Món chính"); use ruled cells.
+- **Don't** use all-caps or letter-spaced labels, or eyebrows above headings.
+- **Don't** join meta with middle dots ("25 phút · Dễ · Món chính"); use badges and pills.
 - **Don't** use "→" arrows in link or button text.
-- **Don't** add gradients, blurred shadows or glows; depth is stacked paper only.
-- **Don't** add a hue outside paper, ink, red, blue and done-green.
+- **Don't** use lime for text, borders or decoration.
+- **Don't** add gradients, glows or grey shadows; shadows are green-tinted and soft.
+- **Don't** bring back a display-size count numeral.
 - **Don't** add motion that ignores `prefers-reduced-motion`.

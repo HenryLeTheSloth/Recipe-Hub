@@ -28,8 +28,8 @@ function onKey(e: KeyboardEvent) {
 
 <style scoped>
 .stars { display: inline-flex; }
-.stars [role='radio'] { display: inline-flex; align-items: center; justify-content: center; min-width: 44px; min-height: 44px; font-size: 1.75rem; line-height: 1; color: var(--rule); cursor: pointer; }
-.stars .on { color: var(--red); }
+.stars [role='radio'] { display: inline-flex; align-items: center; justify-content: center; min-width: 44px; min-height: 44px; font-size: 1.75rem; line-height: 1; color: var(--border); cursor: pointer; }
+.stars .on { color: var(--star); }
 .stars .ro { min-width: 0; min-height: 0; font-size: 1.1rem; cursor: default; }
-.stars [role='radio']:focus-visible { outline: 2px solid var(--blue); outline-offset: -2px; }
+.stars [role='radio']:focus-visible { outline: 2px solid var(--accent); outline-offset: -2px; }
 </style>

@@ -72,18 +72,18 @@ async function remove(r: RecipeCard) {
 .mine { max-width: 900px; margin: 0.5rem auto 0; }
 .head { display: flex; justify-content: space-between; align-items: center; gap: 0.5rem 1rem; flex-wrap: wrap; }
 .head .btn svg, .pager .btn svg { width: 0.85rem; height: 0.85rem; }
-.tabs { display: flex; overflow-x: auto; scrollbar-width: none; border-top: 2px solid var(--ink); border-bottom: 1px solid var(--rule); margin-bottom: 0.5rem; }
+.tabs { display: flex; gap: 0.4rem; overflow-x: auto; scrollbar-width: none; margin-bottom: 0.75rem; }
 .tabs button {
-  flex: none; min-height: 44px; padding: 0.5rem 0.9rem; font: inherit; color: var(--ink); background: none;
-  border: 0; border-right: 1px solid var(--rule); cursor: pointer;
+  flex: none; min-height: 44px; padding: 0.4rem 1rem; font: inherit; font-weight: 600; color: var(--accent-deep);
+  background: var(--surface); border: 1px solid var(--border); border-radius: 999px; cursor: pointer;
 }
-.tabs button:hover { color: var(--red); }
-.tabs button[aria-selected='true'] { background: var(--ink); color: var(--paper); font-weight: 600; }
+.tabs button:hover { border-color: var(--accent); background: var(--sage); }
+.tabs button[aria-selected='true'] { background: var(--accent); border-color: var(--accent); color: var(--accent-text); }
 .empty { margin: 1.5rem 0; color: var(--muted); }
 .rows { list-style: none; padding: 0; margin: 0; }
-.rows li { display: flex; flex-wrap: wrap; gap: 0.25rem 1rem; align-items: center; padding: 0.5rem 0; border-bottom: 1px solid var(--rule); }
-.title { flex: 1 1 240px; color: var(--ink); font-weight: 600; font-size: 1.05rem; text-decoration: none; padding: 0.5rem 0; }
-.title:hover { color: var(--red); }
+.rows li { display: flex; flex-wrap: wrap; gap: 0.25rem 1rem; align-items: center; padding: 0.5rem 0; border-bottom: 1px solid var(--border); }
+.title { flex: 1 1 240px; color: var(--text); font-weight: 600; font-size: 1.05rem; text-decoration: none; padding: 0.5rem 0; }
+.title:hover { color: var(--accent); }
 .actions { display: flex; gap: 1rem; }
 .act { display: inline-flex; align-items: center; min-height: 44px; }
 </style>

@@ -128,11 +128,15 @@ function ask(recipe: RecipeCard, action: 'reject' | 'hide') {
 </template>
 
 <style scoped>
-.tabs { display: flex; border-top: 2px solid var(--ink); border-bottom: 1px solid var(--rule); margin-bottom: 1rem; }
-.tabs button { min-height: 44px; padding: 0.5rem 1rem; font: inherit; border: 0; border-right: 1px solid var(--rule); background: none; color: var(--ink); cursor: pointer; }
-.tabs button.active { background: var(--ink); color: var(--paper); font-weight: 600; }
-.facts { list-style: none; display: flex; flex-wrap: wrap; margin: 0 0 1rem; padding: 0; border-top: 1px solid var(--rule); border-bottom: 1px solid var(--rule); color: var(--muted); }
-.facts li { padding: 0.3rem 0.75rem; border-right: 1px solid var(--rule); }
+.tabs { display: flex; gap: 0.4rem; overflow-x: auto; scrollbar-width: none; margin-bottom: 1rem; }
+.tabs button {
+  flex: none; min-height: 44px; padding: 0.4rem 1rem; font: inherit; font-weight: 600; color: var(--accent-deep);
+  background: var(--surface); border: 1px solid var(--border); border-radius: 999px; cursor: pointer;
+}
+.tabs button:hover { border-color: var(--accent); background: var(--sage); }
+.tabs button.active { background: var(--accent); border-color: var(--accent); color: var(--accent-text); }
+.facts { list-style: none; display: flex; flex-wrap: wrap; margin: 0 0 1rem; padding: 0; border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); color: var(--muted); }
+.facts li { padding: 0.3rem 0.75rem; border-right: 1px solid var(--border); }
 .facts li:first-child { padding-left: 0; }
 .facts li:last-child { border-right: 0; }
 .pager .btn svg { width: 0.85rem; height: 0.85rem; }

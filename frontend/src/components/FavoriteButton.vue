@@ -43,5 +43,5 @@ async function toggle() {
 
 <style scoped>
 .fav { display: inline-flex; align-items: center; gap: 0.75rem; }
-.btn[aria-pressed='true'] { color: var(--red); border-color: var(--red); }
+.btn[aria-pressed='true'] { color: var(--accent-deep); background: var(--lime-soft); }
 </style>

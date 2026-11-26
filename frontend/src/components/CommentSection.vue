@@ -86,11 +86,11 @@ const toggleHidden = (c: Comment) => run(async () => { await hideComment(c.id, !
 
 <style scoped>
 .comments { margin-top: 2.5rem; }
-h2 { font-family: var(--font-display); font-weight: 800; font-size: 2rem; margin: 0 0 0.5rem; }
+h2 { font-weight: 800; font-size: 1.5rem; margin: 0 0 0.5rem; }
 .row, .actions { display: flex; align-items: center; gap: 1rem; flex-wrap: wrap; }
-.list { list-style: none; padding: 0; margin: 1rem 0 0; border-top: 2px solid var(--ink); }
-.list > li { padding: 0.6rem 0; border-bottom: 1px solid var(--rule); }
-.item.reply { margin: 0.5rem 0 0 1.5rem; padding-left: 0.75rem; border-left: 2px solid var(--rule); }
+.list { list-style: none; padding: 0; margin: 1rem 0 0; border-top: 1px solid var(--border); }
+.list > li { padding: 0.6rem 0; border-bottom: 1px solid var(--border); }
+.item.reply { margin: 0.5rem 0 0 1.5rem; padding-left: 0.75rem; border-left: 2px solid var(--border); }
 .text { margin: 0.2rem 0; white-space: pre-line; }
 .hidden .text { color: var(--muted); }
 .reply-form { margin: 0.5rem 0 0 1.5rem; }

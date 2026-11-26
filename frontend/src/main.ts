@@ -24,17 +24,17 @@ try {
 
 app.use(router)
 window.addEventListener('api:unauthenticated', () => onSessionLost(router, useAuthStore()))
-// Admin giữ PrimeVue nhưng mang màu tờ lịch: đỏ lịch làm màu chính, giấy ngà làm nền.
-const Bloc = definePreset(Aura, {
+// Admin giữ PrimeVue nhưng mang màu Bếp xanh: xanh rừng làm màu chính, kem làm nền.
+const Kitchen = definePreset(Aura, {
   semantic: {
     primary: {
-      50: '#fdf1f0', 100: '#fadcd9', 200: '#f4b5af', 300: '#ec867d', 400: '#e1554a', 500: '#d2281d',
-      600: '#b8221a', 700: '#a81e15', 800: '#851912', 900: '#6b1610', 950: '#3d0b08',
+      50: '#eef5f1', 100: '#d5e6dc', 200: '#aecdb9', 300: '#7fae93', 400: '#4f8a6c', 500: '#2f6b50',
+      600: '#245c45', 700: '#1e4d3a', 800: '#173d2e', 900: '#143528', 950: '#0b1f17',
     },
-    colorScheme: { light: { surface: { 0: '#ffffff', 50: '#fbfaf6', 100: '#f4f3ee', 200: '#e9e6de', 300: '#d9d4c9', 400: '#b9b2a5', 500: '#8c857a', 600: '#5f5951', 700: '#45403a', 800: '#2e2a26', 900: '#1d1a17', 950: '#110f0d' } } },
+    colorScheme: { light: { surface: { 0: '#ffffff', 50: '#fbfaf6', 100: '#f7f4ec', 200: '#ece8dd', 300: '#e3ded2', 400: '#b9bdb6', 500: '#767c75', 600: '#5b635e', 700: '#434a46', 800: '#2d3430', 900: '#1c2420', 950: '#111714' } } },
   },
 })
 // PrimeVue 5 dùng giấy phép PrimeUI: key Community miễn phí cho cá nhân, đặt PRIMEUI_KEY trong .env ở gốc repo (không commit).
 // darkModeSelector trỏ vào class không bao giờ bật: trang chỉ có giao diện sáng.
-app.use(PrimeVue, { theme: { preset: Bloc, options: { darkModeSelector: '.app-dark' } }, license: import.meta.env.PRIMEUI_KEY })
+app.use(PrimeVue, { theme: { preset: Kitchen, options: { darkModeSelector: '.app-dark' } }, license: import.meta.env.PRIMEUI_KEY })
 app.mount('#app')

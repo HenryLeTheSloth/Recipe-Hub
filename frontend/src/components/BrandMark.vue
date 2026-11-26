@@ -1,11 +1,11 @@
 <template>
   <svg class="brand-mark" viewBox="0 0 32 32" aria-hidden="true">
-    <rect x="3" y="3" width="26" height="27" rx="2" fill="#fbfaf6" stroke="currentColor" stroke-width="2" />
-    <rect x="3" y="3" width="26" height="7" rx="2" fill="#d2281d" />
-    <path d="M8 17h16a8 8 0 0 1-16 0z" fill="#d2281d" />
+    <circle cx="16" cy="16" r="15" fill="currentColor" />
+    <path d="M7 15h18a9 9 0 0 1-18 0z" fill="#c9e86b" />
+    <path d="M12 11c0-2 2-2 2-4M17 11c0-2 2-2 2-4" stroke="#c9e86b" stroke-width="1.6" fill="none" stroke-linecap="round" />
   </svg>
 </template>
 
 <style scoped>
-.brand-mark { width: 1.75rem; height: 1.75rem; flex: none; }
+.brand-mark { width: 1.75rem; height: 1.75rem; flex: none; color: var(--accent); }
 </style>

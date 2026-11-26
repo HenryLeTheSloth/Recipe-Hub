@@ -49,8 +49,8 @@ async function onChange(e: Event) {
 
 <style scoped>
 .image-upload { display: flex; flex-direction: column; align-items: flex-start; gap: 0.5rem; }
-.preview { width: 112px; height: 84px; object-fit: cover; border: 1px solid var(--rule); }
+.preview { width: 112px; height: 84px; object-fit: cover; border: 1px solid var(--border); }
 .pick { position: relative; cursor: pointer; }
-.pick:focus-within { outline: 2px solid var(--blue); outline-offset: 2px; }
+.pick:focus-within { outline: 2px solid var(--accent); outline-offset: 2px; }
 .visually-hidden { position: absolute; width: 1px; height: 1px; opacity: 0; overflow: hidden; }
 </style>

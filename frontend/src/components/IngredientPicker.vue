@@ -72,12 +72,12 @@ async function suggest() {
 
 <style scoped>
 .picker { position: relative; }
-input { font: inherit; width: 100%; min-height: 44px; padding: 0.55rem 0.75rem; border: 1px dashed var(--ink); border-radius: var(--radius); background: #fff; color: var(--ink); }
+input { font: inherit; width: 100%; min-height: 44px; padding: 0.55rem 0.75rem; border: 1px solid var(--field); border-radius: var(--radius); background: #fff; color: var(--text); }
 .results {
   position: absolute; z-index: 5; left: 0; right: 0; margin: 0.25rem 0 0; padding: 0; list-style: none;
-  background: var(--paper); border: 1px solid var(--ink); border-top: 4px solid var(--red); border-radius: 0; max-height: 280px; overflow: auto;
+  background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius-lg); box-shadow: var(--shadow-lift); max-height: 280px; overflow: auto;
 }
-.results li { border-bottom: 1px solid var(--rule); }
-.results button { font: inherit; width: 100%; min-height: 44px; text-align: left; padding: 0.45rem 0.75rem; border: 0; background: none; color: var(--ink); cursor: pointer; }
-.results button:hover, .results button:focus { background: var(--red); color: #fff; }
+.results li { border-bottom: 1px solid var(--border); }
+.results button { font: inherit; width: 100%; min-height: 44px; text-align: left; padding: 0.45rem 0.75rem; border: 0; background: none; color: var(--text); cursor: pointer; }
+.results button:hover, .results button:focus { background: var(--sage); color: var(--accent-deep); }
 </style>

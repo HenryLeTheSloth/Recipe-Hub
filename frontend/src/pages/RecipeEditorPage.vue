@@ -208,29 +208,29 @@ const removeAt = <T,>(arr: T[], i: number) => arr.splice(i, 1)
 .head { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 0.5rem 1rem; }
 .head h1 { margin-bottom: 0.5rem; }
 fieldset { border: 0; padding: 0; margin: 0; display: flex; flex-direction: column; gap: 1rem; min-width: 0; }
-.warn { padding: 0.6rem 0 0.6rem; border-top: 1px dashed var(--blue); border-bottom: 1px dashed var(--blue); color: var(--blue); font-weight: 600; }
+.warn { padding: 0.6rem 0 0.6rem; border-top: 1px dashed var(--accent); border-bottom: 1px dashed var(--accent); color: var(--accent); font-weight: 600; }
 .lines input, .lines select, .steps textarea {
-  font: inherit; min-height: 44px; padding: 0.55rem 0.7rem; border: 1px solid var(--field); border-radius: var(--radius); background: #fff; color: var(--ink);
+  font: inherit; min-height: 44px; padding: 0.55rem 0.7rem; border: 1px solid var(--field); border-radius: var(--radius); background: #fff; color: var(--text);
 }
 .row { display: grid; gap: 0.75rem; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); }
 .tags { display: flex; flex-wrap: wrap; gap: 0 1rem; font-weight: 400; }
 .tag { display: inline-flex; align-items: center; gap: 0.4rem; min-height: 44px; }
-h2 { font-family: var(--font-display); font-weight: 800; font-size: 1.9rem; margin: 1rem 0 0; padding-top: 0.75rem; border-top: 2px solid var(--ink); }
+h2 { font-weight: 800; font-size: 1.5rem; margin: 1rem 0 0; padding-top: 0.75rem; border-top: 1px solid var(--border); }
 .lines { list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; }
-.lines li { display: grid; gap: 0.5rem; grid-template-columns: 1fr 90px 130px; align-items: center; padding: 0.5rem 0; border-bottom: 1px solid var(--rule); }
+.lines li { display: grid; gap: 0.5rem; grid-template-columns: 1fr 90px 130px; align-items: center; padding: 0.5rem 0; border-bottom: 1px solid var(--border); }
 .lines .name { font-weight: 600; }
 .lines li input[aria-label='Ghi chú'] { grid-column: 1 / 3; }
 @media (min-width: 720px) { .lines li { grid-template-columns: 1.3fr 90px 130px 1fr auto; } .lines li input[aria-label='Ghi chú'] { grid-column: auto; } }
 .steps { list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; }
-.steps li { display: grid; grid-template-columns: 2.75rem 1fr; gap: 0.5rem 0.75rem; padding: 0.75rem 0; border-bottom: 1px solid var(--rule); }
+.steps li { display: grid; grid-template-columns: 2.75rem 1fr; gap: 0.5rem 0.75rem; padding: 0.75rem 0; border-bottom: 1px solid var(--border); }
 .steps li > :not(.no) { grid-column: 2; }
-.no { grid-row: 1 / span 3; font-family: var(--font-display); font-weight: 900; font-size: 2.5rem; line-height: 0.9; color: var(--red); }
+.no { grid-row: 1 / span 3; font-family: var(--font-display); font-weight: 900; font-size: 2.5rem; line-height: 0.9; color: var(--accent); }
 .step-actions { display: flex; gap: 0.4rem; }
 .btn svg { width: 0.9rem; height: 0.9rem; }
 .add { align-self: flex-start; }
 .actions {
   position: sticky; bottom: 0; display: flex; flex-wrap: wrap; gap: 0.75rem; justify-content: flex-end;
-  margin: 1rem -1.25rem 0; padding: 0.9rem 1.25rem; background: var(--paper); border-top: 2px dotted var(--rule);
+  margin: 1rem -1.25rem 0; padding: 0.9rem 1.25rem; background: var(--surface); border-top: 1px solid var(--border);
 }
 @media (min-width: 720px) { .actions { margin-inline: -2rem; padding-inline: 2rem; } }
 .form-error p { margin: 0; }

@@ -79,11 +79,11 @@ const toggleHidden = (r: Rating) => run(async () => { await hideRating(r.id, !r.
 
 <style scoped>
 .ratings { margin-top: 2.5rem; }
-h2 { font-family: var(--font-display); font-weight: 800; font-size: 2rem; margin: 0 0 0.5rem; }
-.count { color: var(--red); }
+h2 { font-weight: 800; font-size: 1.5rem; margin: 0 0 0.5rem; }
+.count { color: var(--accent); }
 .row { display: flex; align-items: center; gap: 1rem; flex-wrap: wrap; }
-.list { list-style: none; padding: 0; margin: 1rem 0 0; border-top: 2px solid var(--ink); }
-.list li { padding: 0.6rem 0; border-bottom: 1px solid var(--rule); }
+.list { list-style: none; padding: 0; margin: 1rem 0 0; border-top: 1px solid var(--border); }
+.list li { padding: 0.6rem 0; border-bottom: 1px solid var(--border); }
 .meta { display: flex; align-items: center; flex-wrap: wrap; gap: 0.25rem 0.75rem; }
 .text { margin: 0.25rem 0 0; white-space: pre-line; }
 .hidden .text { color: var(--muted); }

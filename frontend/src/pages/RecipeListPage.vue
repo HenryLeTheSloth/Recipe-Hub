@@ -64,7 +64,7 @@ const page = computed(() => search.value.page ?? 1)
 </script>
 
 <template>
-  <section class="sheet list" aria-labelledby="list-title">
+  <section class="list" aria-labelledby="list-title">
     <header class="head">
       <h1 id="list-title">Công thức</h1>
       <p v-if="result" class="count"><span class="num">{{ result.page.totalElements }}</span> món</p>
@@ -106,8 +106,8 @@ const page = computed(() => search.value.page ?? 1)
     <p v-if="error" class="form-error">{{ error }}</p>
     <template v-else-if="result">
       <div v-if="!result.content.length" class="empty">
-        <p class="zero num" aria-hidden="true">0</p>
         <p>Không có món nào khớp bộ lọc này. Bỏ bớt một điều kiện thử xem.</p>
+        <RouterLink to="/recipes" class="btn">Bỏ hết bộ lọc</RouterLink>
       </div>
       <div class="grid">
         <RecipeCard v-for="r in result.content" :key="r.id" :recipe="r" />
@@ -122,29 +122,29 @@ const page = computed(() => search.value.page ?? 1)
 </template>
 
 <style scoped>
-.list { margin-top: 0.5rem; }
-.head { display: flex; align-items: baseline; justify-content: space-between; gap: 1rem; border-bottom: 2px solid var(--ink); margin-bottom: 1rem; }
-.head h1 { margin-bottom: 0.25rem; }
+.head { display: flex; align-items: baseline; gap: 0.75rem; margin-bottom: 1rem; }
+.head h1 { margin: 0; }
 .count { margin: 0; color: var(--muted); }
-.count .num { font-family: var(--font-display); font-weight: 900; font-size: 2.5rem; color: var(--red); line-height: 1; }
-.filters { display: grid; gap: 0.5rem; grid-template-columns: repeat(2, minmax(0, 1fr)); }
-.filters .input { width: 100%; min-width: 0; }
+.filters {
+  display: grid; gap: 0.5rem; grid-template-columns: repeat(2, minmax(0, 1fr));
+  padding: 0.75rem; background: var(--surface); border-radius: var(--radius-lg); box-shadow: var(--shadow-card);
+}
+.filters .input { width: 100%; min-width: 0; border-radius: 999px; }
 .filters .name, .filters .pantry { grid-column: 1 / -1; }
 .filters .btn { grid-column: 1 / -1; }
 @media (min-width: 900px) {
-  .filters { grid-template-columns: minmax(0, 2fr) repeat(3, minmax(0, 1fr)) auto; }
+  .filters { grid-template-columns: 9rem minmax(0, 2fr) repeat(3, minmax(0, 1fr)) auto; }
   .filters .name, .filters .pantry, .filters .btn { grid-column: auto; }
 }
 .chips { list-style: none; display: flex; flex-wrap: wrap; gap: 0.4rem; margin: 0.75rem 0 0; padding: 0; }
 .chip {
-  display: inline-flex; align-items: center; gap: 0.4rem; min-height: 44px; padding: 0.3rem 0.8rem;
-  font: inherit; font-weight: 600; color: #fff; background: var(--red); border: 0; border-radius: var(--radius); cursor: pointer;
+  display: inline-flex; align-items: center; gap: 0.4rem; min-height: 44px; padding: 0.3rem 0.9rem;
+  font: inherit; font-weight: 600; color: var(--accent-deep); background: var(--sage); border: 0; border-radius: 999px; cursor: pointer;
 }
-.chip:hover { background: var(--red-deep); }
+.chip:hover { background: var(--lime-soft); }
 .chip .x { width: 0.75rem; height: 0.75rem; }
-.empty { display: flex; align-items: center; gap: 1rem; margin: 1.5rem 0; }
+.empty { display: flex; flex-wrap: wrap; align-items: center; gap: 0.75rem 1.25rem; margin: 2rem 0; }
 .empty p { margin: 0; max-width: 40ch; }
-.zero { font-family: var(--font-display); font-weight: 900; font-size: 6rem; line-height: 0.8; color: var(--red); }
-.grid { display: grid; gap: 1.5rem 1.25rem; margin-top: 1.5rem; grid-template-columns: repeat(auto-fill, minmax(min(100%, 15rem), 1fr)); }
+.grid { display: grid; gap: 1.5rem 1.25rem; margin-top: 1.5rem; grid-template-columns: repeat(auto-fill, minmax(min(100%, 16rem), 1fr)); }
 .pager .btn svg { width: 0.85rem; height: 0.85rem; }
 </style>

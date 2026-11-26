@@ -12,5 +12,5 @@ import { RouterLink } from 'vue-router'
 </template>
 
 <style scoped>
-.code { margin: 0.5rem 0 0; font-family: var(--font-display); font-weight: 900; font-size: 8rem; line-height: 0.8; color: var(--red); }
+.code { margin: 0.5rem 0 0; font-family: var(--font-display); font-weight: 900; font-size: 8rem; line-height: 0.8; color: var(--accent); }
 </style>

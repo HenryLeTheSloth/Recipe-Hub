@@ -43,24 +43,23 @@ aside {
   flex-direction: column;
   gap: 0.25rem;
   padding: 1rem;
-  background: var(--paper);
-  border-top: 10px solid var(--red);
-  border-right: 1px solid var(--rule);
+  background: var(--surface);
+  border-right: 1px solid var(--border);
 }
-.brand { display: inline-flex; align-items: center; gap: 0.5rem; font-family: var(--font-display); font-weight: 800; font-size: 1.5rem; color: var(--ink); text-decoration: none; margin-bottom: 1rem; }
-.section { color: var(--muted); font-weight: 700; font-size: 0.9rem; margin: 0 0 0.25rem; padding-bottom: 0.4rem; border-bottom: 2px solid var(--ink); }
-nav { display: flex; flex-direction: column; }
-nav a { display: flex; align-items: center; min-height: 44px; padding: 0 0.6rem; border-bottom: 1px solid var(--rule); color: var(--ink); text-decoration: none; }
-nav a:hover { color: var(--red); }
-nav a.router-link-active { background: var(--red); color: #fff; font-weight: 600; }
+.brand { display: inline-flex; align-items: center; gap: 0.5rem; font-weight: 800; font-size: 1.25rem; color: var(--accent); text-decoration: none; margin-bottom: 1rem; }
+.section { color: var(--muted); font-weight: 700; font-size: 0.9rem; margin: 0 0 0.25rem; padding: 0 0.75rem; }
+nav { display: flex; flex-direction: column; gap: 0.15rem; }
+nav a { display: flex; align-items: center; min-height: 44px; padding: 0 0.75rem; border-radius: var(--radius); color: var(--text); font-weight: 500; text-decoration: none; }
+nav a:hover { background: var(--sage); color: var(--accent-deep); }
+nav a.router-link-active { background: var(--accent); color: #fff; font-weight: 600; }
 .who { margin-top: auto; color: var(--muted); font-size: 0.9rem; }
 main { padding: 1.5rem; min-width: 0; }
 .welcome { color: var(--muted); }
 @media (max-width: 720px) {
   .admin { grid-template-columns: 1fr; grid-template-rows: auto 1fr; }
-  aside { border-right: 0; border-bottom: 1px solid var(--rule); }
+  aside { border-right: 0; border-bottom: 1px solid var(--border); }
   nav { flex-direction: row; overflow-x: auto; scrollbar-width: none; }
-  nav a { flex: none; border-bottom: 0; border-right: 1px solid var(--rule); }
+  nav a { flex: none; }
   .who { display: none; }
 }
 </style>
